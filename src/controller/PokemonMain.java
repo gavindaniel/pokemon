@@ -27,8 +27,8 @@ public class PokemonMain extends Application {
 	private Observer graphicView; // to be implemented after textView
 	
 	private BorderPane window;
-	public static final int width = 700;
-	public static final int height = 750;
+	public static final int height = 400;
+	public static final int width = 600;
 	
 	char keyPressed;
 

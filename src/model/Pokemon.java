@@ -51,7 +51,7 @@ public class Pokemon extends Observable {
 	    			  newR += 1;
 	    		}
 	    		
-	    		newLoc = new Point(newR, newC);
+	    		newLoc = new Point(newC, newR);
 	    		System.out.println("old: (" + (int)oldLoc.getX() + "," + (int)oldLoc.getY() + ")    new: (" + (int)newLoc.getX() + "," + (int)newLoc.getY() + ")");
 	    		
 	    		theMap.updatePlayerLocation(oldLoc, newLoc);

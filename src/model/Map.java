@@ -12,7 +12,7 @@ public class Map extends Observable {
 	private Point playerLocation;
 
 	public Map() {
-		size = 40; // playable map size: 30, total Map size (with trees): 40x40, to allow for 9 sections to visit on the map, 5 squares of trees padding 
+		size = 50; // playable map size: 30, total Map size (with trees): 40x40, to allow for 9 sections to visit on the map, 10 squares of trees padding 
 		
 		playerLocation = new Point((size / 2), (size / 2)); // starts in the middle of the map
 		clearMap();
@@ -77,16 +77,16 @@ public class Map extends Observable {
 			for (int c = 0; c < size; c++) {
 				
 				// check if on the edges, if so, place a 'T' to resemble a tree on the map
-				if (r < 5) {
+				if (r < 10) {
 					board[r][c] = 'T';
 				}
-				else if (r > size - 4) {
+				else if (r > size - 9) {
 					board[r][c] = 'T';
 				}
-				else if (c < 5) {
+				else if (c < 10) {
 					board[r][c] = 'T';
 				}
-				else if (c > size - 4) {
+				else if (c > size - 9) {
 					board [r][c] = 'T';
 				}
 			}
