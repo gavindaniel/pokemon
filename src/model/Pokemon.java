@@ -50,7 +50,7 @@ public class Pokemon extends Observable {
 	    		else if (direction == 'D'){
 	    			  newR += 1;
 	    		}
-	    		
+	    		// hi
 	    		newLoc = new Point(newC, newR);
 //	    		System.out.println("old: (" + (int)oldLoc.getX() + "," + (int)oldLoc.getY() + ")    new: (" + (int)newLoc.getX() + "," + (int)newLoc.getY() + ")");
 	    		
