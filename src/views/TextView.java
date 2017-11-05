@@ -47,14 +47,14 @@ public class TextView extends BorderPane implements Observer {
 		  S_b = new Button();
 	//	  gameMessage = new Label(theGame.getMessage());
 		  gameDisplay = new TextArea(theGame.toString());
-		  gameDisplay.setFont(new Font("Courier", 23));
+		  gameDisplay.setFont(new Font("Courier", 12));
 		  gameDisplay.setEditable(false);
-		  gp1.setPrefWidth(540.0);
-		  gp1.setPrefHeight(340.0);
-		  gp2.setPrefWidth(540.0);
-		  gp2.setPrefHeight(150.0);
-		  gameDisplay.setPrefHeight(340.0);
-		  gameDisplay.setPrefWidth(540.0);
+		  gp1.setPrefWidth(700.0);
+		  gp1.setPrefHeight(500.0);
+		  gp2.setPrefWidth(700.0);
+		  gp2.setPrefHeight(250.0);
+		  gameDisplay.setPrefHeight(500.0);
+		  gameDisplay.setPrefWidth(700.0);
 		  gameDisplay.setStyle("-fx-font-alignment: center");
 	//	  gameMessage.setFont(new Font("Courier", 24));
 		  

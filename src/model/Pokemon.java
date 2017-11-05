@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Point;
 import java.util.Observable;
 
 public class Pokemon extends Observable {
@@ -29,39 +30,60 @@ public class Pokemon extends Observable {
 	  
 	// Move Player 
 		public void movePlayer(char direction) {
-			int count = 0;
-			char spot = 'z';
-			int pos = 0;
-			boolean flag = false;
-			
-		    for (int r = 0; r < theMap.getSize(); r++) {
-		    		for (int c = 0; c < theMap.getSize(); c++) {
-			    	  	count++;
-				    	if (count == theMap.getPlayerLocation()){
-				    		if (direction == 'U'){
-				    			  
-				    		}
-				    		else if (direction == 'L'){
-				    			  
-				    		}
-				    		else if (direction == 'R'){
-				    			  	    			  
-				    		}
-				    		else if (direction == 'D'){
-				    			    
-				    		}
-				    		  
-				    		flag = true;
-				    	}
-				    	if (flag){
-			    		  break;
-				    	}
-		    		}
-		    		if (flag){
-		    			break;
-		    		}
-		    }
+		
+			Point oldLoc = theMap.getPlayerLocation();
+			Point newLoc = oldLoc;
+			int newC = (int) newLoc.getX();
+			int newR = (int) newLoc.getY();
+		    
+	    		System.out.println("Moving player...");
+	    		
+	    		if (direction == 'U'){
+	    			  newR -= 1;
+	    		}
+	    		else if (direction == 'L'){
+	    			  newC -= 1;
+	    		}
+	    		else if (direction == 'R'){
+	    			  newC += 1;	
+	    		}
+	    		else if (direction == 'D'){
+	    			  newR += 1;
+	    		}
+	    		
+	    		newLoc = new Point(newR, newC);
+	    		System.out.println("old: (" + (int)oldLoc.getX() + "," + (int)oldLoc.getY() + ")    new: (" + (int)newLoc.getX() + "," + (int)newLoc.getY() + ")");
+	    		
+	    		theMap.updatePlayerLocation(oldLoc, newLoc);
+				
 		    setChanged();
 		    notifyObservers();
 		}
+		
+		
+		
+		/**
+		   * Proved a textual version of this tic tac toe board.
+		   */
+		  @Override
+		  public String toString() {
+		    String result = "";
+		    int pc = (int) theMap.getPlayerLocation().getX();
+		    int pr = (int) theMap.getPlayerLocation().getY();
+		    
+		    for (int r = -4; r < 5; r++) {
+		    		for (int c = -4; c < 5; c++) {
+			    		if (theMap.getBoard()[pr+r][pc+c] == '_'){
+			    			  result += " _ ";
+			    		}
+			    		else {
+			    			result += " " + theMap.getBoard()[pr+r][pc+c] + " ";
+			    		}
+		    		}
+		    		if (r < 4)
+		    			result += "\n";
+		    }
+		    
+		    return result;
+		  }
 }

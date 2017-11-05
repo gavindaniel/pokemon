@@ -27,11 +27,15 @@ public class PokemonMain extends Application {
 	private Observer graphicView; // to be implemented after textView
 	
 	private BorderPane window;
-	public static final int width = 540;
-	public static final int height = 650;
+	public static final int width = 700;
+	public static final int height = 750;
 	
 	char keyPressed;
 
+	public static void main(String[] args) {
+		   launch(args);
+	}
+	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		// TODO Auto-generated method stub
@@ -114,7 +118,7 @@ public class PokemonMain extends Application {
 					keyPressed = 'R';
 				}
 				theGame.movePlayer(keyPressed);
-				
+	//			System.out.println(keyPressed);
 	//		}
 		}
 		
