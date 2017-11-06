@@ -35,8 +35,6 @@ public class Pokemon extends Observable {
 			Point newLoc = oldLoc;
 			int newC = (int) newLoc.getX();
 			int newR = (int) newLoc.getY();
-		    
-//	    		System.out.println("Moving player...");
 	    		
 	    		if (direction == 'U'){
 	    			  newR -= 1;
@@ -50,9 +48,8 @@ public class Pokemon extends Observable {
 	    		else if (direction == 'D'){
 	    			  newR += 1;
 	    		}
-	    		// hi
+	    		
 	    		newLoc = new Point(newC, newR);
-//	    		System.out.println("old: (" + (int)oldLoc.getX() + "," + (int)oldLoc.getY() + ")    new: (" + (int)newLoc.getX() + "," + (int)newLoc.getY() + ")");
 	    		
 	    		theMap.updatePlayerLocation(oldLoc, newLoc);
 				
