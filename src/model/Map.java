@@ -27,13 +27,6 @@ public class Map extends Observable {
 	
 	public void updatePlayerLocation(Point oldLoc, Point newLoc) {
 		if (checkCanMoveHere(newLoc)) {
-			int oldC = (int) oldLoc.getX();
-			int oldR = (int) oldLoc.getY();
-			int newC = (int) newLoc.getX();
-			int newR = (int) newLoc.getY();
-			
-//			board[oldR][oldC] = '_';
-//			board[newR][newC] = 'P';
 			trainer.setCurrentLocation(newLoc);
 		}
 	}
@@ -45,7 +38,7 @@ public class Map extends Observable {
 		if (board[r][c] == '_') {
 			return true; // nothing 
 		}
-		else if (board[r][c] == 'G') {
+		else if ((board[r][c] == 'G') || (board[r][c] == 'm') || (board[r][c] == 's')) {
 			return true; // grass
 		}
 		else 		
