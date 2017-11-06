@@ -13,43 +13,41 @@ public class MapView extends BorderPane implements Observer {
 
 	private Pokemon theGame;
 	private GridPane gp1;
-	
+
 	private TextArea gameDisplay;
-	
+
 	private static final double height = 650;
 	private static final double width = 1100;
-	
-	//constructor
-	public MapView(Pokemon PokemonGame) {
-	  theGame = PokemonGame;
-	  gp1 = new GridPane();
-	  initializePane();
-	}
-	
-	
-	private void initializePane() {
-		  gameDisplay = new TextArea(theGame.getMap().toString());
-		  gameDisplay.setFont(new Font("Courier", 12));
-		  gameDisplay.setEditable(false);
-		  gp1.setPrefWidth(width);
-		  gp1.setPrefHeight(height);
-		  gameDisplay.setPrefWidth(width);
-		  gameDisplay.setPrefHeight(height);
-		  gameDisplay.setStyle("-fx-font-alignment: center");
 
-		  gp1.getChildren().addAll(gameDisplay);
-		  this.setCenter(gp1);
-	  }
-	
+	// constructor
+	public MapView(Pokemon PokemonGame) {
+		theGame = PokemonGame;
+		gp1 = new GridPane();
+		initializePane();
+	}
+
+	private void initializePane() {
+		gameDisplay = new TextArea(theGame.getMap().toString());
+		gameDisplay.setFont(new Font("Courier", 12));
+		gameDisplay.setEditable(false);
+		gp1.setPrefWidth(width);
+		gp1.setPrefHeight(height);
+		gameDisplay.setPrefWidth(width);
+		gameDisplay.setPrefHeight(height);
+		gameDisplay.setStyle("-fx-font-alignment: center");
+
+		gp1.getChildren().addAll(gameDisplay);
+		this.setCenter(gp1);
+	}
+
 	@Override
 	public void update(Observable o, Object arg) {
 		theGame = (Pokemon) o;
-	    updateTextArea();
+		updateTextArea();
 	}
-	
-	public void updateTextArea() {
-	  gameDisplay.setText(theGame.getMap().toString());
-	}
-	
-}
 
+	public void updateTextArea() {
+		gameDisplay.setText(theGame.getMap().toString());
+	}
+
+}
