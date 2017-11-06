@@ -105,9 +105,6 @@ public class PokemonMain extends Application {
 
 		@Override
 		public void handle(KeyEvent event) {
-			// TODO Auto-generated method stub
-			// TODO Auto-generated method stub
-	//		if (!theGame.gameOver()){
 				if(event.getCode() == KeyCode.UP){
 					keyPressed = 'U';
 				}
@@ -121,8 +118,6 @@ public class PokemonMain extends Application {
 					keyPressed = 'R';
 				}
 				theGame.movePlayer(keyPressed);
-	//			System.out.println(keyPressed);
-	//		}
 		}
 		
 	}
@@ -142,7 +137,6 @@ public class PokemonMain extends Application {
 	      else if (text.equals("Map")) {
 	    	  		Stage stage = new Stage();
 	    	  		MapView mv = new MapView(theGame);
-	   // 	  		BorderPane window2 = new BorderPane();
 	            stage.setTitle("Map View");
 	            stage.setScene(new Scene(mv, 1100, 650));
 	            stage.show();

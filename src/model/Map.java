@@ -15,7 +15,7 @@ public class Map extends Observable {
 	private Trainer trainer;
 
 	public Map() {
-		size = 100; // playable map size: 30, total Map size (with trees): 50x50, to allow for 9 sections to visit on the map, 10 squares of trees padding 
+		size = 120; // playable map size: 30, total Map size (with trees): 50x50, to allow for 9 sections to visit on the map, 10 squares of trees padding 
 		board = new char[size][size];
 		trainer = new Trainer();
 		ReadMapFromFile();
@@ -35,14 +35,20 @@ public class Map extends Observable {
 		int c = (int) newPosition.getX();
 		int r = (int) newPosition.getY();
 		
-		if (board[r][c] == '_') {
-			return true; // nothing 
+		try {
+			if (board[r][c] == '_') {
+				return true; // nothing 
+			}
+			else if ((board[r][c] == 'G') || (board[r][c] == 'm') || (board[r][c] == 's')) {
+				return true; // grass
+			}
+			else 		
+				return false; //not a valid spot to move to
 		}
-		else if ((board[r][c] == 'G') || (board[r][c] == 'm') || (board[r][c] == 's')) {
-			return true; // grass
+		catch (ArrayIndexOutOfBoundsException aiobe) {
+			System.out.println(aiobe.toString() + "\tr: " + r + "\tc: " + c);
+			return false;
 		}
-		else 		
-			return false; //not a valid spot to move to
 	}
 
 	
