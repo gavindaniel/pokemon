@@ -25,13 +25,13 @@ public class Pokemon extends Observable {
 	    notifyObservers("startNewGame()");
 	  }
 	  
-	  
+	  public Map getMap() {	return theMap;	}
 	  
 	  
 	// Move Player 
 		public void movePlayer(char direction) {
 		
-			Point oldLoc = theMap.getPlayerLocation();
+			Point oldLoc = theMap.getTrainerLocation();
 			Point newLoc = oldLoc;
 			int newC = (int) newLoc.getX();
 			int newR = (int) newLoc.getY();
@@ -62,28 +62,4 @@ public class Pokemon extends Observable {
 		
 		
 		
-		/**
-		   * Proved a textual version of this tic tac toe board.
-		   */
-		  @Override
-		  public String toString() {
-		    String result = "";
-		    int pc = (int) theMap.getPlayerLocation().getX();
-		    int pr = (int) theMap.getPlayerLocation().getY();
-		    
-		    for (int r = -4; r < 5; r++) {
-		    		for (int c = -4; c < 5; c++) {
-			    		if (theMap.getBoard()[pr+r][pc+c] == '_'){
-			    			  result += " _ ";
-			    		}
-			    		else {
-			    			result += " " + theMap.getBoard()[pr+r][pc+c] + " ";
-			    		}
-		    		}
-		    		if (r < 4)
-		    			result += "\n";
-		    }
-		    
-		    return result;
-		  }
 }

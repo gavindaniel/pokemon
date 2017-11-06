@@ -10,14 +10,18 @@ public class Map extends Observable {
 	private char[][] board;
 	private int size;
 	private Point playerLocation;
+	private Trainer trainer;
 
 	public Map() {
-		size = 50; // playable map size: 30, total Map size (with trees): 40x40, to allow for 9 sections to visit on the map, 10 squares of trees padding 
+		size = 50; // playable map size: 30, total Map size (with trees): 50x50, to allow for 9 sections to visit on the map, 10 squares of trees padding 
 		
-		playerLocation = new Point((size / 2), (size / 2)); // starts in the middle of the map
+//		playerLocation = new Point((size / 2), (size / 2)+15); // starts in the middle of the map
+		trainer = new Trainer();
 		clearMap();
 		generateTrees();
 		generatePlayer();
+		generateBushes();
+		generateWater();
 	}
 	
 	// Blank Map Generator
@@ -31,9 +35,8 @@ public class Map extends Observable {
 	}
 	
 	public int getSize() {	return size;		}
-	public Point getPlayerLocation() {	return playerLocation;	}
 	public char[][] getBoard() {		return board;	}
-	
+	public Point getTrainerLocation() { return trainer.getCurrentLocation(); } 
 	
 	public void updatePlayerLocation(Point oldLoc, Point newLoc) {
 		if (checkCanMoveHere(newLoc)) {
@@ -44,7 +47,7 @@ public class Map extends Observable {
 			
 			board[oldR][oldC] = '_';
 			board[newR][newC] = 'P';
-			playerLocation = newLoc;
+			trainer.setCurrentLocation(newLoc);
 		}
 	}
 	
@@ -56,7 +59,6 @@ public class Map extends Observable {
 			return true; // no tree in the way
 		}
 		else if (board[r][c] == 'T') {
-			System.out.println("Tree in the way");
 			return false; //tree in the way
 		}
 		else 		
@@ -64,8 +66,8 @@ public class Map extends Observable {
 	}
 
 	public void generatePlayer() {
-		int c = (int) playerLocation.getX();
-		int r = (int) playerLocation.getY();
+		int c = (int) trainer.getCurrentLocation().getX();
+		int r = (int) trainer.getCurrentLocation().getY();
 		
 		board[r][c] = 'P';
 	}
@@ -91,6 +93,83 @@ public class Map extends Observable {
 				}
 			}
 		}
-		
 	}
+	
+	public void generateBushes() {
+		
+		for (int r = 0; r < size; r++) {
+			for (int c = 0; c < size; c++) {
+				if (r == 30 && (c >= 10 && c < 20)) {
+					board[r][c] = 'B';
+				}
+				if (r == 29 && (c >= 20 && c < 33)) {
+					board[r][c] = 'B';
+				}
+				if (r == 28 && (c >= 31 && c < 33)) {
+					board[r][c] = 'B';
+				}
+				if (r == 22 && (c >= 35 && c <= 41)) {
+					board[r][c] = 'B';
+				}
+				if ((r >= 10 && r < 21) && c == 25) {
+					board[r][c] = 'B';
+				}
+//				if (r == 29)
+			}
+		}
+	}
+	
+	public void generateWater() {
+		
+		for (int r = 0; r < size; r++) {
+			for (int c = 0; c < size; c++) {
+				if ((r > 20 && r < 28) && (c >= 20 && c < 35)) {
+					board[r][c] = 'W';
+				}
+			}
+		}
+	}
+	
+	public String getViewableArea() {
+		String result = "";
+	    int pc = (int) trainer.getCurrentLocation().getX();
+	    int pr = (int) trainer.getCurrentLocation().getY();
+	    
+	    for (int r = -4; r < 5; r++) {
+	    		for (int c = -4; c < 5; c++) {
+		    		if (getBoard()[pr+r][pc+c] == '_'){
+		    			  result += "   ";
+		    		}
+		    		else {
+		    			result += " " + getBoard()[pr+r][pc+c] + " ";
+		    		}
+	    		}
+	    		if (r < 4)
+	    			result += "\n";
+	    }
+	    
+	    return result;
+	}
+	/**
+	   * Proved a textual version of the game Map
+	   */
+	  @Override
+	  public String toString() {
+	    String result = "";
+	    
+	    for (int r = 0; r < size; r++) {
+	    		for (int c = 0; c < size; c++) {
+		    		if (board[r][c] == '_'){
+		    			  result += "   ";
+		    		}
+		    		else {
+		    			result += " " + board[r][c] + " ";
+		    		}
+	    		}
+	    		if (r < size-1)
+	    			result += "\n";
+	    }
+	    
+	    return result;
+	  }
 }

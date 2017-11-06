@@ -15,6 +15,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.Pokemon;
+import views.MapView;
 import views.TextView;
 
 public class PokemonMain extends Application {
@@ -79,9 +80,10 @@ public class PokemonMain extends Application {
 	
 	private void setupMenus() {
 	    MenuItem textV = new MenuItem("Text");
+	    MenuItem mapV = new MenuItem("Map");
 	//    MenuItem graphicV = new MenuItem("Graphics");
 	    Menu views = new Menu("Views");
-	    views.getItems().addAll(textV); //, graphicV
+	    views.getItems().addAll(textV, mapV); //, graphicV
 
 	    MenuItem newGame = new MenuItem("New Game");
 	    Menu options = new Menu("Options");
@@ -94,6 +96,7 @@ public class PokemonMain extends Application {
 	    MenuItemListener menuListener = new MenuItemListener();
 	    newGame.setOnAction(menuListener);
 	    textV.setOnAction(menuListener);
+	    mapV.setOnAction(menuListener);
 //	    graphicV.setOnAction(menuListener);
 	}
 	
@@ -136,6 +139,14 @@ public class PokemonMain extends Application {
 	        setViewTo(textView);
 //	      else if (text.equals("Graphics"))
 //			  setViewTo(graphicView);
+	      else if (text.equals("Map")) {
+	    	  		Stage stage = new Stage();
+	    	  		MapView mv = new MapView(theGame);
+	   // 	  		BorderPane window2 = new BorderPane();
+	            stage.setTitle("Map View");
+	            stage.setScene(new Scene(mv, 1100, 650));
+	            stage.show();
+	      }
 	    }
 	}
 }
