@@ -39,7 +39,6 @@ public class PokemonMain extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		// TODO Auto-generated method stub
 		primaryStage.setTitle("Pokemon");
 		keyPressed = 'z';
 		window = new BorderPane();
