@@ -26,6 +26,16 @@ public class GraphicView extends BorderPane implements Observer {
 	private Image fence;
 	private Image stairs;
 	
+	private Image hill_m;
+	private Image hill_l;
+	private Image hill_r;
+	private Image hill_t;
+	private Image hill_b;
+	private Image hill_tl;
+	private Image hill_tr;
+	private Image hill_bl;
+	private Image hill_br;
+	
 	private static final double height = 400;
 	private static final double width = 600;
 	private static final double imageSize = 16; // 16px by 16px
@@ -59,6 +69,16 @@ public class GraphicView extends BorderPane implements Observer {
 		bush = new Image("/images/shrubs/bush.bmp");
 		fence = new Image("/images/shrubs/fence.bmp");
 		stairs = new Image("/images/misc/stair-right.bmp");
+		
+		hill_m = new Image("/images/hills/hill-middle.bmp");
+		hill_l = new Image("/images/hills/hill-left.bmp");
+		hill_r = new Image("/images/hills/hill-right.bmp");
+		hill_t = new Image("/images/hills/hill-top.bmp");
+		hill_b = new Image("/images/hills/hill-bottom.bmp");
+		hill_tl = new Image("/images/hills/hill-topleft.bmp");
+		hill_tr = new Image("/images/hills/hill-topright.bmp");
+		hill_bl = new Image("/images/hills/hill-bottomleft.bmp");
+		hill_br = new Image("/images/hills/hill-bottomright.bmp");
 	}
 	
 	public void drawViewableArea() {
@@ -107,6 +127,44 @@ public class GraphicView extends BorderPane implements Observer {
 					else if (board[pr + r][pc + c] == 's') {
 						gc.setGlobalAlpha(100);
 						gc.drawImage(stairs, ((cc)*imageSize), ((rc)*imageSize));
+					}
+					
+					
+					else if (board[pr + r][pc + c] == 'b') {
+						gc.setGlobalAlpha(100);
+						gc.drawImage(hill_b, ((cc)*imageSize), ((rc)*imageSize));
+					}
+					else if (board[pr + r][pc + c] == 't') {
+						gc.setGlobalAlpha(100);
+						gc.drawImage(hill_t, ((cc)*imageSize), ((rc)*imageSize));
+					}
+					else if (board[pr + r][pc + c] == 'm') {
+						gc.setGlobalAlpha(100);
+						gc.drawImage(hill_m, ((cc)*imageSize), ((rc)*imageSize));
+					}
+					else if (board[pr + r][pc + c] == 'l') {
+						gc.setGlobalAlpha(100);
+						gc.drawImage(hill_l, ((cc)*imageSize), ((rc)*imageSize));
+					}
+					else if (board[pr + r][pc + c] == 'r') {
+						gc.setGlobalAlpha(100);
+						gc.drawImage(hill_r, ((cc)*imageSize), ((rc)*imageSize));
+					}
+					else if (board[pr + r][pc + c] == 'q') {
+						gc.setGlobalAlpha(100);
+						gc.drawImage(hill_tl, ((cc)*imageSize), ((rc)*imageSize));
+					}
+					else if (board[pr + r][pc + c] == 'o') {
+						gc.setGlobalAlpha(100);
+						gc.drawImage(hill_tr, ((cc)*imageSize), ((rc)*imageSize));
+					}
+					else if (board[pr + r][pc + c] == 'z') {
+						gc.setGlobalAlpha(100);
+						gc.drawImage(hill_br, ((cc)*imageSize), ((rc)*imageSize));
+					}
+					else if (board[pr + r][pc + c] == 'n') {
+						gc.setGlobalAlpha(100);
+						gc.drawImage(hill_br, ((cc)*imageSize), ((rc)*imageSize));
 					}
 				}
 //				System.out.println("Drawing image at... (" + cc + "," + rc + ")");
