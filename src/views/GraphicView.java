@@ -160,7 +160,7 @@ public class GraphicView extends BorderPane implements Observer {
 					}
 					else if (board[pr + r][pc + c] == 'z') {
 						gc.setGlobalAlpha(100);
-						gc.drawImage(hill_br, ((cc)*imageSize), ((rc)*imageSize));
+						gc.drawImage(hill_bl, ((cc)*imageSize), ((rc)*imageSize));
 					}
 					else if (board[pr + r][pc + c] == 'n') {
 						gc.setGlobalAlpha(100);
