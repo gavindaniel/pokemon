@@ -49,8 +49,7 @@ public class PokemonMain extends Application {
 		window.setTop(menuBar);
 		initializeGameForTheFirstTime();
 
-		scene.setOnKeyPressed(new KeyPressListener());
-		scene.setOnKeyReleased(new KeyReleaseListener());
+		scene.setOnKeyReleased(new moveListener());
 
 		// Setup the views
 		textView = new TextView(theGame);
@@ -97,7 +96,7 @@ public class PokemonMain extends Application {
 		graphicV.setOnAction(menuListener);
 	}
 
-	public class KeyReleaseListener implements EventHandler<KeyEvent> {
+	public class moveListener implements EventHandler<KeyEvent> {
 
 		@Override
 		public void handle(KeyEvent event) {
