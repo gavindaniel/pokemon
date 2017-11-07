@@ -3,7 +3,7 @@ package views;
 import java.util.Observable;
 import java.util.Observer;
 
-import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
@@ -22,6 +22,8 @@ public class GraphicView extends BorderPane implements Observer {
 	private Image grass;
 	private Image ground;
 	private Image water;
+	private Image bush;
+	private Image fence;
 	
 	private static final double height = 400;
 	private static final double width = 600;
@@ -48,11 +50,13 @@ public class GraphicView extends BorderPane implements Observer {
 	}
 	
 	private void generateImages() {
-		trainer = new Image("file:Users/gavindaniel/Documents/Zona/cs335/gitrepos/pokemon-teammoltres/images/trainer/trainer1.png");
-		ground = new Image("file:Users/gavindaniel/Documents/Zona/cs335/gitrepos/pokemon-teammoltres/images/shrubs/ground-g.bmp");
-		tree = new Image("file:Users/gavindaniel/Documents/Zona/cs335/gitrepos/pokemon-teammoltres/images/shrubs/tree1.png");
-		grass = new Image("file:Users/gavindaniel/Documents/Zona/cs335/gitrepos/pokemon-teammoltres/images/shrubs/grass.bmp");	
-		water = new Image("file:Users/gavindaniel/Documents/Zona/cs335/gitrepos/pokemon-teammoltres/images/water/water-c.bmp");
+		trainer = new Image("/images/trainer1.png");
+		ground = new Image("/images/shrubs/ground-g.bmp");
+		tree = new Image("/images/shrubs/tree.bmp");
+		grass = new Image("/images/shrubs/grass.bmp");	
+		water = new Image("/images/water/water-c.bmp");
+		bush = new Image("/images/shrubs/bush.bmp");
+		fence = new Image("/images/shrubs/fence.bmp");
 	}
 	
 	public void drawViewableArea() {
@@ -64,12 +68,22 @@ public class GraphicView extends BorderPane implements Observer {
 		int cc = 0;
 		int rc = 0;
 		
-		for (int r = -4; r < 5; r++) {
-			for (int c = -4; c < 5; c++) {
+//		for (int r = 0; r < 8; r++) {
+//			for (int c = 0; c < 8; c++) {
+//				gc.setGlobalAlpha(100);
+//				gc.drawImage(trainer, (c*75), (r*75));
+//			}
+//		}
+		
+		int lowerBound = -19;
+		int upperBound = 20;
+		
+		for (int r = lowerBound; r < upperBound; r++) {
+			for (int c = lowerBound; c < upperBound; c++) {
 				if (r == 0 && c == 0) {
 					gc.setGlobalAlpha(100);
 					gc.drawImage(trainer, ((cc)*imageSize), ((rc)*imageSize));
-					System.out.println("Drawing trainer...");
+//					System.out.println("Drawing trainer...");
 				} else {
 					if (board[pr + r][pc + c] == '_') {
 						gc.setGlobalAlpha(100);
@@ -77,11 +91,23 @@ public class GraphicView extends BorderPane implements Observer {
 					} else if (board[pr + r][pc + c] == 'G') {
 						gc.setGlobalAlpha(100);
 						gc.drawImage(grass, ((cc)*imageSize), ((rc)*imageSize));
-						System.out.println("Drawing grass...");
+//						System.out.println("Drawing grass...");
 					}
 					else if (board[pr + r][pc + c] == 'W') {
 						gc.setGlobalAlpha(100);
 						gc.drawImage(water, ((cc)*imageSize), ((rc)*imageSize));
+					}
+					else if (board[pr + r][pc + c] == 'B') {
+						gc.setGlobalAlpha(100);
+						gc.drawImage(bush, ((cc)*imageSize), ((rc)*imageSize));
+					}
+					else if (board[pr + r][pc + c] == 'T') {
+						gc.setGlobalAlpha(100);
+						gc.drawImage(tree, ((cc)*imageSize), ((rc)*imageSize));
+					}
+					else if (board[pr + r][pc + c] == 'E') {
+						gc.setGlobalAlpha(100);
+						gc.drawImage(fence, ((cc)*imageSize), ((rc)*imageSize));
 					}
 				}
 //				System.out.println("Drawing image at... (" + cc + "," + rc + ")");
