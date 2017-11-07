@@ -57,7 +57,7 @@ public class PokemonMain extends Application {
 		theGame.addObserver(textView);
 		theGame.addObserver(graphicView);
 
-		setViewTo(textView); // change to graphicView once graphicView is implemented
+		setViewTo(graphicView); // change to graphicView once graphicView is implemented
 
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -78,10 +78,10 @@ public class PokemonMain extends Application {
 		MenuItem textV = new MenuItem("Text");
 		MenuItem graphicV = new MenuItem("Graphics");
 		Menu views = new Menu("Views");
-		Menu map = new Menu("Map");
 		views.getItems().addAll(textV, graphicV);
 
 		MenuItem newGame = new MenuItem("New Game");
+		MenuItem map = new MenuItem("Map");
 		Menu options = new Menu("Options");
 		options.getItems().addAll(newGame, map, views);
 

@@ -44,39 +44,51 @@ public class GraphicView extends BorderPane implements Observer {
 		gp1.setPrefWidth(width);
 		gp1.getChildren().addAll(canvas);
 		this.setCenter(gp1);
-		updateImages();
+		drawViewableArea();
 	}
 	
 	private void generateImages() {
-		trainer = new Image("/Users/gavindaniel/Documents/Zona/cs335/gitrepos/pokemon-teammoltres/images/trainer/trainer1.png");
-		ground = new Image("/Users/gavindaniel/Documents/Zona/cs335/gitrepos/pokemon-teammoltres/images/shrubs/ground-g.bmp");
-		tree = new Image("/Users/gavindaniel/Documents/Zona/cs335/gitrepos/pokemon-teammoltres/images/shrubs/tree1.png");
-		grass = new Image("/Users/gavindaniel/Documents/Zona/cs335/gitrepos/pokemon-teammoltres/images/shrubs/grass.bmp");	
-		water = new Image("/Users/gavindaniel/Documents/Zona/cs335/gitrepos/pokemon-teammoltres/images/water/water-c.bmp");
+		trainer = new Image("file:Users/gavindaniel/Documents/Zona/cs335/gitrepos/pokemon-teammoltres/images/trainer/trainer1.png");
+		ground = new Image("file:Users/gavindaniel/Documents/Zona/cs335/gitrepos/pokemon-teammoltres/images/shrubs/ground-g.bmp");
+		tree = new Image("file:Users/gavindaniel/Documents/Zona/cs335/gitrepos/pokemon-teammoltres/images/shrubs/tree1.png");
+		grass = new Image("file:Users/gavindaniel/Documents/Zona/cs335/gitrepos/pokemon-teammoltres/images/shrubs/grass.bmp");	
+		water = new Image("file:Users/gavindaniel/Documents/Zona/cs335/gitrepos/pokemon-teammoltres/images/water/water-c.bmp");
 	}
 	
-	public void updateImages() {
+	public void drawViewableArea() {
+	
 		char[][] board = theGame.getMap().getBoard();
+		int pc = (int) theGame.getMap().getTrainerLocation().getX();
+		int pr = (int) theGame.getMap().getTrainerLocation().getY();
 		
-		for (int r = 0; r < theGame.getMap().getSize(); r++) {
-			for (int c = 0; c < theGame.getMap().getSize(); c++) {
-				if (board[r][c] == '_') {
+		int cc = 0;
+		int rc = 0;
+		
+		for (int r = -4; r < 5; r++) {
+			for (int c = -4; c < 5; c++) {
+				if (r == 0 && c == 0) {
 					gc.setGlobalAlpha(100);
-					gc.drawImage(ground, (c*imageSize), (r*imageSize));
+					gc.drawImage(trainer, ((cc)*imageSize), ((rc)*imageSize));
+					System.out.println("Drawing trainer...");
+				} else {
+					if (board[pr + r][pc + c] == '_') {
+						gc.setGlobalAlpha(100);
+						gc.drawImage(ground, ((cc)*imageSize), ((rc)*imageSize));
+					} else if (board[pr + r][pc + c] == 'G') {
+						gc.setGlobalAlpha(100);
+						gc.drawImage(grass, ((cc)*imageSize), ((rc)*imageSize));
+						System.out.println("Drawing grass...");
+					}
+					else if (board[pr + r][pc + c] == 'W') {
+						gc.setGlobalAlpha(100);
+						gc.drawImage(water, ((cc)*imageSize), ((rc)*imageSize));
+					}
 				}
-				else if (board[r][c] == 'G') {
-					gc.setGlobalAlpha(100);
-					gc.drawImage(grass, (c*imageSize), (r*imageSize));
-				}
-				else if (board[r][c] == 'W') {
-					gc.setGlobalAlpha(100);
-					gc.drawImage(water, (c*imageSize), (r*imageSize));
-				}
-				else if (board[r][c] == 'P') {
-					gc.setGlobalAlpha(100);
-					gc.drawImage(trainer, (c*imageSize), (r*imageSize));
-				}
+//				System.out.println("Drawing image at... (" + cc + "," + rc + ")");
+				cc++;
 			}
+			cc = 0;
+			rc++;
 		}
 	}
 	@Override
@@ -84,7 +96,7 @@ public class GraphicView extends BorderPane implements Observer {
 		// TODO Auto-generated method stub
 		gc.clearRect(0, 0, width, height);
 		theGame = (Pokemon) o;
-		updateImages();
+		drawViewableArea();
 	}
 
 	
