@@ -24,6 +24,7 @@ public class GraphicView extends BorderPane implements Observer {
 	private Image water;
 	private Image bush;
 	private Image fence;
+	private Image stairs;
 	
 	private static final double height = 400;
 	private static final double width = 600;
@@ -57,6 +58,7 @@ public class GraphicView extends BorderPane implements Observer {
 		water = new Image("/images/water/water-c.bmp");
 		bush = new Image("/images/shrubs/bush.bmp");
 		fence = new Image("/images/shrubs/fence.bmp");
+		stairs = new Image("/images/misc/stair-right.bmp");
 	}
 	
 	public void drawViewableArea() {
@@ -67,13 +69,6 @@ public class GraphicView extends BorderPane implements Observer {
 		
 		int cc = 0;
 		int rc = 0;
-		
-//		for (int r = 0; r < 8; r++) {
-//			for (int c = 0; c < 8; c++) {
-//				gc.setGlobalAlpha(100);
-//				gc.drawImage(trainer, (c*75), (r*75));
-//			}
-//		}
 		
 		int lowerBound = -19;
 		int upperBound = 20;
@@ -108,6 +103,10 @@ public class GraphicView extends BorderPane implements Observer {
 					else if (board[pr + r][pc + c] == 'E') {
 						gc.setGlobalAlpha(100);
 						gc.drawImage(fence, ((cc)*imageSize), ((rc)*imageSize));
+					}
+					else if (board[pr + r][pc + c] == 's') {
+						gc.setGlobalAlpha(100);
+						gc.drawImage(stairs, ((cc)*imageSize), ((rc)*imageSize));
 					}
 				}
 //				System.out.println("Drawing image at... (" + cc + "," + rc + ")");

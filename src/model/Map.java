@@ -13,7 +13,7 @@ public class Map extends Observable {
 	private Trainer trainer;
 
 	public Map() {
-		size = 120; // playable map size: 30, total Map size (with trees): 50x50, to allow for 9
+		size = 200; // playable map size: 30, total Map size (with trees): 50x50, to allow for 9
 					// sections to visit on the map, 10 squares of trees padding
 		board = new char[size][size];
 		trainer = new Trainer();
