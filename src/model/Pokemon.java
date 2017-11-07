@@ -2,17 +2,23 @@ package model;
 
 import java.awt.Point;
 import java.util.Observable;
+import java.io.*;
 
-public class Pokemon extends Observable {
+
+public class Pokemon extends Observable implements Serializable{
 
 	private Map theMap;
-	
-	
+        private TempTrainer trainer;
+        public Point tPos; 
+
 	public Pokemon() {
+
 		theMap = new Map();
-		startNewGame();
+                trainer= new TempTrainer();
+ 		startNewGame();
 	}
-	
+
+
 	/**
 	   * Start a new game and tell all observers to draw an new game
 	   * with the string message startNewGame()
@@ -25,16 +31,17 @@ public class Pokemon extends Observable {
 	    notifyObservers("startNewGame()");
 	  }
 	  
-	  public Map getMap() {	return theMap;	}
-	  
+  
 	  
 	// Move Player 
 		public void movePlayer(char direction) {
 		
-			Point oldLoc = theMap.getTrainerLocation();
+			Point oldLoc = theMap.getPlayerLocation();
 			Point newLoc = oldLoc;
 			int newC = (int) newLoc.getX();
 			int newR = (int) newLoc.getY();
+		    
+	    		System.out.println("Moving player...");
 	    		
 	    		if (direction == 'U'){
 	    			  newR -= 1;
@@ -50,13 +57,50 @@ public class Pokemon extends Observable {
 	    		}
 	    		
 	    		newLoc = new Point(newC, newR);
+	    		System.out.println("old: (" + (int)oldLoc.getX() + "," + (int)oldLoc.getY() + ")    new: (" + (int)newLoc.getX() + "," + (int)newLoc.getY() + ")");
+	
 	    		
 	    		theMap.updatePlayerLocation(oldLoc, newLoc);
-				
+                        
+                        tPos=newLoc;
+	
 		    setChanged();
 		    notifyObservers();
 		}
 		
 		
 		
+		/**
+		   * Proved a textual version of this tic tac toe board.
+		   */
+		  @Override
+		  public String toString() {
+		    String result = "";
+		    int pc = (int) theMap.getPlayerLocation().getX();
+		    int pr = (int) theMap.getPlayerLocation().getY();
+		    
+		    for (int r = -4; r < 5; r++) {
+		    		for (int c = -4; c < 5; c++) {
+			    		if (theMap.getBoard()[pr+r][pc+c] == '_'){
+			    			  result += " _ ";
+			    		}
+			    		else {
+			    			result += " " + theMap.getBoard()[pr+r][pc+c] + " ";
+			    		}
+		    		}
+		    		if (r < 4)
+		    			result += "\n";
+		    }
+		    
+		    return result;
+		  }
+
+
+                 public Point getTrainerLoc(){
+
+                      return tPos; 
+
+                 }
+
+
 }

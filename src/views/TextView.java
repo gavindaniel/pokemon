@@ -28,7 +28,7 @@ public class TextView extends BorderPane implements Observer {
 	
 	
 	private void initializePane() {
-		  gameDisplay = new TextArea(theGame.getMap().getViewableArea());
+		  gameDisplay = new TextArea(theGame.toString());
 		  gameDisplay.setFont(new Font("Courier", 34));
 		  gameDisplay.setEditable(false);
 		  gp1.setPrefWidth(width);
@@ -48,7 +48,7 @@ public class TextView extends BorderPane implements Observer {
 	}
 	
 	public void updateTextArea() {
-	  gameDisplay.setText(theGame.getMap().getViewableArea());
+	  gameDisplay.setText(theGame.toString());
 	}
 	
 }
