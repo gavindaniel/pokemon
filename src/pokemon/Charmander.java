@@ -12,6 +12,7 @@ public class Charmander extends Pokemon {
 	public Charmander() {
 		super("Charmander", PokeType.FIRE, null, OccurrenceRate.COMMON);
 		initializeStats(250, 171, 151, 167, 219);
+		initializeAttacks();
 	}
 
 	@Override

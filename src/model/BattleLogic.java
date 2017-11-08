@@ -153,13 +153,21 @@ public class BattleLogic extends Observable {
 		
 		List<Pokemon> pokeList = new ArrayList<>(3);
 		
+		Pokemon chosenPoke;
+		
 		while (pokeList.size() < 3) {
 			
 			printPokeListChooser(trainer);
 			
 			int index = getPokeChoiceFromUser(trainer);
 			
-			pokeList.add(trainer.getPokemonList().get(index));
+			chosenPoke = trainer.getPokemonList().get(index);
+			
+			if (!pokeList.contains(chosenPoke)) {
+				pokeList.add(chosenPoke);
+				System.out.println(chosenPoke.getName() + " Successfully added.");
+			}
+			else System.out.println("Pokemon already chosen. Pick another one.");
 		}
 		
 		return pokeList;
@@ -173,10 +181,10 @@ public class BattleLogic extends Observable {
 		
 		List<Pokemon> pokeList = trainer.getPokemonList();
 		
-		System.out.println("Choose from the following pokemon: ");
+		System.out.println(trainer.getName() + ", Choose from the following pokemon: ");
 		
 		for (int i = 0; i < pokeList.size(); i++) {
-			System.out.println((i) + ": " + pokeList.get(i));
+			System.out.println((i) + ": " + pokeList.get(i).getName());
 		}
 	}
 	
@@ -191,6 +199,8 @@ public class BattleLogic extends Observable {
 		
 		while(true) {
 			
+//			while (!in.hasNextInt()) in.next();
+			
 			if (in.hasNextInt()) {
 				
 				choice = in.nextInt();
@@ -200,7 +210,6 @@ public class BattleLogic extends Observable {
 			}
 			else in.next();
 		}
-		in.close();
 		return choice;
 	}
 	
@@ -229,6 +238,8 @@ public class BattleLogic extends Observable {
 		Pokemon attackPokemon;
 		Pokemon	defendPokemon;
 		
+		printCurrentBattleStatus();
+		
 		if (trainer == trainer1) {
 			attackPokemon = currPoke1;
 			defendPokemon = currPoke2;
@@ -247,6 +258,14 @@ public class BattleLogic extends Observable {
 		}
 //		if (choice == 2) switchPokemon(trainer);
 		
+	}
+	
+	private void printCurrentBattleStatus() {
+		
+		System.out.println();
+		System.out.println(trainer1.getName() + ": " + currPoke1.getName() + " " + currPoke1.getCurrHP());
+		System.out.println(trainer2.getName() + ": " + currPoke2.getName() + " " + currPoke2.getCurrHP());
+		System.out.println();
 	}
 	
 	private int MakeTurnChoice(Trainer trainer) {
@@ -268,7 +287,6 @@ public class BattleLogic extends Observable {
 			}
 			else in.next();
 		}
-		in.close();
 		return choice;
 	}
 	
@@ -278,7 +296,7 @@ public class BattleLogic extends Observable {
 		
 		System.out.println("Choose an attack: ");
 		for (int i = 0; i < attackSet.size(); i++) {
-			System.out.println((i) + ": " + attackSet.get(i));
+			System.out.println((i) + ": " + attackSet.get(i).getName());
 		}
 		
 		Scanner in = new Scanner(System.in);
@@ -295,7 +313,6 @@ public class BattleLogic extends Observable {
 			}
 			else in.next();
 		}
-		in.close();
 		return choice;
 	}
 	
@@ -305,6 +322,8 @@ public class BattleLogic extends Observable {
 		if (attack instanceof ActiveAttack) {
 			int damage = calculateDamage((ActiveAttack) attack, attackPokemon, defendPokemon);
 			defendPokemon.takeDamage(damage);
+			System.out.println(attackPokemon.getName() + " used " + attack.getName() + " on " + defendPokemon.getName());
+			System.out.println(defendPokemon.getName() + " lost " + damage + " HP.");
 		}
 		
 		else if (attack instanceof PassiveAttackBuff) {
@@ -326,8 +345,7 @@ public class BattleLogic extends Observable {
 		if (attack.getType() == attackPokemon.getPrimaryType() || attack.getType() == attackPokemon.getSecondaryType() ) {
 			multiplier *= 1.5;
 		}
-		
-		double damage = (attackPokemon.getAttack()/defendPokemon.getDefense())*attack.getDamage()*multiplier;
+		double damage = .80*((double) attackPokemon.getAttack()/(double) defendPokemon.getDefense())*attack.getDamage()*multiplier;
 		return (int) damage;
 	}
 	

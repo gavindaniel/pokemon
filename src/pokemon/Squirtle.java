@@ -7,6 +7,7 @@ public class Squirtle extends Pokemon {
 	public Squirtle() {
 		super("Squirtle", PokeType.WATER, null, OccurrenceRate.COMMON);
 		initializeStats(260, 163, 195, 167, 153);
+		initializeAttacks();
 	}
 	
 	@Override

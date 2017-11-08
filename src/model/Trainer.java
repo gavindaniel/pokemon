@@ -15,7 +15,7 @@ public class Trainer {
 //	private TrainerAnimation trainerAnimation;
 
 	public Trainer(String name) {
-
+		this.name = name;
 	}
 
 	/**

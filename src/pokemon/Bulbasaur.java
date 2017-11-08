@@ -12,6 +12,7 @@ public class Bulbasaur extends Pokemon {
 	public Bulbasaur() {
 		super("Bulbasaur", PokeType.GRASS, PokeType.POISON, OccurrenceRate.COMMON);
 		initializeStats(262, 165, 163, 197, 157);
+		initializeAttacks();
 	}
 
 	@Override

@@ -12,6 +12,7 @@ public class Pikachu extends Pokemon {
 	public Pikachu() {
 		super("Pikachu", PokeType.ELECTRIC, null, OccurrenceRate.COMMON);
 		initializeStats(242, 177, 125, 167, 247);
+		initializeAttacks();
 	}
 
 	@Override
