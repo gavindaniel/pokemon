@@ -61,10 +61,10 @@ public class TextView extends BorderPane implements Observer {
 				if (r == 0 && c == 0) {
 					result += " P ";
 				} else {
-					if (theGame.getMap().getBoard()[pr + r][pc + c] == '_') {
+					if (theGame.getMap().getTiles()[pr + r][pc + c].getType() == "ground") {
 						result += "   ";
 					} else {
-						result += " " + theGame.getMap().getBoard()[pr + r][pc + c] + " ";
+						result += " " + theGame.getMap().getTiles()[pr + r][pc + c].getSourceChar() + " ";
 					}
 				}
 			}

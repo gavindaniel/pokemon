@@ -48,7 +48,8 @@ public class PokemonView extends BorderPane implements Observer {
 	}
 
 	public void updateTextArea() {
-		gameDisplay.setText(theGame.getMap().toString(theGame.getMap().getPokemonLocations()));
+//		gameDisplay.setText(theGame.getMap().toString(theGame.getMap().getPokemonLocations()));
+		gameDisplay.setText(theGame.getMap().drawPokemonMap());
 	}
 
 }

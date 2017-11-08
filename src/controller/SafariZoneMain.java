@@ -28,7 +28,6 @@ public class SafariZoneMain extends Application {
 	private Observer currentView;
 	private Observer textView;
 	private Observer graphicView; // to be implemented after textView
-
 	private BorderPane window;
 	public static final int height = 400;
 	public static final int width = 600;

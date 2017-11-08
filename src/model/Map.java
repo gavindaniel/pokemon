@@ -13,19 +13,15 @@ import javafx.scene.control.Alert.AlertType;
 
 public class Map extends Observable {
 
-	private char[][] board;
-	private char[][] pokemonLocations; // change later to a 2D array of Pokemon
 	private int size;
 	private Trainer trainer;
-
+	private Tile[][] tiles;
 	private static final int numPokemon = 50;
 
 	public Map() {
-		size = 200; // playable map size: 30, total Map size (with trees): 50x50, to allow for 9
-					// sections to visit on the map, 10 squares of trees padding
-		board = new char[size][size];
-		pokemonLocations = new char[size][size];
+		size = 200; // # columns, rows
 		trainer = new Trainer();
+		tiles = new Tile[size][size];
 		clearBoard();
 		ReadMapFromFile();
 		spawnPokemon();
@@ -35,14 +31,6 @@ public class Map extends Observable {
 		return size;
 	}
 
-	public char[][] getBoard() {
-		return board;
-	}
-
-	public char[][] getPokemonLocations() {
-		return pokemonLocations;
-	}
-
 	public Trainer getTrainer() {
 		return trainer;
 	}
@@ -50,7 +38,66 @@ public class Map extends Observable {
 	public void setTrainer(Trainer t) {
 		trainer = t;
 	}
-
+	public Tile[][] getTiles() {
+		return tiles;
+	}
+	public void setTiles(Tile[][] t) {
+		tiles = t;
+	}
+	public void clearPokemon() {
+		for (int r = 0; r < size; r++)
+			for (int c = 0; c < size; c++)
+				tiles[r][c].setPokemonHere(false);
+	}
+	public void clearBoard() {
+		for (int r = 0; r < size; r++)
+			for (int c = 0; c < size; c++)
+				tiles[r][c] = new Tile();
+	}
+	
+	public void ReadMapFromFile() {
+		File file = new File("./src/files/zone1.txt");
+		Tile temp = new Tile();
+		int r = 0;
+		int c = 0;
+		try {
+			Scanner sc = new Scanner(file);
+			while (sc.hasNextLine()) {
+				String line = sc.nextLine();
+				for (int i = 0; i < line.length(); i++) {
+					if (line.charAt(i) != ' ') {
+						temp = new Tile(line.charAt(i));
+						tiles[r][c] = temp;
+						if (line.charAt(i) == 'P') trainer.setCurrentLocation(new Point(c, r));
+						c++;
+					}
+				}
+				c = 0;
+				r++;
+			}
+			sc.close();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void spawnPokemon() {
+		int min = 0;
+		int max = size;
+		int num = 1;
+		clearPokemon(); //clears the map of any pokemon
+		while (num <= numPokemon) {
+			int random_r = ThreadLocalRandom.current().nextInt(min, max); // removed '+ 1' to not include size (200)
+			int random_c = ThreadLocalRandom.current().nextInt(min, max); // removed '+ 1' to not include size (200)
+			
+			if (tiles[random_r][random_c].getPokemonHere() == false)
+				if (tiles[random_r][random_c].getType() == "grass") {
+					tiles[random_r][random_c].setPokemonHere(true);
+					num++;
+				}
+		}
+	}
+	
 	public void updateTrainerLocation(Point oldLoc, Point newLoc) {
 		if (checkCanMoveHere(oldLoc, newLoc)) {
 			trainer.setCurrentLocation(newLoc);
@@ -67,32 +114,33 @@ public class Map extends Observable {
 		int new_r = (int) newPosition.getY();
 		int old_c = (int) oldPosition.getX();
 		int old_r = (int) oldPosition.getY();
-
+		Tile oldTile = tiles[old_r][old_c];
+		Tile newTile = tiles[new_r][new_c];
 		try {
-			if (board[old_r][old_c] == 't') {
-				if (board[new_r][new_c] == 'm' || board[new_r][new_c] == 't') return true;
+			if (oldTile.getType() == "hill") {
+				if (newTile.getSourceChar() == 'm' || newTile.getSourceChar() == 't' || newTile.getType() == "stairs") return true;
 				else return false;
 			}
-			if (board[new_r][new_c] == '_') return true; // nothing
-			else if ((board[new_r][new_c] == 'G') || (board[new_r][new_c] == 'm') || (board[new_r][new_c] == 't') || (board[new_r][new_c] == 's'))
-				return true; // grass
-			else return false; // not a valid spot to move to
-		} catch (ArrayIndexOutOfBoundsException aiobe) {
+			if (newTile.getType() == "ground") return true;
+			else if ((newTile.getType() == "grass") || (newTile.getSourceChar() == 'm') || (newTile.getType() == "stairs")) return true;
+			else return false;
+		} 
+		
+		catch (ArrayIndexOutOfBoundsException aiobe) {
 			System.out.println(aiobe.toString() + "\tr: " + new_r + "\tc: " + new_c);
 			return false;
-		}
+		} 
+		
 	}
 
 	public void checkForPokemon(Point newPosition) {
 		int c = (int) newPosition.getX();
 		int r = (int) newPosition.getY();
-
 		try {
-			if (pokemonLocations[r][c] == 'Y') {
+			if (tiles[r][c].getPokemonHere() == true) {
 				Vector<Pokemon> temp = trainer.getPokemon();
 				temp.add(new Pokemon());
 				trainer.setPokemon(temp);
-				// System.out.println("# Pokemon = " + trainer.getPokemon().size());
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Pokemon!");
 				alert.setHeaderText("You found a Pokemon!");
@@ -103,101 +151,44 @@ public class Map extends Observable {
 		}
 	}
 
-	public void ReadMapFromFile() {
-
-		File file = new File("./src/files/zone1.txt");
-
-		int r = 0;
-		int c = 0;
-
-		try {
-
-			Scanner sc = new Scanner(file);
-
-			while (sc.hasNextLine()) {
-				String line = sc.nextLine();
-				for (int i = 0; i < line.length(); i++) {
-					if (line.charAt(i) != ' ') {
-						board[r][c] = line.charAt(i);
-						if (line.charAt(i) == 'P') {
-							trainer.setCurrentLocation(new Point(c, r));
-							board[r][c] = '_';
-						}
-						c++;
-					}
-				}
-				c = 0;
-				r++;
-			}
-			sc.close();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
-
-	public void spawnPokemon() {
-		clearPokemon();
-		// nextInt is normally exclusive of the top value,
-		// so add 1 to make it inclusive
-		int min = 0;
-		int max = size;
-
-		int random_r = -1;
-		int random_c = -1;
-
-		int n = 1;
-
-		while (n <= numPokemon) {
-			random_r = ThreadLocalRandom.current().nextInt(min, max); // removed '+ 1'
-			random_c = ThreadLocalRandom.current().nextInt(min, max); // removed '+ 1'
-
-			if (pokemonLocations[random_r][random_c] == 'N') {
-				if (board[random_r][random_c] == 'G') {
-					pokemonLocations[random_r][random_c] = 'Y';
-					n++;
-				}
-			}
-		}
-	}
-
-	public void clearPokemon() {
-		for (int r = 0; r < size; r++) {
-			for (int c = 0; c < size; c++) {
-				pokemonLocations[r][c] = 'N';
-			}
-		}
-	}
-
-	public void clearBoard() {
-		for (int r = 0; r < size; r++) {
-			for (int c = 0; c < size; c++) {
-				board[r][c] = 'T';
-			}
-		}
-	}
+	
 
 	/**
 	 * Proved a textual version of the game Map
 	 */
-	public String toString(char[][] _board) {
+	public String drawGameMap() {
 		String result = "";
 
 		for (int r = 0; r < size; r++) {
-			for (int c = 0; c < size; c++) {
-				if (r == trainer.getCurrentLocation().getY() && c == trainer.getCurrentLocation().getX()) {
+			for (int c = 0; c < size; c++)
+				if (r == trainer.getCurrentLocation().getY() && c == trainer.getCurrentLocation().getX())
 					result += " P ";
-				} else {
-					if (_board[r][c] == '_' || _board[r][c] == 'N') {
-						result += "   ";
-					} else {
-						result += " " + _board[r][c] + " ";
-					}
-				}
-			}
+				else
+					if  (tiles[r][c].getType() == "ground")	result += "   ";
+					else	  result += " " + tiles[r][c].getSourceChar() + " ";
+			if (r < size - 1)  result += "\n";
+		}
+		return result;
+	}
+	
+	/**
+	 * Proved a textual version of the Pokemon locations
+	 */
+	public String drawPokemonMap() {
+		String result = "";
+
+		for (int r = 0; r < size; r++) {
+			for (int c = 0; c < size; c++)
+				if (r == trainer.getCurrentLocation().getY() && c == trainer.getCurrentLocation().getX())
+					result += " P ";
+				else
+					if (tiles[r][c].getPokemonHere() == false)  result += "   ";
+					else  result += " Y ";
+		
 			if (r < size - 1)
 				result += "\n";
 		}
-
 		return result;
 	}
-}
+	
+} // end of Class 'Map'
