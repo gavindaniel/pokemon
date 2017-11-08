@@ -32,6 +32,7 @@ public abstract class Pokemon {
 		this.primaryType = primaryType;
 		this.secondaryType = secondaryType;
 		this.occurRate = occurRate;
+		this.attackList = new ArrayList<>(4);
 	}
 
 	/***********************************Getters and Setters****************************************/
@@ -223,4 +224,10 @@ public abstract class Pokemon {
 	public void takeDamage(int damage) {
 		HP -= damage;
 	}
+	
+	/**
+	 * Create attacks for specific pokemon.
+	 * @return list of 4 attacks
+	 */
+	public abstract ArrayList<Attack> initializeAttacks();
 }

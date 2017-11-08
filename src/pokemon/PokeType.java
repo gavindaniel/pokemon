@@ -12,4 +12,5 @@ public enum PokeType {
 	GRASS,
 	ELECTRIC,
 	NORMAL,
+	POISON
 }

@@ -1,17 +1,16 @@
 package controller; 
 
-import java.util.*;
-import java.io.*;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import javafx.scene.control.Alert.AlertType;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Iterator;
+import java.util.Optional;
+import java.util.Vector;
+
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
-
-
-import controller.User;
- // class to push and pull Vector users
 
 public class FileManager {
 

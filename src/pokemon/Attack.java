@@ -1,18 +1,23 @@
 package pokemon;
 
-import javafx.animation.Timeline;
-
-public class Attack {
+/**
+ * Represents an attack to be used by a pokemon.
+ * @author Abdullah Asaad
+ *
+ */
+public abstract class Attack {
 	
 	private String name;
-	private int damage;		//base damage of attack
 	private PokeType type;
+	private int accuracy;	// Probability of a successful hit (0-100)
 //	private Timeline attackAnimation;
 	
-	public Attack(String name, int damage, PokeType type) {
+	public Attack(String name, PokeType type, int accuracy) {
 		this.name = name;
-		this.damage = damage;
 		this.type = type;
+		if (accuracy > 0 && accuracy < 100) {
+			this.accuracy = accuracy;
+		}
 	}
 
 	/***********************************Getters and Setters****************************************/
@@ -31,20 +36,6 @@ public class Attack {
 	}
 
 	/**
-	 * @return the base damage of attack
-	 */
-	public int getDamage() {
-		return damage;
-	}
-
-	/**
-	 * @param damage the base damage of attack
-	 */
-	public void setDamage(int damage) {
-		this.damage = damage;
-	}
-
-	/**
 	 * @return elemental type of attack
 	 */
 	public PokeType getType() {
@@ -56,6 +47,22 @@ public class Attack {
 	 */
 	public void setType(PokeType type) {
 		this.type = type;
+	}
+
+	/**
+	 * @return the accuracy of an attack
+	 */
+	public int getAccuracy() {
+		return accuracy;
+	}
+
+	/**
+	 * @param accuracy the accuracy of the attack. Must be between 0 and 100.
+	 */
+	public void setAccuracy(int accuracy) {
+		if (accuracy > 0 && accuracy < 100) {
+			this.accuracy = accuracy;
+		}
 	}
 	
 	/*********************************************************************************************/
