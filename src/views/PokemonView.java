@@ -9,7 +9,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import model.SafariZone;
 
-public class MapView extends BorderPane implements Observer {
+public class PokemonView extends BorderPane implements Observer {
 
 	private SafariZone theGame;
 	private GridPane gp1;
@@ -20,7 +20,7 @@ public class MapView extends BorderPane implements Observer {
 	private static final double width = 1100;
 
 	// constructor
-	public MapView(SafariZone PokemonGame) {
+	public PokemonView(SafariZone PokemonGame) {
 		theGame = PokemonGame;
 		gp1 = new GridPane();
 		initializePane();
@@ -48,7 +48,8 @@ public class MapView extends BorderPane implements Observer {
 	}
 
 	public void updateTextArea() {
-		gameDisplay.setText(theGame.getMap().toString(theGame.getMap().getBoard()));
+		gameDisplay.setText(theGame.getMap().toString(theGame.getMap().getPokemonLocations()));
 	}
 
 }
+

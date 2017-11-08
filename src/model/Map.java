@@ -5,19 +5,29 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Observable;
 import java.util.Scanner;
+import java.util.concurrent.ThreadLocalRandom;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class Map extends Observable {
 
 	private char[][] board;
+	private char[][] pokemonLocations; //change later to a 2D array of Pokemon
 	private int size;
 	private Trainer trainer;
+	
+	private static final int numPokemon = 50;
 
 	public Map() {
 		size = 200; // playable map size: 30, total Map size (with trees): 50x50, to allow for 9
 					// sections to visit on the map, 10 squares of trees padding
 		board = new char[size][size];
+		pokemonLocations = new char[size][size];
 		trainer = new Trainer();
+		clearBoard();
 		ReadMapFromFile();
+		spawnPokemon();
 	}
 
 	public int getSize() {
@@ -27,16 +37,27 @@ public class Map extends Observable {
 	public char[][] getBoard() {
 		return board;
 	}
-
-	public Point getTrainerLocation() {
-		return trainer.getCurrentLocation();
+	public char[][] getPokemonLocations() {
+		return pokemonLocations;
+	}
+	public Trainer getTrainer() {
+		return trainer;
+	}
+	public void setTrainer(Trainer t) {
+		trainer = t;
 	}
 
-	public void updatePlayerLocation(Point oldLoc, Point newLoc) {
+	public void updateTrainerLocation(Point oldLoc, Point newLoc) {
 		if (checkCanMoveHere(newLoc)) {
 			trainer.setCurrentLocation(newLoc);
 			trainer.setNumSteps(trainer.getNumSteps() - 1);
 			System.out.println("Steps left: " + (trainer.getNumSteps()));
+			if (checkForPokemon(newLoc)) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Pokemon!");
+				alert.setHeaderText("You found a Pokemon!");
+				alert.showAndWait();
+			}
 		}
 	}
 
@@ -56,55 +77,19 @@ public class Map extends Observable {
 			return false;
 		}
 	}
-
-	public String getViewableArea() {
-		String result = "";
-		int pc = (int) trainer.getCurrentLocation().getX();
-		int pr = (int) trainer.getCurrentLocation().getY();
-
-		for (int r = -4; r < 5; r++) {
-			for (int c = -4; c < 5; c++) {
-				if (r == 0 && c == 0) {
-					result += " P ";
-				} else {
-					if (getBoard()[pr + r][pc + c] == '_') {
-						result += "   ";
-					} else {
-						result += " " + getBoard()[pr + r][pc + c] + " ";
-					}
-				}
-			}
-			if (r < 4)
-				result += "\n";
+	
+	public boolean checkForPokemon(Point newPosition) {
+		int c = (int) newPosition.getX();
+		int r = (int) newPosition.getY();
+		
+		try {
+			if (pokemonLocations[r][c] == 'Y') {
+				return true;
+			} else
+				return false;
+		} catch (ArrayIndexOutOfBoundsException aiobe) {
+			return false;
 		}
-
-		return result;
-	}
-
-	/**
-	 * Proved a textual version of the game Map
-	 */
-	@Override
-	public String toString() {
-		String result = "";
-
-		for (int r = 0; r < size; r++) {
-			for (int c = 0; c < size; c++) {
-				if (r == trainer.getCurrentLocation().getY() && c == trainer.getCurrentLocation().getX()) {
-					result += " P ";
-				} else {
-					if (board[r][c] == '_') {
-						result += "   ";
-					} else {
-						result += " " + board[r][c] + " ";
-					}
-				}
-			}
-			if (r < size - 1)
-				result += "\n";
-		}
-
-		return result;
 	}
 
 	public void ReadMapFromFile() {
@@ -117,7 +102,7 @@ public class Map extends Observable {
 		try {
 
 			Scanner sc = new Scanner(file);
-
+			
 			while (sc.hasNextLine()) {
 				String line = sc.nextLine();
 				for (int i = 0; i < line.length(); i++) {
@@ -137,5 +122,72 @@ public class Map extends Observable {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void spawnPokemon() {
+		clearPokemon();
+		// nextInt is normally exclusive of the top value,
+		// so add 1 to make it inclusive
+		int min = 0;
+		int max = size;
+		
+		int random_r = -1;
+		int random_c = -1;
+		
+		int n = 1;
+		
+		while (n <= numPokemon) {
+			random_r = ThreadLocalRandom.current().nextInt(min, max); //removed '+ 1'
+			random_c = ThreadLocalRandom.current().nextInt(min, max); //removed '+ 1'
+			
+			if (pokemonLocations[random_r][random_c] == 'N') {
+				if (board[random_r][random_c] == 'G') {
+					pokemonLocations[random_r][random_c] = 'Y';
+					System.out.println( "Pokemon " + n + " @ [" + random_r + "][" + random_c + "]" );
+					n++;
+				}
+			}
+		}
+	}
+	
+	public void clearPokemon() {
+		for (int r = 0; r < size; r++) {
+			for (int c = 0; c < size; c++) {
+				pokemonLocations[r][c] = 'N';
+			}
+		}
+	}
+	
+	public void clearBoard() {
+		for (int r = 0; r < size; r++) {
+			for (int c = 0; c < size; c++) {
+				board[r][c] = 'T';
+			}
+		}
+	}
+	
+	/**
+	 * Proved a textual version of the game Map
+	 */
+	public String toString(char[][] _board) {
+		String result = "";
+
+		for (int r = 0; r < size; r++) {
+			for (int c = 0; c < size; c++) {
+				if (r == trainer.getCurrentLocation().getY() && c == trainer.getCurrentLocation().getX()) {
+					result += " P ";
+				} else {
+					if (_board[r][c] == '_' || _board[r][c] == 'N') {
+						result += "   ";
+					} else {
+						result += " " + _board[r][c] + " ";
+					}
+				}
+			}
+			if (r < size - 1)
+				result += "\n";
+		}
+
+		return result;
 	}
 }

@@ -14,14 +14,15 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import model.Pokemon;
+import model.SafariZone;
 import views.GraphicView;
 import views.MapView;
+import views.PokemonView;
 import views.TextView;
 
-public class PokemonMain extends Application {
+public class SafariZoneMain extends Application {
 
-	private Pokemon theGame;
+	private SafariZone theGame;
 
 	private MenuBar menuBar;
 	private Observer currentView;
@@ -40,7 +41,7 @@ public class PokemonMain extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		primaryStage.setTitle("Pokemon");
+		primaryStage.setTitle("Pokemon: Safari Zone");
 		keyPressed = 'z';
 		window = new BorderPane();
 		Scene scene = new Scene(window, width, height);
@@ -57,7 +58,7 @@ public class PokemonMain extends Application {
 		theGame.addObserver(textView);
 		theGame.addObserver(graphicView);
 
-		setViewTo(graphicView); // change to graphicView once graphicView is implemented
+		setViewTo(graphicView); 
 
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -71,7 +72,7 @@ public class PokemonMain extends Application {
 	}
 
 	public void initializeGameForTheFirstTime() {
-		theGame = new Pokemon();
+		theGame = new SafariZone();
 	}
 
 	private void setupMenus() {
@@ -82,8 +83,9 @@ public class PokemonMain extends Application {
 
 		MenuItem newGame = new MenuItem("New Game");
 		MenuItem map = new MenuItem("Map");
+		MenuItem pokemon = new MenuItem("Pokemon");
 		Menu options = new Menu("Options");
-		options.getItems().addAll(newGame, map, views);
+		options.getItems().addAll(newGame, map, pokemon, views);
 
 		menuBar = new MenuBar();
 		menuBar.getMenus().addAll(options);
@@ -92,8 +94,10 @@ public class PokemonMain extends Application {
 		MenuItemListener menuListener = new MenuItemListener();
 		newGame.setOnAction(menuListener);
 		textV.setOnAction(menuListener);
-		map.setOnAction(menuListener);
 		graphicV.setOnAction(menuListener);
+		map.setOnAction(menuListener);
+		pokemon.setOnAction(menuListener);
+		
 	}
 
 	public class moveListener implements EventHandler<KeyEvent> {
@@ -131,6 +135,13 @@ public class PokemonMain extends Application {
 				MapView mv = new MapView(theGame);
 				stage.setTitle("Map View");
 				stage.setScene(new Scene(mv, 1100, 650));
+				stage.show();
+			}
+			else if (text.equals("Pokemon")) {
+				Stage stage = new Stage();
+				PokemonView pv = new PokemonView(theGame);
+				stage.setTitle("Pokemon View");
+				stage.setScene(new Scene(pv, 1100, 650));
 				stage.show();
 			}
 		}

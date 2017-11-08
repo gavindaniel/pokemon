@@ -8,11 +8,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import model.Pokemon;
+import model.SafariZone;
 
 public class GraphicView extends BorderPane implements Observer {
 
-	private Pokemon theGame;
+	private SafariZone theGame;
 	private Canvas canvas;
 	private GraphicsContext gc;
 	private GridPane gp1;
@@ -41,7 +41,7 @@ public class GraphicView extends BorderPane implements Observer {
 	private static final double imageSize = 16; // 16px by 16px
 	
 	// contructor 
-	public GraphicView(Pokemon PokemonGame) {
+	public GraphicView(SafariZone PokemonGame) {
 		theGame = PokemonGame;
 		canvas = new Canvas(width, height);
 		gp1 = new GridPane();
@@ -84,8 +84,8 @@ public class GraphicView extends BorderPane implements Observer {
 	public void drawViewableArea() {
 	
 		char[][] board = theGame.getMap().getBoard();
-		int pc = (int) theGame.getMap().getTrainerLocation().getX();
-		int pr = (int) theGame.getMap().getTrainerLocation().getY();
+		int pc = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();
+		int pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();
 		
 		int cc = 0;
 		int rc = 0;
@@ -178,7 +178,7 @@ public class GraphicView extends BorderPane implements Observer {
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
 		gc.clearRect(0, 0, width, height);
-		theGame = (Pokemon) o;
+		theGame = (SafariZone) o;
 		drawViewableArea();
 	}
 

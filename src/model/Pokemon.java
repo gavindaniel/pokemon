@@ -1,58 +1,30 @@
 package model;
 
 import java.awt.Point;
-import java.util.Observable;
+import java.util.Vector;
 
-public class Pokemon extends Observable {
+public class Pokemon {
 
-	private Map theMap;
-
+	private String type; // change once Type enum is defined
+	private String rarity; // Common, Uncommon, Rare
+	private int total_HP;	// static?
+	private int current_HP;
+	private Vector<String> moves; // change once Move class is defined
+	private Point location;
+	
 	public Pokemon() {
-		theMap = new Map();
-		startNewGame();
+		type = "FIXME";
+		rarity = "Common";
+		total_HP = -99999;
+		current_HP = -99999;
+		moves = new Vector<String>();
+		location = new Point(0,0);
 	}
-
-	/**
-	 * Start a new game and tell all observers to draw an new game with the string
-	 * message startNewGame()
-	 */
-	public void startNewGame() {
-		// clearBoard();
-		theMap = new Map();
-		// The state of this model just changed so tell any observer to update
-		// themselves
-		setChanged();
-		notifyObservers("startNewGame()");
+	
+	public Point getLocation() {
+		return location;
 	}
-
-	public Map getMap() {
-		return theMap;
+	public void setLocation(Point p) {
+		location = p;
 	}
-
-	// Move Player
-	public void movePlayer(char direction) {
-
-		Point oldLoc = theMap.getTrainerLocation();
-		Point newLoc = oldLoc;
-		int newC = (int) newLoc.getX();
-		int newR = (int) newLoc.getY();
-
-		if (direction == 'U') {
-			newR -= 1;
-		} else if (direction == 'L') {
-			newC -= 1;
-		} else if (direction == 'R') {
-			newC += 1;
-		} else if (direction == 'D') {
-			newR += 1;
-		}
-
-		newLoc = new Point(newC, newR);
-
-		theMap.updatePlayerLocation(oldLoc, newLoc);
-
-		setChanged();
-		notifyObservers();
-	}
-
 }
