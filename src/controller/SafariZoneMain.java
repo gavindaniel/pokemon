@@ -34,6 +34,7 @@ public class SafariZoneMain extends Application {
 	public static final int width = 600;
 
 	char keyPressed;
+	boolean surfEnabled;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -112,7 +113,30 @@ public class SafariZoneMain extends Application {
 			} else if (event.getCode() == KeyCode.RIGHT) {
 				theGame.movePlayer('R');//keyPressed = 'R';
 			}
-//			theGame.movePlayer(keyPressed);
+			
+//			else if (event.getCode() == KeyCode.ENTER) {
+//				int c = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();
+//				int r = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();
+//				
+//				if (!surfEnabled) {
+//					if (theGame.getMap().getBoard()[r][c-1] == '~' || theGame.getMap().getBoard()[r][c-1] == '!' || theGame.getMap().getBoard()[r][c-1] == '@' || theGame.getMap().getBoard()[r][c-1] == '#' || theGame.getMap().getBoard()[r][c-1] == '$' || theGame.getMap().getBoard()[r][c-1] == '%' || theGame.getMap().getBoard()[r][c-1] == '^' || theGame.getMap().getBoard()[r][c-1] == '&') {
+//						surfEnabled = true;
+//						theGame.movePlayer('L');
+//					}
+//					else if (theGame.getMap().getBoard()[r][c+1] == '~' || theGame.getMap().getBoard()[r][c+1] == '!' || theGame.getMap().getBoard()[r][c+1] == '@' || theGame.getMap().getBoard()[r][c+1] == '#' || theGame.getMap().getBoard()[r][c+1] == '$' || theGame.getMap().getBoard()[r][c+1] == '%' || theGame.getMap().getBoard()[r][c+1] == '^' || theGame.getMap().getBoard()[r][c+1] == '&') {
+//						surfEnabled = true;
+//						theGame.movePlayer('R');
+//					}
+//					else if (theGame.getMap().getBoard()[r+1][c] == '~' || theGame.getMap().getBoard()[r+1][c] == '!' || theGame.getMap().getBoard()[r+1][c] == '@' || theGame.getMap().getBoard()[r+1][c] == '#' || theGame.getMap().getBoard()[r+1][c] == '$' || theGame.getMap().getBoard()[r+1][c] == '%' || theGame.getMap().getBoard()[r+1][c] == '^' || theGame.getMap().getBoard()[r+1][c] == '&') {
+//						surfEnabled = true;
+//						theGame.movePlayer('D');
+//					}
+//					else if (theGame.getMap().getBoard()[r-1][c] == '~' || theGame.getMap().getBoard()[r-1][c] == '!' || theGame.getMap().getBoard()[r-1][c] == '@' || theGame.getMap().getBoard()[r-1][c] == '#' || theGame.getMap().getBoard()[r-1][c] == '$' || theGame.getMap().getBoard()[r-1][c] == '%' || theGame.getMap().getBoard()[r-1][c] == '^' || theGame.getMap().getBoard()[r-1][c] == '&') {
+//						surfEnabled = true;
+//						theGame.movePlayer('U');
+//					}
+//				}
+//			}
 		}
 
 	}

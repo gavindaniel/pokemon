@@ -154,8 +154,6 @@ public class Map extends Observable {
 			if (pokemonLocations[random_r][random_c] == 'N') {
 				if (board[random_r][random_c] == 'G') {
 					pokemonLocations[random_r][random_c] = 'Y';
-					// System.out.println( "Pokemon " + n + " @ [" + random_r + "][" + random_c +
-					// "]" );
 					n++;
 				}
 			}
