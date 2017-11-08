@@ -11,7 +11,8 @@ public abstract class Pokemon {
 	
 	private String name;
 	private ArrayList<Attack> attackList;	//4 attacks to be used by pokemon
-	private PokeType type;
+	private PokeType primaryType;
+	private PokeType secondaryType;
 	private OccurrenceRate occurRate;
 	private int HP;		// Determines hit points for the pokemon
 	private int attack;		// Determines strength of physical attacks
@@ -25,11 +26,12 @@ public abstract class Pokemon {
 	 * @param type elemental type of pokemon.
 	 * @param occurRate rarity of pokemon (common, uncommon, or rare).
 	 */
-	public Pokemon(String name, PokeType type, OccurrenceRate occurRate) {
+	public Pokemon(String name, PokeType primaryType, PokeType secondaryType, OccurrenceRate occurRate) {
 		
-		this.setName(name);
-		this.setType(type);
-		this.setOccurRate(occurRate);
+		this.name = name;
+		this.primaryType = primaryType;
+		this.secondaryType = secondaryType;
+		this.occurRate = occurRate;
 	}
 
 	/***********************************Getters and Setters****************************************/
@@ -64,17 +66,31 @@ public abstract class Pokemon {
 	}
 
 	/**
-	 * @return the pokemon's elemental type
+	 * @return the pokemon's primary elemental type
 	 */
-	public PokeType getType() {
-		return type;
+	public PokeType getPrimaryType() {
+		return primaryType;
 	}
 
 	/**
-	 * @param type the elemental type to set for pokemon
+	 * @param type the primary elemental type to set for pokemon
 	 */
-	public void setType(PokeType type) {
-		this.type = type;
+	public void setPrimaryType(PokeType type) {
+		this.primaryType = type;
+	}
+	
+	/**
+	 * @return the pokemon's primary elemental type
+	 */
+	public PokeType getSecondaryType() {
+		return secondaryType;
+	}
+
+	/**
+	 * @param type the primary elemental type to set for pokemon
+	 */
+	public void setSecondaryType(PokeType type) {
+		this.secondaryType = type;
 	}
 
 	/**
@@ -163,19 +179,48 @@ public abstract class Pokemon {
 	
 	/*********************************************************************************************/
 	
+	/**
+	 * Sets the four attacks available to the pokemon.
+	 * @param attack1 first attack
+	 * @param attack2 second attack
+	 * @param attack3 third attack
+	 * @param attack4 fourth attack
+	 */
 	public void initializeAttackList(Attack attack1, Attack attack2, Attack attack3, Attack attack4) {
 		attackList.add(attack1);
 		attackList.add(attack2);
 		attackList.add(attack3);
 		attackList.add(attack4);
 	}
+	/**
+	 * Sets the base stats for the pokemon
+	 * @param HP 
+	 * @param attack
+	 * @param defense
+	 * @param special
+	 * @param speed
+	 */
+	public void initializeStats(int HP, int attack, int defense, int special, int speed) {
+		this.HP = HP;
+		this.attack = attack;
+		this.defense = defense;
+		this.special = special;
+		this.speed = speed;
+	}
 	
+	/**
+	 * Heals pokemon by the specified amount.
+	 * @param pointsToHeal points to restore
+	 */
 	public void heal(int pointsToHeal) {
 		HP += pointsToHeal;
 	}
 	
+	/**
+	 * Hurts pokemon by specified amount.
+	 * @param damage points to deduct from HP
+	 */
 	public void takeDamage(int damage) {
 		HP -= damage;
 	}
-	
 }
