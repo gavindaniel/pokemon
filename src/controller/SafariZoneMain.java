@@ -101,19 +101,18 @@ public class SafariZoneMain extends Application {
 	}
 
 	public class moveListener implements EventHandler<KeyEvent> {
-
 		@Override
 		public void handle(KeyEvent event) {
 			if (event.getCode() == KeyCode.UP) {
-				keyPressed = 'U';
+				theGame.movePlayer('U');	//keyPressed = 'U';
 			} else if (event.getCode() == KeyCode.DOWN) {
-				keyPressed = 'D';
+				theGame.movePlayer('D');//keyPressed = 'D';
 			} else if (event.getCode() == KeyCode.LEFT) {
-				keyPressed = 'L';
+				theGame.movePlayer('L');//keyPressed = 'L';
 			} else if (event.getCode() == KeyCode.RIGHT) {
-				keyPressed = 'R';
+				theGame.movePlayer('R');//keyPressed = 'R';
 			}
-			theGame.movePlayer(keyPressed);
+//			theGame.movePlayer(keyPressed);
 		}
 
 	}

@@ -52,7 +52,7 @@ public class Map extends Observable {
 	}
 
 	public void updateTrainerLocation(Point oldLoc, Point newLoc) {
-		if (checkCanMoveHere(newLoc)) {
+		if (checkCanMoveHere(oldLoc, newLoc)) {
 			trainer.setCurrentLocation(newLoc);
 			trainer.setNumSteps(trainer.getNumSteps() - 1);
 			System.out.println("Steps left: " + (trainer.getNumSteps()));
@@ -62,19 +62,23 @@ public class Map extends Observable {
 		}
 	}
 
-	public boolean checkCanMoveHere(Point newPosition) {
-		int c = (int) newPosition.getX();
-		int r = (int) newPosition.getY();
+	public boolean checkCanMoveHere(Point oldPosition, Point newPosition) {
+		int new_c = (int) newPosition.getX();
+		int new_r = (int) newPosition.getY();
+		int old_c = (int) oldPosition.getX();
+		int old_r = (int) oldPosition.getY();
 
 		try {
-			if (board[r][c] == '_') {
-				return true; // nothing
-			} else if ((board[r][c] == 'G') || (board[r][c] == 'm') || (board[r][c] == 's')) {
+			if (board[old_r][old_c] == 't') {
+				if (board[new_r][new_c] == 'm' || board[new_r][new_c] == 't') return true;
+				else return false;
+			}
+			if (board[new_r][new_c] == '_') return true; // nothing
+			else if ((board[new_r][new_c] == 'G') || (board[new_r][new_c] == 'm') || (board[new_r][new_c] == 't') || (board[new_r][new_c] == 's'))
 				return true; // grass
-			} else
-				return false; // not a valid spot to move to
+			else return false; // not a valid spot to move to
 		} catch (ArrayIndexOutOfBoundsException aiobe) {
-			System.out.println(aiobe.toString() + "\tr: " + r + "\tc: " + c);
+			System.out.println(aiobe.toString() + "\tr: " + new_r + "\tc: " + new_c);
 			return false;
 		}
 	}
