@@ -61,6 +61,7 @@ public class SafariZone extends Observable {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Game Over");
 			alert.setHeaderText("You ran out of steps!");
+			alert.setContentText("You caught " + theMap.getTrainer().getPokemon().size() + " Pokemon");
 			alert.showAndWait();
 		}
 	}

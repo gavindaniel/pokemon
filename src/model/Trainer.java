@@ -1,17 +1,20 @@
 package model;
 
 import java.awt.Point;
+import java.util.Vector;
 
 public class Trainer {
 
 	private Point currentLocation;
 	private int numSteps;
 	private int numPokeBalls;
+	private Vector<Pokemon> pokemon;
 
 	public Trainer() {
 		currentLocation = new Point((50 / 2), (50 / 2) + 15);
 		numSteps = 500;
 		numPokeBalls = 30;
+		pokemon = new Vector<Pokemon>();
 	}
 
 	public Point getCurrentLocation() {
@@ -38,4 +41,11 @@ public class Trainer {
 		numPokeBalls = np;
 	}
 
+	public Vector<Pokemon> getPokemon() {
+		return pokemon;
+	}
+	
+	public void setPokemon(Vector<Pokemon> p) {
+		pokemon = p;
+	}
 }

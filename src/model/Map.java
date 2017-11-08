@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Observable;
 import java.util.Scanner;
+import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javafx.scene.control.Alert;
@@ -52,12 +53,9 @@ public class Map extends Observable {
 			trainer.setCurrentLocation(newLoc);
 			trainer.setNumSteps(trainer.getNumSteps() - 1);
 			System.out.println("Steps left: " + (trainer.getNumSteps()));
-			if (checkForPokemon(newLoc)) {
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Pokemon!");
-				alert.setHeaderText("You found a Pokemon!");
-				alert.showAndWait();
-			}
+			checkForPokemon(newLoc);
+			clearPokemon();
+			spawnPokemon();
 		}
 	}
 
@@ -78,17 +76,23 @@ public class Map extends Observable {
 		}
 	}
 	
-	public boolean checkForPokemon(Point newPosition) {
+	public void checkForPokemon(Point newPosition) {
 		int c = (int) newPosition.getX();
 		int r = (int) newPosition.getY();
 		
 		try {
 			if (pokemonLocations[r][c] == 'Y') {
-				return true;
-			} else
-				return false;
+				Vector<Pokemon> temp = trainer.getPokemon();
+				temp.add(new Pokemon());
+				trainer.setPokemon(temp);
+//				System.out.println("# Pokemon = " + trainer.getPokemon().size());
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Pokemon!");
+				alert.setHeaderText("You found a Pokemon!");
+				alert.showAndWait();
+			}		
 		} catch (ArrayIndexOutOfBoundsException aiobe) {
-			return false;
+			System.out.println(aiobe.toString());
 		}
 	}
 
@@ -143,7 +147,7 @@ public class Map extends Observable {
 			if (pokemonLocations[random_r][random_c] == 'N') {
 				if (board[random_r][random_c] == 'G') {
 					pokemonLocations[random_r][random_c] = 'Y';
-					System.out.println( "Pokemon " + n + " @ [" + random_r + "][" + random_c + "]" );
+//					System.out.println( "Pokemon " + n + " @ [" + random_r + "][" + random_c + "]" );
 					n++;
 				}
 			}
