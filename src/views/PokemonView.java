@@ -52,4 +52,3 @@ public class PokemonView extends BorderPane implements Observer {
 	}
 
 }
-

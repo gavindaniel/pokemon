@@ -44,7 +44,7 @@ public class Trainer {
 	public Vector<Pokemon> getPokemon() {
 		return pokemon;
 	}
-	
+
 	public void setPokemon(Vector<Pokemon> p) {
 		pokemon = p;
 	}

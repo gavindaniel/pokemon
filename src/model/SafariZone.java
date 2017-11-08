@@ -9,7 +9,7 @@ import javafx.scene.control.Alert.AlertType;
 public class SafariZone extends Observable {
 
 	private Map theMap;
-	
+
 	public SafariZone() {
 		theMap = new Map();
 		startNewGame();
@@ -20,10 +20,7 @@ public class SafariZone extends Observable {
 	 * message startNewGame()
 	 */
 	public void startNewGame() {
-		// clearBoard();
 		theMap = new Map();
-		// The state of this model just changed so tell any observer to update
-		// themselves
 		setChanged();
 		notifyObservers("startNewGame()");
 	}
@@ -39,7 +36,7 @@ public class SafariZone extends Observable {
 			Point newLoc = oldLoc;
 			int newC = (int) newLoc.getX();
 			int newR = (int) newLoc.getY();
-	
+
 			if (direction == 'U') {
 				newR -= 1;
 			} else if (direction == 'L') {
@@ -49,15 +46,14 @@ public class SafariZone extends Observable {
 			} else if (direction == 'D') {
 				newR += 1;
 			}
-	
+
 			newLoc = new Point(newC, newR);
-	
+
 			theMap.updateTrainerLocation(oldLoc, newLoc);
-	
+
 			setChanged();
 			notifyObservers();
-		}
-		else {
+		} else {
 			Alert alert = new Alert(AlertType.INFORMATION);
 			alert.setTitle("Game Over");
 			alert.setHeaderText("You ran out of steps!");
@@ -69,8 +65,7 @@ public class SafariZone extends Observable {
 	public boolean gameOver() {
 		if (theMap.getTrainer().getNumSteps() == 0) {
 			return true;
-		}
-		else {
+		} else {
 			return false;
 		}
 	}

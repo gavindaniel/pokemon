@@ -14,10 +14,10 @@ import javafx.scene.control.Alert.AlertType;
 public class Map extends Observable {
 
 	private char[][] board;
-	private char[][] pokemonLocations; //change later to a 2D array of Pokemon
+	private char[][] pokemonLocations; // change later to a 2D array of Pokemon
 	private int size;
 	private Trainer trainer;
-	
+
 	private static final int numPokemon = 50;
 
 	public Map() {
@@ -38,12 +38,15 @@ public class Map extends Observable {
 	public char[][] getBoard() {
 		return board;
 	}
+
 	public char[][] getPokemonLocations() {
 		return pokemonLocations;
 	}
+
 	public Trainer getTrainer() {
 		return trainer;
 	}
+
 	public void setTrainer(Trainer t) {
 		trainer = t;
 	}
@@ -75,22 +78,22 @@ public class Map extends Observable {
 			return false;
 		}
 	}
-	
+
 	public void checkForPokemon(Point newPosition) {
 		int c = (int) newPosition.getX();
 		int r = (int) newPosition.getY();
-		
+
 		try {
 			if (pokemonLocations[r][c] == 'Y') {
 				Vector<Pokemon> temp = trainer.getPokemon();
 				temp.add(new Pokemon());
 				trainer.setPokemon(temp);
-//				System.out.println("# Pokemon = " + trainer.getPokemon().size());
+				// System.out.println("# Pokemon = " + trainer.getPokemon().size());
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Pokemon!");
 				alert.setHeaderText("You found a Pokemon!");
 				alert.showAndWait();
-			}		
+			}
 		} catch (ArrayIndexOutOfBoundsException aiobe) {
 			System.out.println(aiobe.toString());
 		}
@@ -106,7 +109,7 @@ public class Map extends Observable {
 		try {
 
 			Scanner sc = new Scanner(file);
-			
+
 			while (sc.hasNextLine()) {
 				String line = sc.nextLine();
 				for (int i = 0; i < line.length(); i++) {
@@ -127,33 +130,34 @@ public class Map extends Observable {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void spawnPokemon() {
 		clearPokemon();
 		// nextInt is normally exclusive of the top value,
 		// so add 1 to make it inclusive
 		int min = 0;
 		int max = size;
-		
+
 		int random_r = -1;
 		int random_c = -1;
-		
+
 		int n = 1;
-		
+
 		while (n <= numPokemon) {
-			random_r = ThreadLocalRandom.current().nextInt(min, max); //removed '+ 1'
-			random_c = ThreadLocalRandom.current().nextInt(min, max); //removed '+ 1'
-			
+			random_r = ThreadLocalRandom.current().nextInt(min, max); // removed '+ 1'
+			random_c = ThreadLocalRandom.current().nextInt(min, max); // removed '+ 1'
+
 			if (pokemonLocations[random_r][random_c] == 'N') {
 				if (board[random_r][random_c] == 'G') {
 					pokemonLocations[random_r][random_c] = 'Y';
-//					System.out.println( "Pokemon " + n + " @ [" + random_r + "][" + random_c + "]" );
+					// System.out.println( "Pokemon " + n + " @ [" + random_r + "][" + random_c +
+					// "]" );
 					n++;
 				}
 			}
 		}
 	}
-	
+
 	public void clearPokemon() {
 		for (int r = 0; r < size; r++) {
 			for (int c = 0; c < size; c++) {
@@ -161,7 +165,7 @@ public class Map extends Observable {
 			}
 		}
 	}
-	
+
 	public void clearBoard() {
 		for (int r = 0; r < size; r++) {
 			for (int c = 0; c < size; c++) {
@@ -169,7 +173,7 @@ public class Map extends Observable {
 			}
 		}
 	}
-	
+
 	/**
 	 * Proved a textual version of the game Map
 	 */

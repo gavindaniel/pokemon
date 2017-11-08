@@ -16,7 +16,7 @@ public class GraphicView extends BorderPane implements Observer {
 	private Canvas canvas;
 	private GraphicsContext gc;
 	private GridPane gp1;
-	
+
 	private Image tree;
 	private Image trainer;
 	private Image grass;
@@ -25,7 +25,7 @@ public class GraphicView extends BorderPane implements Observer {
 	private Image bush;
 	private Image fence;
 	private Image stairs;
-	
+
 	private Image hill_m;
 	private Image hill_l;
 	private Image hill_r;
@@ -35,20 +35,20 @@ public class GraphicView extends BorderPane implements Observer {
 	private Image hill_tr;
 	private Image hill_bl;
 	private Image hill_br;
-	
+
 	private static final double height = 400;
 	private static final double width = 600;
 	private static final double imageSize = 16; // 16px by 16px
-	
-	// contructor 
+
+	// contructor
 	public GraphicView(SafariZone PokemonGame) {
 		theGame = PokemonGame;
 		canvas = new Canvas(width, height);
 		gp1 = new GridPane();
-		
+
 		initializePane();
 	}
-	
+
 	// initialize Pane for the first time
 	private void initializePane() {
 		gc = canvas.getGraphicsContext2D();
@@ -59,17 +59,17 @@ public class GraphicView extends BorderPane implements Observer {
 		this.setCenter(gp1);
 		drawViewableArea();
 	}
-	
+
 	private void generateImages() {
 		trainer = new Image("/images/trainer1.png");
 		ground = new Image("/images/shrubs/ground-g.bmp");
 		tree = new Image("/images/shrubs/tree.bmp");
-		grass = new Image("/images/shrubs/grass.bmp");	
+		grass = new Image("/images/shrubs/grass.bmp");
 		water = new Image("/images/water/water-c.bmp");
 		bush = new Image("/images/shrubs/bush.bmp");
 		fence = new Image("/images/shrubs/fence.bmp");
 		stairs = new Image("/images/misc/stair-right.bmp");
-		
+
 		hill_m = new Image("/images/hills/hill-middle.bmp");
 		hill_l = new Image("/images/hills/hill-left.bmp");
 		hill_r = new Image("/images/hills/hill-right.bmp");
@@ -80,100 +80,87 @@ public class GraphicView extends BorderPane implements Observer {
 		hill_bl = new Image("/images/hills/hill-bottomleft.bmp");
 		hill_br = new Image("/images/hills/hill-bottomright.bmp");
 	}
-	
+
 	public void drawViewableArea() {
-	
+
 		char[][] board = theGame.getMap().getBoard();
 		int pc = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();
 		int pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();
-		
+
 		int cc = 0;
 		int rc = 0;
-		
+
 		int lowerBound = -19;
 		int upperBound = 20;
-		
+
 		for (int r = lowerBound; r < upperBound; r++) {
 			for (int c = lowerBound; c < upperBound; c++) {
 				if (r == 0 && c == 0) {
 					gc.setGlobalAlpha(100);
-					gc.drawImage(trainer, ((cc)*imageSize), ((rc)*imageSize));
-//					System.out.println("Drawing trainer...");
+					gc.drawImage(trainer, ((cc) * imageSize), ((rc) * imageSize));
+					// System.out.println("Drawing trainer...");
 				} else {
 					if (board[pr + r][pc + c] == '_') {
 						gc.setGlobalAlpha(100);
-						gc.drawImage(ground, ((cc)*imageSize), ((rc)*imageSize));
+						gc.drawImage(ground, ((cc) * imageSize), ((rc) * imageSize));
 					} else if (board[pr + r][pc + c] == 'G') {
 						gc.setGlobalAlpha(100);
-						gc.drawImage(grass, ((cc)*imageSize), ((rc)*imageSize));
-//						System.out.println("Drawing grass...");
-					}
-					else if (board[pr + r][pc + c] == 'W') {
+						gc.drawImage(grass, ((cc) * imageSize), ((rc) * imageSize));
+						// System.out.println("Drawing grass...");
+					} else if (board[pr + r][pc + c] == 'W') {
 						gc.setGlobalAlpha(100);
-						gc.drawImage(water, ((cc)*imageSize), ((rc)*imageSize));
-					}
-					else if (board[pr + r][pc + c] == 'B') {
+						gc.drawImage(water, ((cc) * imageSize), ((rc) * imageSize));
+					} else if (board[pr + r][pc + c] == 'B') {
 						gc.setGlobalAlpha(100);
-						gc.drawImage(bush, ((cc)*imageSize), ((rc)*imageSize));
-					}
-					else if (board[pr + r][pc + c] == 'T') {
+						gc.drawImage(bush, ((cc) * imageSize), ((rc) * imageSize));
+					} else if (board[pr + r][pc + c] == 'T') {
 						gc.setGlobalAlpha(100);
-						gc.drawImage(tree, ((cc)*imageSize), ((rc)*imageSize));
-					}
-					else if (board[pr + r][pc + c] == 'E') {
+						gc.drawImage(tree, ((cc) * imageSize), ((rc) * imageSize));
+					} else if (board[pr + r][pc + c] == 'E') {
 						gc.setGlobalAlpha(100);
-						gc.drawImage(fence, ((cc)*imageSize), ((rc)*imageSize));
-					}
-					else if (board[pr + r][pc + c] == 's') {
+						gc.drawImage(fence, ((cc) * imageSize), ((rc) * imageSize));
+					} else if (board[pr + r][pc + c] == 's') {
 						gc.setGlobalAlpha(100);
-						gc.drawImage(stairs, ((cc)*imageSize), ((rc)*imageSize));
+						gc.drawImage(stairs, ((cc) * imageSize), ((rc) * imageSize));
 					}
-					
-					
+
 					else if (board[pr + r][pc + c] == 'b') {
 						gc.setGlobalAlpha(100);
-						gc.drawImage(hill_b, ((cc)*imageSize), ((rc)*imageSize));
-					}
-					else if (board[pr + r][pc + c] == 't') {
+						gc.drawImage(hill_b, ((cc) * imageSize), ((rc) * imageSize));
+					} else if (board[pr + r][pc + c] == 't') {
 						gc.setGlobalAlpha(100);
-						gc.drawImage(hill_t, ((cc)*imageSize), ((rc)*imageSize));
-					}
-					else if (board[pr + r][pc + c] == 'm') {
+						gc.drawImage(hill_t, ((cc) * imageSize), ((rc) * imageSize));
+					} else if (board[pr + r][pc + c] == 'm') {
 						gc.setGlobalAlpha(100);
-						gc.drawImage(hill_m, ((cc)*imageSize), ((rc)*imageSize));
-					}
-					else if (board[pr + r][pc + c] == 'l') {
+						gc.drawImage(hill_m, ((cc) * imageSize), ((rc) * imageSize));
+					} else if (board[pr + r][pc + c] == 'l') {
 						gc.setGlobalAlpha(100);
-						gc.drawImage(hill_l, ((cc)*imageSize), ((rc)*imageSize));
-					}
-					else if (board[pr + r][pc + c] == 'r') {
+						gc.drawImage(hill_l, ((cc) * imageSize), ((rc) * imageSize));
+					} else if (board[pr + r][pc + c] == 'r') {
 						gc.setGlobalAlpha(100);
-						gc.drawImage(hill_r, ((cc)*imageSize), ((rc)*imageSize));
-					}
-					else if (board[pr + r][pc + c] == 'q') {
+						gc.drawImage(hill_r, ((cc) * imageSize), ((rc) * imageSize));
+					} else if (board[pr + r][pc + c] == 'q') {
 						gc.setGlobalAlpha(100);
-						gc.drawImage(hill_tl, ((cc)*imageSize), ((rc)*imageSize));
-					}
-					else if (board[pr + r][pc + c] == 'o') {
+						gc.drawImage(hill_tl, ((cc) * imageSize), ((rc) * imageSize));
+					} else if (board[pr + r][pc + c] == 'o') {
 						gc.setGlobalAlpha(100);
-						gc.drawImage(hill_tr, ((cc)*imageSize), ((rc)*imageSize));
-					}
-					else if (board[pr + r][pc + c] == 'z') {
+						gc.drawImage(hill_tr, ((cc) * imageSize), ((rc) * imageSize));
+					} else if (board[pr + r][pc + c] == 'z') {
 						gc.setGlobalAlpha(100);
-						gc.drawImage(hill_bl, ((cc)*imageSize), ((rc)*imageSize));
-					}
-					else if (board[pr + r][pc + c] == 'n') {
+						gc.drawImage(hill_bl, ((cc) * imageSize), ((rc) * imageSize));
+					} else if (board[pr + r][pc + c] == 'n') {
 						gc.setGlobalAlpha(100);
-						gc.drawImage(hill_br, ((cc)*imageSize), ((rc)*imageSize));
+						gc.drawImage(hill_br, ((cc) * imageSize), ((rc) * imageSize));
 					}
 				}
-//				System.out.println("Drawing image at... (" + cc + "," + rc + ")");
+				// System.out.println("Drawing image at... (" + cc + "," + rc + ")");
 				cc++;
 			}
 			cc = 0;
 			rc++;
 		}
 	}
+
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
@@ -182,6 +169,4 @@ public class GraphicView extends BorderPane implements Observer {
 		drawViewableArea();
 	}
 
-	
-	
 }

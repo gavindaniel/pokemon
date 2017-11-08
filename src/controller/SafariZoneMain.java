@@ -58,7 +58,7 @@ public class SafariZoneMain extends Application {
 		theGame.addObserver(textView);
 		theGame.addObserver(graphicView);
 
-		setViewTo(graphicView); 
+		setViewTo(graphicView);
 
 		primaryStage.setScene(scene);
 		primaryStage.show();
@@ -97,7 +97,7 @@ public class SafariZoneMain extends Application {
 		graphicV.setOnAction(menuListener);
 		map.setOnAction(menuListener);
 		pokemon.setOnAction(menuListener);
-		
+
 	}
 
 	public class moveListener implements EventHandler<KeyEvent> {
@@ -136,8 +136,7 @@ public class SafariZoneMain extends Application {
 				stage.setTitle("Map View");
 				stage.setScene(new Scene(mv, 1100, 650));
 				stage.show();
-			}
-			else if (text.equals("Pokemon")) {
+			} else if (text.equals("Pokemon")) {
 				Stage stage = new Stage();
 				PokemonView pv = new PokemonView(theGame);
 				stage.setTitle("Pokemon View");
