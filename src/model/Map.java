@@ -105,7 +105,7 @@ public class Map extends Observable {
 
 	public void ReadMapFromFile() {
 
-		File file = new File("/Users/gavindaniel/Documents/Zona/cs335/gitrepos/pokemon-teammoltres/maps/zone1.txt");
+		File file = new File("./src/files/zone1.txt");
 
 		int r = 0;
 		int c = 0;
