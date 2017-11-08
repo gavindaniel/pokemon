@@ -1,24 +1,28 @@
 package model;
 
 import java.util.*;
+
+import items.Item;
+
 import java.awt.Point;
 import java.io.*;
 
-import model.Pokemon;
+import pokemon.Pokemon;
+
 
 public class TempTrainer implements Serializable{
 
    public String name;
      
    public Point loc;
-   public LinkedList<String> poks;
-   public LinkedList<String> tools; 
+   public LinkedList<Pokemon> poks;
+   public LinkedList<Item> tools; 
 
         
    public TempTrainer(){
 
-     tools = new LinkedList<String>();
-     poks = new LinkedList<String>();
+     tools = new LinkedList<Item>();
+     poks = new LinkedList<Pokemon>();
 
      
 
@@ -31,13 +35,13 @@ public class TempTrainer implements Serializable{
 
    }
 
-   public void addPoks(String pok){ 
+   public void addPoks(Pokemon pok){ 
 
      poks.add(pok);
     
    }
 
-   public void addTools(String tool){ 
+   public void addTools(Item tool){ 
 
      tools.add(tool);
     
