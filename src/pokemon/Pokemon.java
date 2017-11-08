@@ -1,5 +1,6 @@
 package pokemon;
 
+import java.awt.Point;
 import java.util.ArrayList;
 
 /**
@@ -10,11 +11,13 @@ import java.util.ArrayList;
 public abstract class Pokemon {
 	
 	private String name;
+	private Point position;
 	private ArrayList<Attack> attackList;	//4 attacks to be used by pokemon
 	private PokeType primaryType;
 	private PokeType secondaryType;
 	private OccurrenceRate occurRate;
-	private int HP;		// Determines hit points for the pokemon
+	private int maxHP;		// Determines maximum hit points for the pokemon
+	private int currHP;		// Determines current hit points for the pokemon
 	private int attack;		// Determines strength of physical attacks
 	private int defense;	// Determines how much damage is received
 	private int special;	// Determines strength of special moves
@@ -48,6 +51,20 @@ public abstract class Pokemon {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	/**
+	 * @return pokemon position on map
+	 */
+	public Point getPosition() {
+		return position;
+	}
+
+	/**
+	 * @param position set position on map
+	 */
+	public void setPosition(Point position) {
+		this.position = position;
 	}
 
 	/**
@@ -109,17 +126,33 @@ public abstract class Pokemon {
 	}
 
 	/**
-	 * @return the pokemon's current hit points.
+	 * @return the pokemon's maximum hit points.
 	 */
-	public int getHP() {
-		return HP;
+	public int getMaxHP() {
+		return this.maxHP;
 	}
 
 	/**
 	 * @param HP the pokemon's hit points
 	 */
 	public void setHP(int HP) {
-		this.HP = HP;
+		this.maxHP = HP;
+	}
+
+	/**
+	 * @return the current hit points for the pokemon
+	 */
+	public int getCurrHP() {
+		return currHP;
+	}
+
+	/**
+	 * @param currHP the current hit points to set for pokemon
+	 */
+	public void setCurrHP(int currHP) {
+		this.currHP = currHP;
+		if (this.currHP > this.maxHP) this.currHP = this.maxHP;
+		if (this.currHP < 0) this.currHP = 0;
 	}
 
 	/**
@@ -148,6 +181,9 @@ public abstract class Pokemon {
 	 */
 	public void setDefense(int defense) {
 		this.defense = defense;
+		if (this.defense <= 0) {
+			this.defense = 1;
+		}
 	}
 
 	/**
@@ -201,8 +237,9 @@ public abstract class Pokemon {
 	 * @param special
 	 * @param speed
 	 */
-	public void initializeStats(int HP, int attack, int defense, int special, int speed) {
-		this.HP = HP;
+	public void initializeStats(int maxHP, int attack, int defense, int special, int speed) {
+		this.maxHP = maxHP;
+		this.currHP = maxHP;
 		this.attack = attack;
 		this.defense = defense;
 		this.special = special;
@@ -214,7 +251,8 @@ public abstract class Pokemon {
 	 * @param pointsToHeal points to restore
 	 */
 	public void heal(int pointsToHeal) {
-		HP += pointsToHeal;
+		currHP += pointsToHeal;
+		if (currHP > maxHP) currHP = maxHP;
 	}
 	
 	/**
@@ -222,7 +260,8 @@ public abstract class Pokemon {
 	 * @param damage points to deduct from HP
 	 */
 	public void takeDamage(int damage) {
-		HP -= damage;
+		currHP -= damage;
+		if (currHP < 0) currHP = 0;
 	}
 	
 	/**
