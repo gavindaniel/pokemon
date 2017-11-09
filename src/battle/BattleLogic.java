@@ -322,7 +322,7 @@ public class BattleLogic extends Observable {
 	 * @param attack
 	 *            the attack to be triggered
 	 */
-	private void applyAttack(Attack attack, Pokemon attackPokemon, Pokemon defendPokemon) {
+	public void applyAttack(Attack attack, Pokemon attackPokemon, Pokemon defendPokemon) {
 
 		if (attack instanceof ActiveAttack) {
 			int damage = calculateDamage((ActiveAttack) attack, attackPokemon, defendPokemon);
@@ -344,7 +344,7 @@ public class BattleLogic extends Observable {
 		}
 	}
 
-	private int calculateDamage(ActiveAttack attack, Pokemon attackPokemon, Pokemon defendPokemon) {
+	public int calculateDamage(ActiveAttack attack, Pokemon attackPokemon, Pokemon defendPokemon) {
 		// Calculating multiplier from elemental effectiveness, randomness, and same
 		// type bonus.
 		// Effectiveness multiplier
@@ -416,7 +416,7 @@ public class BattleLogic extends Observable {
 	 * @return true if one player has no HP left for any of battle pokemon, false
 	 *         otherwise.
 	 */
-	private boolean isBattleOver() {
+	public boolean isBattleOver() {
 		return areAllPokemonDrained(trainer1.getBattlePokemonList())
 				|| areAllPokemonDrained(trainer2.getBattlePokemonList());
 	}
@@ -428,7 +428,7 @@ public class BattleLogic extends Observable {
 	 *            Pokemon list to iterate through
 	 * @return true if all pokemon are incapacitated, false otherwise
 	 */
-	private boolean areAllPokemonDrained(List<Pokemon> chosenPokeList) {
+	public boolean areAllPokemonDrained(List<Pokemon> chosenPokeList) {
 
 		for (Pokemon p : chosenPokeList) {
 			if (!isPokemonDrained(p)) {
@@ -438,7 +438,7 @@ public class BattleLogic extends Observable {
 		return true;
 	}
 
-	private boolean isPokemonDrained(Pokemon p) {
+	public boolean isPokemonDrained(Pokemon p) {
 		return (p.getCurrHP() <= 0);
 	}
 
