@@ -19,6 +19,8 @@ public class Trainer {
 	private List<Pokemon> battlePokemonList;		//List of 3 pokemon to be used in battle
 	private Pokemon activeBattlePokemon;			//Active pokemon in battle
 	public List<Item> itemList;
+	private Point currLocation;		//Position on map
+
 //	private TrainerAnimation trainerAnimation;
 	
 	public Trainer(String name) {
@@ -42,14 +44,6 @@ public class Trainer {
 	 */
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	public Point getCurrentLocation() {
-		return currentLocation;
-	}
-
-	public void setCurrentLocation(Point c) {
-		currentLocation = c;
 	}
 
 	public int getNumSteps() {
@@ -75,14 +69,6 @@ public class Trainer {
 //	public void setPokemon(Vector<Pokemon> p) {
 //		pokemon = p;
 //	}
-	public boolean addPokemonToOwned(Pokemon p) {
-		return this.ownedPokemonList.add(p);
-	}
-	
-	public boolean removePokemonFromOwned(Pokemon p) {
-		return this.ownedPokemonList.remove(p);
-	}
-	
 	
 	public boolean addItem() {
 	return false;
@@ -135,5 +121,69 @@ public boolean removeItem() {
 	 */
 	public void setActiveBattlePokemon(Pokemon activeBattlePokemon) {
 		this.activeBattlePokemon = activeBattlePokemon;
+	}
+
+	/**
+	 * @return the itemList
+	 */
+	public List<Item> getItemList() {
+		return itemList;
+	}
+
+	/**
+	 * @param itemList the itemList to set
+	 */
+	public void setItemList(List<Item> itemList) {
+		this.itemList = itemList;
+	}
+	
+	/**
+	 * @param add to item list
+	 */
+	public void addItem(Item item) {
+		this.itemList.add(item);
+	}
+	
+	/**
+	 * @param remove from item list
+	 */
+	public void removeItem(Item item) {
+		this.itemList.remove(item);
+
+	}
+
+	/**
+	 * @return the position
+	 */
+	public Point getCurrentLocation() {
+		return currLocation;
+	}
+
+	/**
+	 * @param position the position to set
+	 */
+	public void setCurrentLocation(Point p) {
+		currLocation = p;
+	}
+	
+//	public void move() {
+//
+//	}
+	/**
+	 * Append pokemon to owned list.
+	 * @param p pokemon to add
+	 * @return true if successful
+	 */
+	public boolean addPokemonToOwned(Pokemon p) {
+		return this.ownedPokemonList.add(p);
+	}
+
+	/**
+	 * Delete pokemon from owned list
+	 * @param p pokemon to delete
+	 * @return ture if successful
+	 */
+	public boolean removePokemonFromOwned(Pokemon p) {
+		return this.ownedPokemonList.remove(p);
 	}
 }
