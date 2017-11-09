@@ -3,7 +3,6 @@ package model;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import items.Item;
 import pokemon.Pokemon;
@@ -11,27 +10,27 @@ import pokemon.Pokemon;
 public class Trainer {
 
 	private String name;
-	private Point currentLocation;
 	private int numSteps;
 	private int numPokeBalls;
-//	private Vector<Pokemon> pokemon;
-	private List<Pokemon> ownedPokemonList;		//List of all owned pokemon
-	private List<Pokemon> battlePokemonList;		//List of 3 pokemon to be used in battle
-	private Pokemon activeBattlePokemon;			//Active pokemon in battle
+	private List<Pokemon> ownedPokemonList; // List of all owned pokemon
 	public List<Item> itemList;
-	private Point currLocation;		//Position on map
-
-//	private TrainerAnimation trainerAnimation;
+	private Point currLocation; // Position on map
 	
+	private List<Pokemon> battlePokemonList; // List of 3 pokemon to be used in battle
+	private Pokemon activeBattlePokemon; // Active pokemon in battle
+
+	// private TrainerAnimation trainerAnimation;
+
 	public Trainer(String name) {
-		currentLocation = new Point((50 / 2), (50 / 2) + 15);
+		this.name = name;
+		currLocation = new Point((50 / 2), (50 / 2) + 15);
 		numSteps = 500;
 		numPokeBalls = 30;
-//		pokemon = new Vector<Pokemon>();
 		ownedPokemonList = new ArrayList<Pokemon>();
-		battlePokemonList = new ArrayList<Pokemon>(3);
 		itemList = new ArrayList<Item>();
-		this.name = name;
+		
+		battlePokemonList = new ArrayList<Pokemon>(3);
+		activeBattlePokemon = null;
 	}
 
 	/**
@@ -40,9 +39,10 @@ public class Trainer {
 	public String getName() {
 		return name;
 	}
-	
+
 	/**
-	 * @param name the name to set
+	 * @param name
+	 *            the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -64,24 +64,16 @@ public class Trainer {
 		numPokeBalls = np;
 	}
 
-//	public Vector<Pokemon> getPokemon() {
-//		return pokemon;
-//	}
-//
-//	public void setPokemon(Vector<Pokemon> p) {
-//		pokemon = p;
-//	}
-	
 	public boolean addItem() {
-	return false;
+		return false;
 
-}
+	}
 
-public boolean removeItem() {
-	return false;
+	public boolean removeItem() {
+		return false;
 
-}
-	
+	}
+
 	/**
 	 * @return the ownedPokemonList
 	 */
@@ -90,12 +82,12 @@ public boolean removeItem() {
 	}
 
 	/**
-	 * @param pokemonList the pokemonList to set
+	 * @param pokemonList
+	 *            the pokemonList to set
 	 */
 	public void setOwnedPokemonList(List<Pokemon> pokemonList) {
 		this.ownedPokemonList = pokemonList;
 	}
-	
 
 	/**
 	 * @return the battlePokemonList
@@ -105,7 +97,8 @@ public boolean removeItem() {
 	}
 
 	/**
-	 * @param battlePokemonList the battlePokemonList to set
+	 * @param battlePokemonList
+	 *            the battlePokemonList to set
 	 */
 	public void setBattlePokemonList(List<Pokemon> battlePokemonList) {
 		this.battlePokemonList = battlePokemonList;
@@ -119,7 +112,8 @@ public boolean removeItem() {
 	}
 
 	/**
-	 * @param activeBattlePokemon the activeBattlePokemon to set
+	 * @param activeBattlePokemon
+	 *            the activeBattlePokemon to set
 	 */
 	public void setActiveBattlePokemon(Pokemon activeBattlePokemon) {
 		this.activeBattlePokemon = activeBattlePokemon;
@@ -133,21 +127,24 @@ public boolean removeItem() {
 	}
 
 	/**
-	 * @param itemList the itemList to set
+	 * @param itemList
+	 *            the itemList to set
 	 */
 	public void setItemList(List<Item> itemList) {
 		this.itemList = itemList;
 	}
-	
+
 	/**
-	 * @param add to item list
+	 * @param add
+	 *            to item list
 	 */
 	public void addItem(Item item) {
 		this.itemList.add(item);
 	}
-	
+
 	/**
-	 * @param remove from item list
+	 * @param remove
+	 *            from item list
 	 */
 	public void removeItem(Item item) {
 		this.itemList.remove(item);
@@ -162,18 +159,18 @@ public boolean removeItem() {
 	}
 
 	/**
-	 * @param position the position to set
+	 * @param position
+	 *            the position to set
 	 */
 	public void setCurrentLocation(Point p) {
 		currLocation = p;
 	}
-	
-//	public void move() {
-//
-//	}
+
 	/**
 	 * Append pokemon to owned list.
-	 * @param p pokemon to add
+	 * 
+	 * @param p
+	 *            pokemon to add
 	 * @return true if successful
 	 */
 	public boolean addPokemonToOwned(Pokemon p) {
@@ -182,7 +179,9 @@ public boolean removeItem() {
 
 	/**
 	 * Delete pokemon from owned list
-	 * @param p pokemon to delete
+	 * 
+	 * @param p
+	 *            pokemon to delete
 	 * @return ture if successful
 	 */
 	public boolean removePokemonFromOwned(Pokemon p) {
