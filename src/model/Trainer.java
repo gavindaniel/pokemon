@@ -1,8 +1,11 @@
 package model;
 
 import java.awt.Point;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
+import items.Item;
 import pokemon.Pokemon;
 
 public class Trainer {
@@ -11,13 +14,16 @@ public class Trainer {
 	private List<Pokemon> ownedPokemonList;		//List of all owned pokemon
 	private List<Pokemon> battlePokemonList;		//List of 3 pokemon to be used in battle
 	private Pokemon activeBattlePokemon;			//Active pokemon in battle
-//	private List<Item> itemList;
 	private Point currLocation;		//Position on map
+ 	private List<Item> itemList;
 
 //	private TrainerAnimation trainerAnimation;
 
 	public Trainer(String name) {
 		this.name = name;
+		itemList = new ArrayList<Item>();
+	    ownedPokemonList = new ArrayList<Pokemon>();
+	    battlePokemonList = new ArrayList<Pokemon>(3);
 	}
 
 	/**
@@ -77,6 +83,49 @@ public class Trainer {
 		this.activeBattlePokemon = activeBattlePokemon;
 	}
 
+	/**
+	 * @return the itemList
+	 */
+	public List<Item> getItemList() {
+		return itemList;
+	}
+
+	/**
+	 * @param itemList the itemList to set
+	 */
+	public void setItemList(List<Item> itemList) {
+		this.itemList = itemList;
+	}
+	
+	/**
+	 * @param add to item list
+	 */
+	public void addItem(Item item) {
+		this.itemList.add(item);
+	}
+	
+	/**
+	 * @param remove from item list
+	 */
+	public void removeItem(Item item) {
+		this.itemList.remove(item);
+
+	}
+
+	/**
+	 * @return the position
+	 */
+	public Point getCurrentLocation() {
+		return currLocation;
+	}
+
+	/**
+	 * @param position the position to set
+	 */
+	public void setCurrentLocation(Point p) {
+		currLocation = p;
+	}
+	
 //	public void move() {
 //
 //	}
