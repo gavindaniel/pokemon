@@ -10,7 +10,7 @@ import org.junit.Test;
 
 import items.Rock;
 import items.SafariBall;
-import model.TempTrainer;
+import model.Trainer;
 import pokemon.Frequency;
 import pokemon.OccurrenceRate;
 import pokemon.Pikachu;
@@ -40,20 +40,20 @@ public class captureTest {
 	public void testAddSafariBalls() {
 		Pokemon commonPoke=new Pikachu();
 		commonPoke.setOccurRate(OccurrenceRate.COMMON);
-		TempTrainer trainer=new TempTrainer();
+		Trainer trainer=new Trainer("Name");
 		for (int i=0;i<30;i++) {
-		trainer.tools.add(new SafariBall());
+		trainer.addItem(new SafariBall());
 		}
-		assertEquals(trainer.tools.size(),30);
+		assertEquals(trainer.getItemList().size(),30);
 	}
 	
 	@Test
 	public void testCommonRetreat() {
 		Pokemon commonPoke=new Pikachu();
 		commonPoke.setOccurRate(OccurrenceRate.COMMON);
-		TempTrainer trainer=new TempTrainer();
+		Trainer trainer=new Trainer("Name");
 		for (int i=0;i<30;i++) {
-		trainer.tools.add(new SafariBall());
+		trainer.addItem(new SafariBall());
 		}
 		Capture common = new Capture(commonPoke,trainer);
 		//Test when the Pokemon is neutral
@@ -73,9 +73,9 @@ public class captureTest {
 	public void testUncommonRetreat() {
 		Pokemon uncommonPoke = new Pikachu();
 		uncommonPoke.setOccurRate(OccurrenceRate.UNCOMMON);
-		TempTrainer trainer=new TempTrainer();
+		Trainer trainer=new Trainer("Name");
 		for (int i=0;i<30;i++) {
-		trainer.tools.add(new SafariBall());
+		trainer.addItem(new SafariBall());
 		}
 		Capture uncommon = new Capture(uncommonPoke,trainer);
 		//Test when the Pokemon is neutral
@@ -95,9 +95,9 @@ public class captureTest {
 	public void testRareRetreat() {
 		Pokemon rarePoke=new Pikachu();
 		rarePoke.setOccurRate(OccurrenceRate.RARE);
-		TempTrainer trainer=new TempTrainer();
+		Trainer trainer=new Trainer("Name");
 		for (int i=0;i<30;i++) {
-		trainer.tools.add(new SafariBall());
+		trainer.addItem(new SafariBall());
 		}
 		Capture rare = new Capture(rarePoke,trainer);
 		//Test when the Pokemon is neutral
@@ -117,9 +117,9 @@ public class captureTest {
 	public void testThrowItems() {
 		Pokemon rarePoke=new Pikachu();
 		rarePoke.setOccurRate(OccurrenceRate.RARE);
-		TempTrainer trainer=new TempTrainer();
+		Trainer trainer=new Trainer("Name");
 		for (int i=0;i<30;i++) {
-		trainer.tools.add(new SafariBall());
+		trainer.addItem(new SafariBall());
 		}
 		Capture rare = new Capture(rarePoke,trainer);
 		assertEquals(rare.currentPoke.getMood(),"Neutral");
@@ -136,11 +136,11 @@ public class captureTest {
 	public void testCommonCapture() {
 		Pokemon commonPoke=new Pikachu();
 		commonPoke.setOccurRate(OccurrenceRate.COMMON);
-		TempTrainer trainer=new TempTrainer();
+		Trainer trainer=new Trainer("Name");
 		for (int i=0;i<30;i++) {
-		trainer.tools.add(new SafariBall());
+		trainer.addItem(new SafariBall());
 		}
-		assertEquals(trainer.tools.size(),30);
+		assertEquals(trainer.getItemList().size(),30);
 		Capture common = new Capture(commonPoke,trainer);
 		//Test when the Pokemon is neutral
 		assertTrue(common.throwBall(26));
@@ -158,11 +158,11 @@ public class captureTest {
 	public void testStartCaptureThrowRock() {
 		Pokemon commonPoke=new Pikachu();
 		commonPoke.setOccurRate(OccurrenceRate.COMMON);
-		TempTrainer trainer=new TempTrainer();
+		Trainer trainer=new Trainer("Name");
 		for (int i=0;i<30;i++) {
-		trainer.tools.add(new SafariBall());
+		trainer.addItem(new SafariBall());
 		}
-		assertEquals(trainer.tools.size(),30);
+		assertEquals(trainer.getItemList().size(),30);
 		Capture common = new Capture(commonPoke,trainer);
 		assertTrue(common.checkSafariBalls());
 		
@@ -176,11 +176,11 @@ public class captureTest {
 	public void testStartCaptureThrowBait() {
 		Pokemon commonPoke=new Pikachu();
 		commonPoke.setOccurRate(OccurrenceRate.COMMON);
-		TempTrainer trainer=new TempTrainer();
+		Trainer trainer=new Trainer("Name");
 		for (int i=0;i<30;i++) {
-		trainer.tools.add(new SafariBall());
+		trainer.addItem(new SafariBall());
 		}
-		assertEquals(trainer.tools.size(),30);
+		assertEquals(trainer.getItemList().size(),30);
 		Capture common = new Capture(commonPoke,trainer);
 		assertTrue(common.checkSafariBalls());
 		
@@ -194,11 +194,11 @@ public class captureTest {
 	public void testStartCaptureThrowBall() {
 		Pokemon commonPoke=new Pikachu();
 		commonPoke.setOccurRate(OccurrenceRate.COMMON);
-		TempTrainer trainer=new TempTrainer();
+		Trainer trainer=new Trainer("Name");
 		for (int i=0;i<30;i++) {
-		trainer.tools.add(new SafariBall());
+		trainer.addItem(new SafariBall());
 		}
-		assertEquals(trainer.tools.size(),30);
+		assertEquals(trainer.getItemList().size(),30);
 		Capture common = new Capture(commonPoke,trainer);
 		assertTrue(common.checkSafariBalls());
 		
@@ -213,7 +213,7 @@ public class captureTest {
 	public void testStartCaptureNoSafariBalls() {
 		Pokemon commonPoke=new Pikachu();
 		commonPoke.setOccurRate(OccurrenceRate.COMMON);
-		TempTrainer trainer=new TempTrainer();
+		Trainer trainer=new Trainer("Name");
 		Capture common = new Capture(commonPoke,trainer);
 	    String input = "3";
 	    InputStream in = new ByteArrayInputStream(input.getBytes());
@@ -225,7 +225,7 @@ public class captureTest {
 	public void testInvalidChoice() {
 		Pokemon commonPoke=new Pikachu();
 		commonPoke.setOccurRate(OccurrenceRate.COMMON);
-		TempTrainer trainer=new TempTrainer();
+		Trainer trainer=new Trainer("Name");
 		Capture common = new Capture(commonPoke,trainer);
 	    String input = "q 3";
 	    InputStream in = new ByteArrayInputStream(input.getBytes());
@@ -237,7 +237,7 @@ public class captureTest {
 	public void testNoSafariBalls() {
 		Pokemon commonPoke=new Pikachu();
 		commonPoke.setOccurRate(OccurrenceRate.COMMON);
-		TempTrainer trainer=new TempTrainer();
+		Trainer trainer=new Trainer("Name");
 		Capture common = new Capture(commonPoke,trainer);
 		assertFalse(common.checkSafariBalls());
 	
@@ -246,7 +246,7 @@ public class captureTest {
 	public void testRetreat() {
 		Pokemon rarePoke=new Pikachu();
 		rarePoke.setOccurRate(OccurrenceRate.RARE);
-		TempTrainer trainer=new TempTrainer();
+		Trainer trainer=new Trainer("Name");
 		Capture common = new Capture(rarePoke,trainer);
 		String input = "1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1";
 	    InputStream in = new ByteArrayInputStream(input.getBytes());

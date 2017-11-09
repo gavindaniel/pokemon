@@ -3,15 +3,15 @@ package strategies;
 import java.util.Scanner;
 
 import items.SafariBall;
-import model.TempTrainer;
+import model.Trainer;
 import pokemon.Pokemon;
 import java.util.Random;
 
 public class Capture {
 		public Pokemon currentPoke;
-		public TempTrainer currentTrain;
+		public Trainer currentTrain;
 		
-		public Capture(Pokemon currentPoke,TempTrainer currentTrain) {
+		public Capture(Pokemon currentPoke,Trainer currentTrain) {
 			this.currentPoke=currentPoke;
 			this.currentTrain=currentTrain;
 		}
@@ -51,7 +51,7 @@ public class Capture {
 		}
 		
 		public boolean checkSafariBalls() {
-			for (Object obj:currentTrain.tools) {
+			for (Object obj:currentTrain.getItemList()) {
 				if(obj.getClass()==SafariBall.class) {
 					return true;
 				}
@@ -93,13 +93,13 @@ public class Capture {
 		
 		
 		public boolean throwBall(int catchChance) {
-			    currentTrain.tools.remove(SafariBall.class);			
+			    currentTrain.getItemList().remove(SafariBall.class);			
 				System.out.println("You threw a Safari Ball");
 				String currentMood=currentPoke.getMood();
 				int captureRate=currentPoke.getCatchRate();
 				if(currentMood.equals("Eating")) {
 					if(captureRate*1.2<catchChance) {
-						currentTrain.poks.add(currentPoke);
+						currentTrain.addPokemonToOwned(currentPoke);
 						System.out.println("Pokemon caught");
 						return true;
 					}
@@ -110,7 +110,7 @@ public class Capture {
 				}	
 				else if(currentMood.equals("Angry")) {
 					if(captureRate*.5<catchChance) {
-						currentTrain.poks.add(currentPoke);
+						currentTrain.addPokemonToOwned(currentPoke);
 						System.out.println("Pokemon Caught");
 						return true;
 					}
@@ -121,7 +121,7 @@ public class Capture {
 				}	
 				else {
 					if(captureRate<catchChance) {
-						currentTrain.poks.add(currentPoke);
+						currentTrain.addPokemonToOwned(currentPoke);
 						System.out.println("Pokemon Caught");
 						return true;
 					}
