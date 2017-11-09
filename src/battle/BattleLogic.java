@@ -23,7 +23,7 @@ public class BattleLogic extends Observable {
 
 		this.trainer1 = trainer1;
 		this.trainer2 = trainer2;
-		
+
 		generateEffectLookupTable();
 	}
 
@@ -63,28 +63,42 @@ public class BattleLogic extends Observable {
 	public void runBattle() {
 
 		// Each trainer selects pokemon.
-		trainerSelectsPokemon(trainer1);
-		trainerSelectsPokemon(trainer2);
+		trainerSelectsPokemonForBattle(trainer1);
+		trainerSelectsPokemonForBattle(trainer2);
 
 		// Head of list is automatically selected at start.
 		trainer1.setActiveBattlePokemon(trainer1.getBattlePokemonList().get(0));
 		trainer2.setActiveBattlePokemon(trainer2.getBattlePokemonList().get(0));
 
-		int faster = determineWhoStarts();
+		int order = determineWhoStarts();
+
+		boolean isPokemonDrained = false;
 
 		while (!isBattleOver()) {
 
-			if (faster == 1)
-				playRound(trainer1, trainer2);
+			if (isPokemonDrained) {
+				order = determineWhoStarts();
+			}
+
+			if (order == 1)
+				isPokemonDrained = playRound(trainer1, trainer2);
 			else
-				playRound(trainer2, trainer1);
+				isPokemonDrained = playRound(trainer2, trainer1);
+		}
+
+		System.out.println("\nBattle is over.");
+
+		if (areAllPokemonDrained(trainer1.getBattlePokemonList())) {
+			System.out.println(trainer2.getName() + " has defeated " + trainer1.getName());
+		} else {
+			System.out.println(trainer1.getName() + " has defeated " + trainer2.getName());
 		}
 	}
 
 	/**
 	 * 3 pokemon are selected for use in battle.
 	 */
-	private void trainerSelectsPokemon(Trainer trainer) {
+	private void trainerSelectsPokemonForBattle(Trainer trainer) {
 
 		List<Pokemon> pokeList = trainer.getBattlePokemonList();
 
@@ -100,7 +114,7 @@ public class BattleLogic extends Observable {
 				pokeList.add(chosenPoke);
 				System.out.println("\n" + chosenPoke.getName() + " Successfully added.\n");
 			} else
-				System.out.println("\nPokemon already chosen. Pick another one.\n");
+				System.out.println("\n" + chosenPoke.getName() + "is already chosen. Pick another one.\n");
 		}
 	}
 
@@ -146,21 +160,26 @@ public class BattleLogic extends Observable {
 	}
 
 	/**
-	 * Determines which trainer starts based on chosen pokemon's speed.
-	 * If speed for both pokemon is tied, order is determined by 'coin toss'.
+	 * Determines which trainer starts based on chosen pokemon's speed. If speed for
+	 * both pokemon is tied, order is determined by 'coin toss'.
+	 * 
 	 * @return 1 if trainer 1 goes first, 2 if trainer 2 goes first.
 	 */
-	private int determineWhoStarts() {
-		
+	public int determineWhoStarts() {
+
 		Pokemon p1 = trainer1.getActiveBattlePokemon();
 		Pokemon p2 = trainer2.getActiveBattlePokemon();
-		
-		if (p1.getSpeed() > p2.getSpeed()) return 1;
-		else if (p1.getSpeed() < p2.getSpeed()) return 2;
+
+		if (p1.getSpeed() > p2.getSpeed())
+			return 1;
+		else if (p1.getSpeed() < p2.getSpeed())
+			return 2;
 		else {// Perform 'coin toss'
 			int num = (new Random()).nextInt(10);
-			if (num <= 4) return 1;
-			else return 2;
+			if (num <= 4)
+				return 1;
+			else
+				return 2;
 		}
 	}
 
@@ -169,11 +188,36 @@ public class BattleLogic extends Observable {
 	 * dies in middle of round)
 	 * 
 	 * @param starter
+	 *            Pokemon to go first
 	 * @param finisher
+	 *            Pokemon to go second
+	 * 
+	 * @return true if a pokemon has been depleted during the round, false otherwise
 	 */
-	private void playRound(Trainer starter, Trainer finisher) {
+	private boolean playRound(Trainer starter, Trainer finisher) {
+		// First Turn
 		playTurn(starter, finisher);
+		if (isPokemonDrained(finisher.getActiveBattlePokemon())) {
+			System.out.println();
+			System.out.println(finisher.getActiveBattlePokemon().getName() + " has fainted.");
+			if (isBattleOver())
+				return true;
+			switchPokemon(finisher);
+			return true;
+		}
+
+		// Second Turn
 		playTurn(finisher, starter);
+		if (isPokemonDrained(starter.getActiveBattlePokemon())) {
+			System.out.println();
+			System.out.println(starter.getActiveBattlePokemon().getName() + " has fainted.");
+			if (isBattleOver())
+				return true;
+			switchPokemon(starter);
+			return true;
+		}
+
+		return false;
 	}
 
 	/**
@@ -283,13 +327,15 @@ public class BattleLogic extends Observable {
 		if (attack instanceof ActiveAttack) {
 			int damage = calculateDamage((ActiveAttack) attack, attackPokemon, defendPokemon);
 			defendPokemon.takeDamage(damage);
-			System.out.println(attackPokemon.getName() + " used " + attack.getName() + " on " + defendPokemon.getName());
+			System.out
+					.println(attackPokemon.getName() + " used " + attack.getName() + " on " + defendPokemon.getName());
 			System.out.println(defendPokemon.getName() + " lost " + damage + " HP.");
 		}
 
 		else if (attack instanceof PassiveAttackBuff) {
 			((PassiveAttackBuff) attack).activate(attackPokemon.getAttackList());
-			System.out.println(attackPokemon.getName() + " increased effectiveness of " + attackPokemon.getPrimaryType() + " attacks.");
+			System.out.println(attackPokemon.getName() + " increased effectiveness of " + attackPokemon.getPrimaryType()
+					+ " attacks.");
 		}
 
 		else {
@@ -318,7 +364,7 @@ public class BattleLogic extends Observable {
 	private void switchPokemon(Trainer trainer) {
 
 		printSwitchMenu(trainer);
-		
+
 		Pokemon chosenPoke = getSwitchChoice(trainer);
 
 		trainer.setActiveBattlePokemon(chosenPoke);
@@ -327,7 +373,7 @@ public class BattleLogic extends Observable {
 	private void printSwitchMenu(Trainer trainer) {
 
 		System.out.println(trainer.getName() + ", Select new pokemon to enter battlefield:");
-		
+
 		List<Pokemon> pokeList = trainer.getBattlePokemonList();
 
 		for (int i = 0; i < pokeList.size(); i++) {
@@ -336,10 +382,10 @@ public class BattleLogic extends Observable {
 	}
 
 	private Pokemon getSwitchChoice(Trainer trainer) {
-		
+
 		List<Pokemon> pokeList = trainer.getBattlePokemonList();
 		Pokemon currPoke = trainer.getActiveBattlePokemon();
-		
+
 		Scanner in = new Scanner(System.in);
 		int choice;
 
@@ -350,8 +396,10 @@ public class BattleLogic extends Observable {
 				choice = in.nextInt();
 
 				if (choice >= 0 && choice < 3) {
-					if (currPoke == pokeList.get(choice)) {
-						System.out.println(currPoke.getName() + " is already selected. Choose another pokemon");
+
+					if (pokeList.get(choice).getCurrHP() <= 0) {
+						System.out.println(
+								pokeList.get(choice).getName() + " is completely drained. Choose another pokemon");
 					} else
 						break;
 				} else
@@ -369,7 +417,8 @@ public class BattleLogic extends Observable {
 	 *         otherwise.
 	 */
 	private boolean isBattleOver() {
-		return areAllPokemonDrained(trainer1.getBattlePokemonList()) || areAllPokemonDrained(trainer2.getBattlePokemonList());
+		return areAllPokemonDrained(trainer1.getBattlePokemonList())
+				|| areAllPokemonDrained(trainer2.getBattlePokemonList());
 	}
 
 	/**
