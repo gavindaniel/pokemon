@@ -3,7 +3,7 @@ package tests;
 import java.util.ArrayList;
 import java.util.List;
 
-import model.BattleLogic;
+import battle.BattleLogic;
 import model.Trainer;
 import pokemon.Bulbasaur;
 import pokemon.Charmander;

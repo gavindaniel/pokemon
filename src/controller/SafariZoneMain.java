@@ -14,12 +14,13 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import map.GraphicView;
+import map.MapView;
+import map.PokemonView;
+import map.TextView;
+import menus.LoginView;
 import model.SafariZone;
-import views.GraphicView;
-import views.LoginView;
-import views.MapView;
-import views.PokemonView;
-import views.TextView;
+
 /**************************************************************/
 import java.net.*;
 import java.io.*;

@@ -1,4 +1,4 @@
-package controller;
+package network;
 
 import java.util.*;
 import java.awt.Point;

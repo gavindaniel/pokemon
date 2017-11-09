@@ -1,4 +1,4 @@
-package controller; 
+package persistence; 
 
 import java.util.*;
 import java.io.*;
@@ -8,11 +8,9 @@ import java.io.FileWriter;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-
-
-import controller.User;
 import model.SafariZone;
  // class to push and pull Vector users
+import network.User;
 
 public class FileManager {
 

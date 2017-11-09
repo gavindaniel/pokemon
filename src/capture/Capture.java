@@ -1,4 +1,4 @@
-package strategies;
+package capture;
 
 import java.util.Scanner;
 

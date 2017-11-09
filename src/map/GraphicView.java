@@ -1,4 +1,4 @@
-package views;
+package map;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -9,7 +9,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import model.SafariZone;
-import model.Tile;
 
 public class GraphicView extends BorderPane implements Observer {
 

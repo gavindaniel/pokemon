@@ -29,6 +29,8 @@ public class Trainer {
 		numPokeBalls = 30;
 //		pokemon = new Vector<Pokemon>();
 		ownedPokemonList = new ArrayList<Pokemon>();
+		battlePokemonList = new ArrayList<Pokemon>(3);
+		itemList = new ArrayList<Item>();
 		this.name = name;
 	}
 

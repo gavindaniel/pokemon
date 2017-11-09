@@ -1,12 +1,9 @@
-package views;
+package menus;
 
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
 
-import controller.FileManager;
-import controller.GameLoader;
-import controller.User;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -25,6 +22,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
+import map.TextView;
+import network.User;
+import persistence.FileManager;
+import persistence.GameLoader;
 
 
 public class LoginView extends BorderPane implements Observer {

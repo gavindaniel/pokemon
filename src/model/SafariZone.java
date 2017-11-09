@@ -5,6 +5,7 @@ import java.util.Observable;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import map.Map;
 
 public class SafariZone extends Observable {
 

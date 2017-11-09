@@ -1,4 +1,4 @@
-package controller;
+package network;
 
 /*
  * This is the server part of a multi-client server. Since it is 

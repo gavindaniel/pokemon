@@ -8,6 +8,7 @@ import java.util.LinkedList;
 
 import org.junit.Test;
 
+import capture.Capture;
 import items.Rock;
 import items.SafariBall;
 import model.Trainer;
@@ -15,7 +16,6 @@ import pokemon.OccurrenceRate;
 import pokemon.Pikachu;
 import pokemon.PokeType;
 import pokemon.Pokemon;
-import strategies.Capture;
 
 public class captureTest {
 	
