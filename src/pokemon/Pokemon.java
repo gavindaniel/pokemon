@@ -37,6 +37,7 @@ public abstract class Pokemon {
 		this.secondaryType = secondaryType;
 		this.occurRate = occurRate;
 		this.attackList = new ArrayList<>(4);
+		this.mood="Neutral";
 	}
 
 	/***********************************Getters and Setters****************************************/
@@ -52,6 +53,21 @@ public abstract class Pokemon {
 	 */
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	
+	/**
+	 * @return the pokemon's mood
+	 */
+	public String getMood() {
+		return mood;
+	}
+
+	/**
+	 * @param set the pokemons mood
+	 */
+	public void setMood(String mood) {
+		this.mood = mood;
 	}
 
 	/**
@@ -265,9 +281,36 @@ public abstract class Pokemon {
 		if (currHP < 0) currHP = 0;
 	}
 	
+	//Set to return a catch rate depending on the frequency.
+		public int getRunRate() {
+			if(getOccurRate()==occurRate.RARE) {
+				return 40;
+			}
+			else if(getOccurRate()==occurRate.UNCOMMON) {
+				return 25;
+			}
+			else {
+				return 10;
+			}
+			
+		}
+		public int getCatchRate() {
+			if(getOccurRate()==occurRate.RARE) {
+				return 80;
+			}
+			else if(getOccurRate()==occurRate.UNCOMMON) {
+				return 50;
+			}
+			else {
+				return 25;
+			}
+			
+		}
+	
 	/**
 	 * Create attacks for specific pokemon.
 	 * @return list of 4 attacks
 	 */
 	public abstract ArrayList<Attack> initializeAttacks();
 }
+

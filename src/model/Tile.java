@@ -42,11 +42,11 @@ public class Tile {
 		}
 		else if (c == 'E') {
 			type = "fence";
-			img = new Image("/images/shrubs/fence.bmp");
+			img = new Image("/images/misc/fence.bmp");
 		}
 		else if (c == 's') {
 			type = "stairs";
-			img = new Image("/images/misc/stair-right.bmp");
+			img = new Image("/images/misc/stairs.bmp");
 		}
 		else if (c == 'b') {
 			type = "hill";

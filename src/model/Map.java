@@ -3,6 +3,7 @@ package model;
 import java.awt.Point;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.List;
 import java.util.Observable;
 import java.util.Scanner;
 import java.util.Vector;
@@ -10,6 +11,8 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import pokemon.Pikachu;
+import pokemon.Pokemon;
 
 public class Map extends Observable {
 
@@ -20,7 +23,7 @@ public class Map extends Observable {
 
 	public Map() {
 		size = 200; // # columns, rows
-		trainer = new Trainer();
+		trainer = new Trainer("Player1");
 		tiles = new Tile[size][size];
 		clearBoard();
 		ReadMapFromFile();
@@ -138,9 +141,10 @@ public class Map extends Observable {
 		int r = (int) newPosition.getY();
 		try {
 			if (tiles[r][c].getPokemonHere() == true) {
-				Vector<Pokemon> temp = trainer.getPokemon();
-				temp.add(new Pokemon());
-				trainer.setPokemon(temp);
+				//Vector<Pokemon> temp = trainer.getPokemon();
+				List<Pokemon> temp = trainer.getOwnedPokemonList();
+				temp.add(new Pikachu());								// FIXME
+				trainer.setOwnedPokemonList(temp);
 				Alert alert = new Alert(AlertType.INFORMATION);
 				alert.setTitle("Pokemon!");
 				alert.setHeaderText("You found a Pokemon!");

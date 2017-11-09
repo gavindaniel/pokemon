@@ -16,10 +16,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.SafariZone;
 import views.GraphicView;
+import views.LoginView;
 import views.MapView;
 import views.PokemonView;
 import views.TextView;
-// from branch gfe
+/**************************************************************/
 import java.net.*;
 import java.io.*;
 import javafx.concurrent.Task;
@@ -30,8 +31,10 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Optional;
+//import controller.SafariZoneMain.ServerListener;
 import javafx.concurrent.Task;
 //import views.LoginView;
+/**************************************************************/
 
 public class SafariZoneMain extends Application {
 
@@ -46,7 +49,7 @@ public class SafariZoneMain extends Application {
 	char keyPressed;
 	boolean surfEnabled;
 
-	//new
+/***************************************/
 //		private GameLoader gameLoader;
 		private Socket socket;
         private ObjectOutputStream outputToServer;
@@ -54,6 +57,7 @@ public class SafariZoneMain extends Application {
         private static final String Address = "localhost";
         public Point altPlayer;
  //       FileManager man = new FileManager();
+/***************************************/
         
 	public static void main(String[] args) {
 		launch(args);
@@ -61,6 +65,9 @@ public class SafariZoneMain extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+/***************************************/
+//      openConnection();
+/***************************************/
 		primaryStage.setTitle("Pokemon: Safari Zone");
 		keyPressed = 'z';
 		window = new BorderPane();
@@ -75,6 +82,12 @@ public class SafariZoneMain extends Application {
 		// Setup the views
 		textView = new TextView(theGame);
 		graphicView = new GraphicView(theGame);
+		
+/***************************************/
+//		textView = new TextView(gameLoader.getSafariZone());
+//        loginView = new LoginView(man,gameLoader,textView);
+/***************************************/
+		
 		theGame.addObserver(textView);
 		theGame.addObserver(graphicView);
 
@@ -110,10 +123,20 @@ public class SafariZoneMain extends Application {
 		MenuItem pokemon = new MenuItem("Pokemon");
 		Menu options = new Menu("Options");
 		options.getItems().addAll(newGame, map, pokemon, views);
-
+		
+/***************************************/
+//		Menu user = new Menu("User");
+//	    MenuItem signIn = new MenuItem("Sign In");
+//      MenuItem signOut = new MenuItem("Sign Out");
+/***************************************/
+            
 		menuBar = new MenuBar();
 		menuBar.getMenus().addAll(options);
-
+		
+/***************************************/
+//		menuBar.getMenus().addAll(options, user);
+/***************************************/
+		
 		// Add the same listener to all menu items requiring action
 		MenuItemListener menuListener = new MenuItemListener();
 		newGame.setOnAction(menuListener);
@@ -122,6 +145,11 @@ public class SafariZoneMain extends Application {
 		map.setOnAction(menuListener);
 		pokemon.setOnAction(menuListener);
 
+/***************************************/
+//		signIn.setOnAction(menuListener); 
+//        signOut.setOnAction(menuListener);
+/***************************************/
+		
 	}
 
 	public class moveListener implements EventHandler<KeyEvent> {
@@ -164,7 +192,97 @@ public class SafariZoneMain extends Application {
 				stage.setTitle("Pokemon View");
 				stage.setScene(new Scene(pv, 1100, 650));
 				stage.show();
-			}
+			} 
+		
+/**************************************************************/
+//			else if (text.equals("Sign In")){
+//		  		setViewTo(loginView);
+//
+//		      }else if (text.equals("Sign Out")){
+//	    
+//	                // FileManager will push User data
+//	  
+//	                man.pushUserData();  
+//	                // new SafariZone and textView
+//	                gameLoader.setSafariZone(null); 
+//	                gameLoader.setSafariZone(new SafariZone());
+//	                textView = null; 
+//	                textView = new TextView(gameLoader.getSafariZone()); 
+//	                loginView = new LoginView(man,gameLoader,textView);
+//	                gameLoader.getSafariZone().addObserver(textView); 
+//	                setViewTo(textView);
+//		
+//	              }
+//		    }
+/**************************************************************/
 		}
 	}
+	
+	
+	
+	
+	
+	
+////////////////work in progress
+
+
+
+
+	private void openConnection() {
+	// Our server is on our computer, but make sure to use the same port.
+	try {
+	socket = new Socket(Address, 4001);
+	outputToServer = new ObjectOutputStream(socket.getOutputStream());
+	inputFromServer = new ObjectInputStream(socket.getInputStream());
+	
+	altPlayer = new Point();
+	
+	
+	// SeverListener will have a while(true) loop
+	ServerListener listener = new ServerListener();
+	// Note: Need setDaemon when started with a JavaFX App, or it crashes.
+	
+	Thread thread = new Thread(listener);
+	thread.setDaemon(true);
+	thread.start();
+	
+	
+	} catch (IOException e) {
+	}
+	}
+	
+	private class ServerListener extends Task<Object> {
+	
+	@Override
+	public void run()  {
+	
+	
+	while(true){
+	
+	try {
+	    altPlayer = (Point)inputFromServer.readObject();
+	
+	System.out.println("C: altPlayer: "+altPlayer.getX()+" "+altPlayer.getY());         
+	
+	} catch (ClassNotFoundException e) {
+	e.printStackTrace();
+	} catch (IOException e) {
+	e.printStackTrace();
+	}
+	
+	}
+	
+	
+	}
+	
+	@Override
+	protected Object call() throws Exception {
+	// Not using this call, but we need to override it to compile
+	return null;
+	}
+	}
+
+
+
+/////////////////////////
 }
