@@ -19,11 +19,23 @@ import views.GraphicView;
 import views.MapView;
 import views.PokemonView;
 import views.TextView;
+// from branch gfe
+import java.net.*;
+import java.io.*;
+import javafx.concurrent.Task;
+import javafx.collections.ObservableList;
+import java.awt.Point;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
+import java.util.Optional;
+import javafx.concurrent.Task;
+//import views.LoginView;
 
 public class SafariZoneMain extends Application {
 
 	private SafariZone theGame;
-
 	private MenuBar menuBar;
 	private Observer currentView;
 	private Observer textView;
@@ -31,10 +43,18 @@ public class SafariZoneMain extends Application {
 	private BorderPane window;
 	public static final int height = 400;
 	public static final int width = 600;
-
 	char keyPressed;
 	boolean surfEnabled;
 
+	//new
+//		private GameLoader gameLoader;
+		private Socket socket;
+        private ObjectOutputStream outputToServer;
+        private ObjectInputStream inputFromServer;
+        private static final String Address = "localhost";
+        public Point altPlayer;
+ //       FileManager man = new FileManager();
+        
 	public static void main(String[] args) {
 		launch(args);
 	}
@@ -58,6 +78,10 @@ public class SafariZoneMain extends Application {
 		theGame.addObserver(textView);
 		theGame.addObserver(graphicView);
 
+/***********************/
+		//gameLoader.getPokemon().addObserver(textView);
+/***********************/
+		
 		setViewTo(graphicView);
 
 		primaryStage.setScene(scene);
@@ -112,30 +136,6 @@ public class SafariZoneMain extends Application {
 			} else if (event.getCode() == KeyCode.RIGHT) {
 				theGame.movePlayer('R');//keyPressed = 'R';
 			}
-			
-//			else if (event.getCode() == KeyCode.ENTER) {
-//				int c = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();
-//				int r = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();
-//				
-//				if (!surfEnabled) {
-//					if (theGame.getMap().getBoard()[r][c-1] == '~' || theGame.getMap().getBoard()[r][c-1] == '!' || theGame.getMap().getBoard()[r][c-1] == '@' || theGame.getMap().getBoard()[r][c-1] == '#' || theGame.getMap().getBoard()[r][c-1] == '$' || theGame.getMap().getBoard()[r][c-1] == '%' || theGame.getMap().getBoard()[r][c-1] == '^' || theGame.getMap().getBoard()[r][c-1] == '&') {
-//						surfEnabled = true;
-//						theGame.movePlayer('L');
-//					}
-//					else if (theGame.getMap().getBoard()[r][c+1] == '~' || theGame.getMap().getBoard()[r][c+1] == '!' || theGame.getMap().getBoard()[r][c+1] == '@' || theGame.getMap().getBoard()[r][c+1] == '#' || theGame.getMap().getBoard()[r][c+1] == '$' || theGame.getMap().getBoard()[r][c+1] == '%' || theGame.getMap().getBoard()[r][c+1] == '^' || theGame.getMap().getBoard()[r][c+1] == '&') {
-//						surfEnabled = true;
-//						theGame.movePlayer('R');
-//					}
-//					else if (theGame.getMap().getBoard()[r+1][c] == '~' || theGame.getMap().getBoard()[r+1][c] == '!' || theGame.getMap().getBoard()[r+1][c] == '@' || theGame.getMap().getBoard()[r+1][c] == '#' || theGame.getMap().getBoard()[r+1][c] == '$' || theGame.getMap().getBoard()[r+1][c] == '%' || theGame.getMap().getBoard()[r+1][c] == '^' || theGame.getMap().getBoard()[r+1][c] == '&') {
-//						surfEnabled = true;
-//						theGame.movePlayer('D');
-//					}
-//					else if (theGame.getMap().getBoard()[r-1][c] == '~' || theGame.getMap().getBoard()[r-1][c] == '!' || theGame.getMap().getBoard()[r-1][c] == '@' || theGame.getMap().getBoard()[r-1][c] == '#' || theGame.getMap().getBoard()[r-1][c] == '$' || theGame.getMap().getBoard()[r-1][c] == '%' || theGame.getMap().getBoard()[r-1][c] == '^' || theGame.getMap().getBoard()[r-1][c] == '&') {
-//						surfEnabled = true;
-//						theGame.movePlayer('U');
-//					}
-//				}
-//			}
 		}
 
 	}
