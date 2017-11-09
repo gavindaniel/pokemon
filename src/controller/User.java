@@ -2,14 +2,14 @@ package controller;
 
 import java.io.Serializable;
 
-import model.PokemonGame;
+import model.SafariZone;
 
 public class User implements Serializable{
 
    public String name;
    public String password;
      
-   public PokemonGame pokemon;
+   public SafariZone pokemon;
         
    public User(String name, String password){
 
@@ -18,13 +18,13 @@ public class User implements Serializable{
 
    }
 
-   public void setPokemon(PokemonGame pokemon){
+   public void setPokemon(SafariZone pokemon){
 
     this.pokemon=pokemon;
 
    } 
 
-   public PokemonGame getPokemon(){
+   public SafariZone getPokemon(){
 
     return pokemon;
 

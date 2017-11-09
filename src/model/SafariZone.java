@@ -5,13 +5,13 @@ import java.util.Observable;
 import java.io.*;
 
 
-public class PokemonGame extends Observable implements Serializable{
+public class SafariZone extends Observable implements Serializable{
 
 	private Map theMap;
         private TempTrainer trainer;
         public Point tPos; 
 
-	public PokemonGame() {
+	public SafariZone() {
 
 		theMap = new Map();
                 trainer= new TempTrainer();

@@ -20,7 +20,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import model.PokemonGame;
+import model.SafariZone;
 import views.LoginView;
 import views.TextView;
 
@@ -101,7 +101,7 @@ public class PokemonMain extends Application {
 	
 	
 	public void initializeGameForTheFirstTime() {
-	    gameLoader = new GameLoader( new PokemonGame());
+	    gameLoader = new GameLoader( new SafariZone());
 	}
 	
 	
@@ -213,7 +213,7 @@ public class PokemonMain extends Application {
   
                 // new Pokemon and textView
                 gameLoader.setPokemon(null); 
-                gameLoader.setPokemon(new PokemonGame());
+                gameLoader.setPokemon(new SafariZone());
                 textView = null; 
                 textView = new TextView(gameLoader.getPokemon()); 
                 loginView = new LoginView(man,gameLoader,textView);

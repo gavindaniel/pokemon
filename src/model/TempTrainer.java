@@ -4,7 +4,7 @@ import java.util.*;
 import java.awt.Point;
 import java.io.*;
 
-import model.PokemonGame;
+import model.SafariZone;
 
 public class TempTrainer implements Serializable{
 

@@ -3,27 +3,27 @@ package controller;
 
 
 
-import model.PokemonGame;
+import model.SafariZone;
 
 
 public class GameLoader{
 
-   PokemonGame game;
+   SafariZone game;
 
 
-   public GameLoader(PokemonGame game){
+   public GameLoader(SafariZone game){
 
     this.game=game;
    }
 
 
-   public PokemonGame getPokemon(){
+   public SafariZone getPokemon(){
 
     return game;
 
    }
 
-   public void setPokemon(PokemonGame game){
+   public void setPokemon(SafariZone game){
 
     this.game=game;
 

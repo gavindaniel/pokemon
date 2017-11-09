@@ -22,6 +22,7 @@ public abstract class Pokemon {
 	private int defense;	// Determines how much damage is received
 	private int special;	// Determines strength of special moves
 	private int speed;		// Determines the order of pokemon that can act in battle
+	private String mood;		//State of pokemon during capture.
 	
 	/**
 	 * Contructor initializing name, elemental type, and commonness of pokemon.
