@@ -44,6 +44,7 @@ public class Tile {
 			type = "fence";
 			img = new Image("/images/misc/fence.bmp");
 		}
+		//d
 		else if (c == 's') {
 			type = "stairs";
 			img = new Image("/images/misc/stairs.bmp");
