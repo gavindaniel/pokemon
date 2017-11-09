@@ -12,7 +12,7 @@ public class Trainer {
 	private List<Pokemon> battlePokemonList;		//List of 3 pokemon to be used in battle
 	private Pokemon activeBattlePokemon;			//Active pokemon in battle
 //	private List<Item> itemList;
-	private Point position;		//Position on map
+	private Point currLocation;		//Position on map
 
 //	private TrainerAnimation trainerAnimation;
 
@@ -77,20 +77,6 @@ public class Trainer {
 		this.activeBattlePokemon = activeBattlePokemon;
 	}
 
-	/**
-	 * @return the position
-	 */
-	public Point getPosition() {
-		return position;
-	}
-
-	/**
-	 * @param position the position to set
-	 */
-	public void setPosition(Point position) {
-		this.position = position;
-	}
-
 //	public void move() {
 //
 //	}
@@ -111,14 +97,4 @@ public class Trainer {
 	public boolean removePokemonFromOwned(Pokemon p) {
 		return this.ownedPokemonList.remove(p);
 	}
-
-//	public boolean addItem() {
-//		return false;
-//
-//	}
-//
-//	public boolean removeItem() {
-//		return false;
-//
-//	}
 }
