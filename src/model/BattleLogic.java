@@ -17,11 +17,11 @@ public class BattleLogic extends Observable {
 	
 	private Trainer trainer1;
 	private Trainer trainer2;
-	private List<Pokemon> chosenPokemonList1;	//First trainer's 3 chosen pokemon
-	private List<Pokemon> chosenPokemonList2;	//Second trainer's 3 chosen pokemon
-	private Pokemon currPoke1;	//Pokemon starting the round
-	private Pokemon currPoke2;	//Pokemon ending the round
-	private double[][] effectLookupTable;	//Lookup table with values determining elemental attack effectiveness
+	private List<Pokemon> chosenPokemonList1;		// trainer1's 3 chosen pokemon
+	private List<Pokemon> chosenPokemonList2;		// trainer2's 3 chosen pokemon
+	private Pokemon currPoke1;	// Chosen pokemon associated with trainer1
+	private Pokemon currPoke2;	// Chosen pokemon associated with trainer2
+	private double[][] effectLookupTable;	// Lookup table with values determining elemental attack effectiveness
 	
 	public BattleLogic(Trainer trainer1, Trainer trainer2) {
 		
@@ -141,7 +141,7 @@ public class BattleLogic extends Observable {
 			
 			if (faster == 1) playRound(trainer1, trainer2);
 			else playRound(trainer2, trainer1);
-		
+			
 		}
 		
 	}
@@ -165,13 +165,11 @@ public class BattleLogic extends Observable {
 			
 			if (!pokeList.contains(chosenPoke)) {
 				pokeList.add(chosenPoke);
-				System.out.println(chosenPoke.getName() + " Successfully added.");
+				System.out.println("\n" + chosenPoke.getName() + " Successfully added.\n");
 			}
-			else System.out.println("Pokemon already chosen. Pick another one.");
+			else System.out.println("\nPokemon already chosen. Pick another one.\n");
 		}
-		
 		return pokeList;
-		
 	}
 	
 	/**
@@ -198,8 +196,6 @@ public class BattleLogic extends Observable {
 		int choice;
 		
 		while(true) {
-			
-//			while (!in.hasNextInt()) in.next();
 			
 			if (in.hasNextInt()) {
 				
@@ -256,8 +252,7 @@ public class BattleLogic extends Observable {
 			int attackChoice = chooseAttack(attackPokemon, defendPokemon);
 			applyAttack(attackPokemon, defendPokemon, attackChoice);
 		}
-//		if (choice == 2) switchPokemon(trainer);
-		
+		if (choice == 2) switchPokemon(trainer);
 	}
 	
 	private void printCurrentBattleStatus() {
@@ -349,10 +344,58 @@ public class BattleLogic extends Observable {
 		return (int) damage;
 	}
 	
+	private void switchPokemon(Trainer trainer) {
+		Pokemon currPokemon;
+		List<Pokemon> battlePokemonList;
+		boolean order = (trainer == trainer1);	//true if trainer1 is switching, false for trainer2.
+		
+		if (order) {
+			currPokemon = currPoke1;
+			battlePokemonList = chosenPokemonList1;
+		}
+		else {
+			currPokemon = currPoke2;
+			battlePokemonList = chosenPokemonList2;
+		}
+		
+		printSwitchMenu(trainer, battlePokemonList);
+		int choice = getSwitchChoice(currPokemon, battlePokemonList);
+		
+		if (order) currPoke1 = battlePokemonList.get(choice);
+		else currPoke2 = battlePokemonList.get(choice);
+	}
 	
+	private void printSwitchMenu(Trainer trainer, List<Pokemon> pokeList) {
+		
+		System.out.println(trainer.getName() + ", Select new pokemon to enter battlefield:");
+		
+			for (int i = 0; i < pokeList.size(); i++) {
+				System.out.println((i) + ": " + pokeList.get(i).getName());
+			}
+	}
 	
-	
-	
+	private int getSwitchChoice(Pokemon currPoke, List<Pokemon> pokeList) {
+		Scanner in = new Scanner(System.in);
+		int choice;
+		
+		while(true) {
+			
+			if (in.hasNextInt()) {
+				
+				choice = in.nextInt();
+				
+				if (choice >= 0 && choice < 3) {
+					if (currPoke == pokeList.get(choice)) {
+						System.out.println(currPoke.getName() + " is already selected. Choose another pokemon");
+					}
+					else break;
+				}
+				else System.out.println("Invalid Entry. Try Again");
+			}
+			else in.next();
+		}
+		return choice;
+	}
 	
 	/**
 	 * Battle is over when all battle pokemon HP are zero for either trainer.
@@ -362,17 +405,24 @@ public class BattleLogic extends Observable {
 		return areAllPokemonDrained(chosenPokemonList1) || areAllPokemonDrained(chosenPokemonList2);
 	}
 	
+	/**
+	 * Checks if all pokemon in a list are 'incapacitated' (i.e. currHP = 0)
+	 * @param chosenPokeList Pokemon list to iterate through
+	 * @return true if all pokemon are incapacitated, false otherwise
+	 */
 	private boolean areAllPokemonDrained(List<Pokemon> chosenPokeList) {
 		
 		for (Pokemon p : chosenPokeList) {
-			if(p.getCurrHP() > 0) {
+			if(!isPokemonDrained(p)) {
 				return false;
 			}
 		}
 		return true;
 	}
 	
-	
+	private boolean isPokemonDrained(Pokemon p) {
+		return (p.getCurrHP() <= 0);
+	}
 	
 	
 	/**
