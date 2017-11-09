@@ -161,7 +161,7 @@ public class BattleLogic extends Observable {
 			
 			int index = getPokeChoiceFromUser(trainer);
 			
-			chosenPoke = trainer.getPokemonList().get(index);
+			chosenPoke = trainer.getOwnedPokemonList().get(index);
 			
 			if (!pokeList.contains(chosenPoke)) {
 				pokeList.add(chosenPoke);
@@ -177,7 +177,7 @@ public class BattleLogic extends Observable {
 	 */
 	private void printPokeListChooser(Trainer trainer) {
 		
-		List<Pokemon> pokeList = trainer.getPokemonList();
+		List<Pokemon> pokeList = trainer.getOwnedPokemonList();
 		
 		System.out.println(trainer.getName() + ", Choose from the following pokemon: ");
 		
@@ -201,7 +201,7 @@ public class BattleLogic extends Observable {
 				
 				choice = in.nextInt();
 				
-				if (choice >= 0 && choice < trainer.getPokemonList().size()) break;
+				if (choice >= 0 && choice < trainer.getOwnedPokemonList().size()) break;
 				else System.out.println("Invalid Choice. Try Again");
 			}
 			else in.next();
