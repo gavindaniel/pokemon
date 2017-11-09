@@ -18,7 +18,7 @@ public class Capture {
 		
 		public void startCapture() {
 			Scanner keyboard = new Scanner(System.in);
-			System.out.println("A wild "+currentPoke.name+" appeared");
+			System.out.println("A wild "+currentPoke.getName()+" appeared");
 			while(true) {
 				System.out.println("Pick 1 to throw a rock, 2 to throw bait, 3 to throw a Safari Ball");
 				String choice=keyboard.next();
@@ -64,7 +64,7 @@ public class Capture {
 		
 		public boolean retreat(int retreatChance) {
 			
-			String currentMood=currentPoke.mood;
+			String currentMood=currentPoke.getMood();
 			int chanceToRun=currentPoke.getRunRate();
 			if(currentMood.equals("Eating")) {
 				chanceToRun=chanceToRun/2;
@@ -82,20 +82,20 @@ public class Capture {
 		
 		public void throwRock() {
 			System.out.println("You threw a rock");
-			currentPoke.mood="Angry";
+			currentPoke.setMood("Angry");
 		}
 		
 		
 		public void throwBait() {
 			System.out.println("You threw bait");
-			currentPoke.mood="Eating";	
+			currentPoke.setMood("Eating");	
 				}
 		
 		
 		public boolean throwBall(int catchChance) {
 			    currentTrain.tools.remove(SafariBall.class);			
 				System.out.println("You threw a Safari Ball");
-				String currentMood=currentPoke.mood;
+				String currentMood=currentPoke.getMood();
 				int captureRate=currentPoke.getCatchRate();
 				if(currentMood.equals("Eating")) {
 					if(captureRate*1.2<catchChance) {

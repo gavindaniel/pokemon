@@ -2,13 +2,14 @@ package model;
 
 import java.util.*;
 
+
 import items.Item;
 
 import java.awt.Point;
 import java.io.*;
 
+import model.SafariZone;
 import pokemon.Pokemon;
-
 
 public class TempTrainer implements Serializable{
 

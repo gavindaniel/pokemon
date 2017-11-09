@@ -7,11 +7,11 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
-import model.Pokemon;
+import model.SafariZone;
 
 public class TextView extends BorderPane implements Observer {
 
-	private Pokemon theGame;
+	private SafariZone theGame;
 	private GridPane gp1;
 	
 	private TextArea gameDisplay;
@@ -20,7 +20,7 @@ public class TextView extends BorderPane implements Observer {
 	private static final double width = 600;
 	
 	//constructor
-	public TextView(Pokemon PokemonGame) {
+	public TextView(SafariZone PokemonGame) {
 	  theGame = PokemonGame;
 	  gp1 = new GridPane();
 	  initializePane();
@@ -43,7 +43,7 @@ public class TextView extends BorderPane implements Observer {
 	
 	@Override
 	public void update(Observable o, Object arg) {
-		theGame = (Pokemon) o;
+		theGame = (SafariZone) o;
 	    updateTextArea();
 	}
 	

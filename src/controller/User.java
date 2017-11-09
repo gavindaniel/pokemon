@@ -1,17 +1,15 @@
 package controller;
 
-import java.util.*;
-import java.awt.Point;
-import java.io.*;
+import java.io.Serializable;
 
-import model.Pokemon;
+import model.SafariZone;
 
 public class User implements Serializable{
 
    public String name;
    public String password;
      
-   public Pokemon pokemon;
+   public SafariZone pokemon;
         
    public User(String name, String password){
 
@@ -20,13 +18,13 @@ public class User implements Serializable{
 
    }
 
-   public void setPokemon(Pokemon pokemon){
+   public void setPokemon(SafariZone pokemon){
 
     this.pokemon=pokemon;
 
    } 
 
-   public Pokemon getPokemon(){
+   public SafariZone getPokemon(){
 
     return pokemon;
 

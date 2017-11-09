@@ -1,8 +1,14 @@
 package controller;
 
+import java.awt.Point;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.Socket;
 import java.util.Observer;
 
 import javafx.application.Application;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -14,23 +20,9 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
-import java.net.*;
-import java.io.*;
-import javafx.concurrent.Task;
-import javafx.collections.ObservableList;
-import java.awt.Point;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.Socket;
-import java.util.Optional;
-import javafx.concurrent.Task;
-
-
-
-import model.Pokemon;
-import views.TextView;
+import model.SafariZone;
 import views.LoginView;
+import views.TextView;
 
 
 public class PokemonMain extends Application {
@@ -109,7 +101,7 @@ public class PokemonMain extends Application {
 	
 	
 	public void initializeGameForTheFirstTime() {
-	    gameLoader = new GameLoader( new Pokemon());
+	    gameLoader = new GameLoader( new SafariZone());
 	}
 	
 	
@@ -221,7 +213,7 @@ public class PokemonMain extends Application {
   
                 // new Pokemon and textView
                 gameLoader.setPokemon(null); 
-                gameLoader.setPokemon(new Pokemon());
+                gameLoader.setPokemon(new SafariZone());
                 textView = null; 
                 textView = new TextView(gameLoader.getPokemon()); 
                 loginView = new LoginView(man,gameLoader,textView);
