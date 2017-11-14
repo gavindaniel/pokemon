@@ -67,7 +67,7 @@ public class Map extends Observable {
 	}
 	
 	public void ReadMapFromFile() {
-		File file = new File("./src/files/zone1.txt");
+		File file = new File("./files/zone1.txt");
 		Tile temp = new Tile();
 		int r = 0;
 		int c = 0;

@@ -30,7 +30,7 @@ public class GraphicView extends BorderPane implements Observer {
 		theGame = PokemonGame;
 		canvas = new Canvas(width, height);
 		gp1 = new GridPane();
-		trainer = new Image("/images/trainer1.png");
+		trainer = new Image("file:./images/trainer1.png");
 		initializePane();
 	}
 
@@ -56,28 +56,30 @@ public class GraphicView extends BorderPane implements Observer {
 		Tile temp = new Tile();
 		Image img;
 		String path = "";
-		
-			for (int r = lowerBound; r < upperBound; r++) {
-				for (int c = lowerBound; c < upperBound; c++) {
-					try {
+
+		for (int r = lowerBound; r < upperBound; r++) {
+			for (int c = lowerBound; c < upperBound; c++) {
+				try {
 					temp = theGame.getMap().getTile(pr + r, pc + c);
 					path = temp.getImagePath();
-					img = new Image(path);
-					if (r == 0 && c == 0) gc.drawImage(trainer, (cc * imageSize), (rc * imageSize));
-					//else gc.drawImage(temp.getImage(), (cc * imageSize), (rc * imageSize));
-					else gc.drawImage(img, (cc * imageSize), (rc * imageSize));
+					img = new Image("file:." + path);
+					if (r == 0 && c == 0)
+						gc.drawImage(trainer, (cc * imageSize), (rc * imageSize));
+					// else gc.drawImage(temp.getImage(), (cc * imageSize), (rc * imageSize));
+					else
+						gc.drawImage(img, (cc * imageSize), (rc * imageSize));
 					cc++;
-					} catch (NullPointerException npe) {
-						System.out.println("(r,c) = [" + r + "," + c + "]");
-						System.out.println("Tile -> " + "[" + (pr+r) + "," + (pc+c) + "]");
-						System.out.println();
-//						System.out.println("Not found -> " + temp.getImagePath()); //idk
-					}
+				} catch (NullPointerException npe) {
+					System.out.println("(r,c) = [" + r + "," + c + "]");
+					System.out.println("Tile -> " + "[" + (pr + r) + "," + (pc + c) + "]");
+					System.out.println();
+					// System.out.println("Not found -> " + temp.getImagePath()); //idk
 				}
-				cc = 0;
-				rc++;
 			}
-		
+			cc = 0;
+			rc++;
+		}
+
 	}
 
 	@Override
