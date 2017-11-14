@@ -71,7 +71,7 @@ public class GraphicView extends BorderPane implements Observer {
 						System.out.println("(r,c) = [" + r + "," + c + "]");
 						System.out.println("Tile -> " + "[" + (pr+r) + "," + (pc+c) + "]");
 						System.out.println();
-//						System.out.println("Not found -> " + temp.getImagePath());
+//						System.out.println("Not found -> " + temp.getImagePath()); //idk
 					}
 				}
 				cc = 0;
