@@ -48,6 +48,13 @@ public class Map extends Observable {
 	public void setTiles(Tile[][] t) {
 		tiles = t;
 	}
+	public Tile getTile(int r, int c) {
+		return tiles[r][c];
+	}
+	public void setTile(Tile t, int r, int c) {
+		tiles[r][c] = t;
+	}
+	
 	public void clearPokemon() {
 		for (int r = 0; r < size; r++)
 			for (int c = 0; c < size; c++)

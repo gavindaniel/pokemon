@@ -23,7 +23,9 @@ public class GraphicView extends BorderPane implements Observer {
 	private static final double width = 600;
 	private static final double imageSize = 16; // 16px by 16px
 
-	// contructor
+	/**
+	 * @param instance of the game 'PokemonGame'
+	 */
 	public GraphicView(SafariZone PokemonGame) {
 		theGame = PokemonGame;
 		canvas = new Canvas(width, height);
@@ -52,17 +54,30 @@ public class GraphicView extends BorderPane implements Observer {
 		int upperBound = 20;
 
 		Tile temp = new Tile();
+		Image img;
+		String path = "";
 		
-		for (int r = lowerBound; r < upperBound; r++) {
-			for (int c = lowerBound; c < upperBound; c++) {
-				temp = theGame.getMap().getTiles()[pr + r][pc + c];
-				if (r == 0 && c == 0) gc.drawImage(trainer, (cc * imageSize), (rc * imageSize));
-				else gc.drawImage(temp.getImage(), (cc * imageSize), (rc * imageSize));
-				cc++;
+			for (int r = lowerBound; r < upperBound; r++) {
+				for (int c = lowerBound; c < upperBound; c++) {
+					try {
+					temp = theGame.getMap().getTile(pr + r, pc + c);
+					path = temp.getImagePath();
+					img = new Image(path);
+					if (r == 0 && c == 0) gc.drawImage(trainer, (cc * imageSize), (rc * imageSize));
+					//else gc.drawImage(temp.getImage(), (cc * imageSize), (rc * imageSize));
+					else gc.drawImage(img, (cc * imageSize), (rc * imageSize));
+					cc++;
+					} catch (NullPointerException npe) {
+						System.out.println("(r,c) = [" + r + "," + c + "]");
+						System.out.println("Tile -> " + "[" + (pr+r) + "," + (pc+c) + "]");
+						System.out.println();
+//						System.out.println("Not found -> " + temp.getImagePath());
+					}
+				}
+				cc = 0;
+				rc++;
 			}
-			cc = 0;
-			rc++;
-		}
+		
 	}
 
 	@Override
