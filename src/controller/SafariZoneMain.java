@@ -12,6 +12,7 @@ import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import map.GraphicView;
@@ -42,8 +43,10 @@ public class SafariZoneMain extends Application {
 	private SafariZone theGame;
 	private MenuBar menuBar;
 	private Observer currentView;
-	private Observer textView;
-	private Observer graphicView; // to be implemented after textView
+//	private Observer textView;
+//	private Observer graphicView; // to be implemented after textView
+	private GraphicView graphicView;
+	private TextView textView;
 	private BorderPane window;
 	public static final int height = 400;
 	public static final int width = 600;
@@ -78,7 +81,17 @@ public class SafariZoneMain extends Application {
 		window.setTop(menuBar);
 		initializeGameForTheFirstTime();
 
-		scene.setOnKeyReleased(new moveListener());
+		scene.setOnKeyPressed(new KeyPressListener());
+		scene.setOnKeyReleased(new KeyReleaseListener());
+		scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				// TODO Auto-generated method stub
+				System.out.println("x: " + event.getSceneX() + "y: " + event.getSceneY());
+			}
+			
+		});
 
 		// Setup the views
 		textView = new TextView(theGame);
@@ -153,17 +166,40 @@ public class SafariZoneMain extends Application {
 		
 	}
 
-	public class moveListener implements EventHandler<KeyEvent> {
+	public class KeyPressListener implements EventHandler<KeyEvent> {
 		@Override
 		public void handle(KeyEvent event) {
 			if (event.getCode() == KeyCode.UP) {
 				theGame.movePlayer('U');	//keyPressed = 'U';
+				graphicView.animateTrainer('U', false);
 			} else if (event.getCode() == KeyCode.DOWN) {
 				theGame.movePlayer('D');//keyPressed = 'D';
+				graphicView.animateTrainer('D', false);
 			} else if (event.getCode() == KeyCode.LEFT) {
 				theGame.movePlayer('L');//keyPressed = 'L';
+				graphicView.animateTrainer('L', false);
 			} else if (event.getCode() == KeyCode.RIGHT) {
 				theGame.movePlayer('R');//keyPressed = 'R';
+				graphicView.animateTrainer('R', false);
+			}
+		}
+
+	}
+	public class KeyReleaseListener implements EventHandler<KeyEvent> {
+		@Override
+		public void handle(KeyEvent event) {
+			if (event.getCode() == KeyCode.UP) {
+//				theGame.movePlayer('U');	//keyPressed = 'U';
+				graphicView.animateTrainer('U', true);
+			} else if (event.getCode() == KeyCode.DOWN) {
+				graphicView.animateTrainer('D', true);
+//				theGame.movePlayer('D');//keyPressed = 'D';
+			} else if (event.getCode() == KeyCode.LEFT) {
+				graphicView.animateTrainer('L', true);
+//				theGame.movePlayer('L');//keyPressed = 'L';
+			} else if (event.getCode() == KeyCode.RIGHT) {
+				graphicView.animateTrainer('R', true);
+//				theGame.movePlayer('R');//keyPressed = 'R';
 			}
 		}
 
