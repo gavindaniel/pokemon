@@ -9,6 +9,7 @@ import java.util.LinkedList;
 import org.junit.Test;
 
 import capture.Capture;
+import capture.CaptureView;
 import items.Rock;
 import items.SafariBall;
 import model.Trainer;
@@ -253,5 +254,6 @@ public class captureTest {
 		common.startCapture();
 	
 	}
+	
 
 }

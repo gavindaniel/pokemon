@@ -9,6 +9,8 @@ import java.util.Scanner;
 import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
+import capture.Capture;
+import capture.CaptureView;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import model.Trainer;
