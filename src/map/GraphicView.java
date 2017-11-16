@@ -2,7 +2,6 @@ package map;
 
 import java.util.Observable;
 import java.util.Observer;
-
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -12,7 +11,6 @@ import javafx.scene.canvas.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.util.Duration;
 import model.SafariZone;
 
@@ -21,9 +19,6 @@ public class GraphicView extends BorderPane implements Observer {
 	private SafariZone theGame;
 	private Canvas canvas;
 	private GraphicsContext gc;
-	private GridPane gp1;
-
-	private Image trainer;
 	private Image spritesheet;
 	private Timeline timeline;
 	private char direction;
@@ -32,19 +27,16 @@ public class GraphicView extends BorderPane implements Observer {
 
 	private static final double height = 400;
 	private static final double width = 600;
-	private static final double imageSize = 16; // 16px by 16px
+	private static final double imageSize = 32; // 16px by 16px
 
 	/**
 	 * @param instance of the game 'PokemonGame'
 	 */
 	public GraphicView(SafariZone PokemonGame) {
 		theGame = PokemonGame;
-		canvas = new Canvas(width, height);
-		gp1 = new GridPane();
-		trainer = new Image("file:./images/trainer1.png", false);
-		
+		canvas = new Canvas(width, height);		
 		spritesheet = new Image("file:images/sheets/trainer.png", false);
-		timeline = new Timeline(new KeyFrame(Duration.millis(180), new AnimateStarter()));
+		timeline = new Timeline(new KeyFrame(Duration.millis(200), new AnimateStarter()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		
 		initializePane();
@@ -53,24 +45,19 @@ public class GraphicView extends BorderPane implements Observer {
 	// initialize Pane for the first time
 	private void initializePane() {
 		gc = canvas.getGraphicsContext2D();
-//		gp1.setPrefHeight(height);
-//		gp1.setPrefWidth(width);
-//		gp1.getChildren().addAll(canvas);
-//		this.setCenter(gp1);
 		this.setCenter(canvas);
 		drawViewableArea();
+		gc.drawImage(spritesheet, -2, 0, 19, 25, 289, 272, 32, 44); //38, 50
 	}
 
 	public void drawViewableArea() {
 
 		int pc = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();
 		int pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();
-//		int cc = 0;
-//		int rc = 0;
 		double rc = 0;
 		double cc = 0;
-		int lowerBound = -19;
-		int upperBound = 20;
+		int lowerBound = -9; //-19
+		int upperBound = 10; //20
 
 		Tile temp = new Tile();
 		Image img;
@@ -82,26 +69,21 @@ public class GraphicView extends BorderPane implements Observer {
 					temp = theGame.getMap().getTile(pr + r, pc + c);
 					path = temp.getImagePath();
 					img = new Image("file:" + path);
-					gc.drawImage(img, (cc * imageSize), (rc * imageSize));
+					gc.drawImage(img, 0, 0, 16, 16, (cc * imageSize), (rc * imageSize), imageSize, imageSize);
 					cc++;
-//					cc += 0.5;
 				} catch (NullPointerException npe) {
 					// needed just in case some weird shit happens
 				}
 			}
 			cc = 0;
 			rc++;
-//			rc += 0.5;
 		}
 
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-//		gc.clearRect(0, 0, width, height);
 		theGame = (SafariZone) o;
-//		drawViewableArea();
 	}
 
 	
@@ -114,20 +96,19 @@ public class GraphicView extends BorderPane implements Observer {
 
 	// TODO 2: handle the TimeLine calls until tic gets too big
 	private class AnimateStarter implements EventHandler<ActionEvent> {
-//		int tic;
+
 		double sx, sy, sw, sh, dx, dy, dw, dh;
 
 		public AnimateStarter() {
 			tic = 0;
-
-			sx = 0;
+			sx = -2;
 			sy = 0;
 			sw = 19;
 			sh = 25;
-			dx = 304;//288
-			dy = 297;
-			dw = 19;
-			dh = 25;
+			dx = 289;//304
+			dy = 272;//297
+			dw = 32; //38
+			dh = 44; //50
 		}
 
 		@Override
@@ -135,12 +116,9 @@ public class GraphicView extends BorderPane implements Observer {
 		// location
 		public void handle(ActionEvent event) {
 			tic++;
-//			g2.drawImage(dirt, 0, 0);
 			drawViewableArea();
-//			System.out.println(direction + " -> " + tic);
 			
 			if (direction == 'R') {
-//				dx += 5;
 				if (tic == 1) {
 					sx = 89;
 					sy = 30;
@@ -150,7 +128,6 @@ public class GraphicView extends BorderPane implements Observer {
 				}
 			}
 			if (direction == 'L') {
-//				dx -= 5;
 				if (tic == 1) {
 					sx = 28;
 					sy = 30;
@@ -159,7 +136,6 @@ public class GraphicView extends BorderPane implements Observer {
 					sy -= 30;
 			}
 			if (direction == 'U') {
-//				dy -= 5;
 				if (tic == 1) {
 					sx = 58;
 					sy = 30;
@@ -168,7 +144,6 @@ public class GraphicView extends BorderPane implements Observer {
 					sy -= 30;
  			}
 			if (direction == 'D') {
-//				dy += 5;
 				if (tic == 1) {
 					sx = -2;
 					sy = 30;

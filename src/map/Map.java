@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.util.List;
 import java.util.Observable;
 import java.util.Scanner;
-import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javafx.scene.control.Alert;
@@ -151,6 +150,7 @@ public class Map extends Observable {
 		try {
 			if (tiles[r][c].getPokemonHere() == true) {
 				//Vector<Pokemon> temp = trainer.getPokemon();
+//				Thread.sleep(500);
 				List<Pokemon> temp = trainer.getOwnedPokemonList();
 				temp.add(new Pikachu());								// FIXME
 				trainer.setOwnedPokemonList(temp);
@@ -161,7 +161,7 @@ public class Map extends Observable {
 			}
 		} catch (ArrayIndexOutOfBoundsException aiobe) {
 			System.out.println(aiobe.toString());
-		}
+		} 
 	}
 
 	

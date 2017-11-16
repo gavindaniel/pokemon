@@ -170,17 +170,21 @@ public class SafariZoneMain extends Application {
 		@Override
 		public void handle(KeyEvent event) {
 			if (event.getCode() == KeyCode.UP) {
-				theGame.movePlayer('U');	//keyPressed = 'U';
 				graphicView.animateTrainer('U', false);
+				theGame.movePlayer('U');	//keyPressed = 'U';
+//				graphicView.animateTrainer('U', false);
 			} else if (event.getCode() == KeyCode.DOWN) {
-				theGame.movePlayer('D');//keyPressed = 'D';
 				graphicView.animateTrainer('D', false);
+				theGame.movePlayer('D');//keyPressed = 'D';
+//				graphicView.animateTrainer('D', false);
 			} else if (event.getCode() == KeyCode.LEFT) {
-				theGame.movePlayer('L');//keyPressed = 'L';
 				graphicView.animateTrainer('L', false);
+				theGame.movePlayer('L');//keyPressed = 'L';
+//				graphicView.animateTrainer('L', false);
 			} else if (event.getCode() == KeyCode.RIGHT) {
-				theGame.movePlayer('R');//keyPressed = 'R';
 				graphicView.animateTrainer('R', false);
+				theGame.movePlayer('R');//keyPressed = 'R';
+//				graphicView.animateTrainer('R', false);
 			}
 		}
 
@@ -212,7 +216,7 @@ public class SafariZoneMain extends Application {
 			// Find out the text of the JMenuItem that was just clicked
 			String text = ((MenuItem) e.getSource()).getText();
 			if (text.equals("New Game"))
-				theGame.startNewGame(); // The computer player has been set and should not change.
+				theGame.startNewGame(); 
 			else if (text.equals("Text"))
 				setViewTo(textView);
 			else if (text.equals("Graphics"))
