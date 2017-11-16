@@ -83,15 +83,15 @@ public class SafariZoneMain extends Application {
 
 		scene.setOnKeyPressed(new KeyPressListener());
 		scene.setOnKeyReleased(new KeyReleaseListener());
-		scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
-
-			@Override
-			public void handle(MouseEvent event) {
-				// TODO Auto-generated method stub
-				System.out.println("x: " + event.getSceneX() + "y: " + event.getSceneY());
-			}
-			
-		});
+//		scene.setOnMouseClicked(new EventHandler<MouseEvent>() {
+//
+//			@Override
+//			public void handle(MouseEvent event) {
+//				// TODO Auto-generated method stub
+//				System.out.println("x: " + event.getSceneX() + "y: " + event.getSceneY());
+//			}
+//			
+//		});
 
 		// Setup the views
 		textView = new TextView(theGame);

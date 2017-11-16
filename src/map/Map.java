@@ -113,7 +113,8 @@ public class Map extends Observable {
 		if (checkCanMoveHere(oldLoc, newLoc)) {
 			trainer.setCurrentLocation(newLoc);
 			trainer.setNumSteps(trainer.getNumSteps() - 1);
-			System.out.println("Steps left: " + (trainer.getNumSteps()));
+			if (trainer.getNumSteps() % 100 == 0)
+				System.out.println("Steps left: " + (trainer.getNumSteps()));
 			checkForPokemon(newLoc);
 			clearPokemon();
 			spawnPokemon();

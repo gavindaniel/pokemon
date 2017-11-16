@@ -44,11 +44,66 @@ public class GraphicView extends BorderPane implements Observer {
 		trainer = new Image("file:./images/trainer1.png", false);
 		
 		spritesheet = new Image("file:images/sheets/trainer.png", false);
-		timeline = new Timeline(new KeyFrame(Duration.millis(100), new AnimateStarter()));
+		timeline = new Timeline(new KeyFrame(Duration.millis(180), new AnimateStarter()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		
 		initializePane();
 	}
+	
+	// initialize Pane for the first time
+	private void initializePane() {
+		gc = canvas.getGraphicsContext2D();
+//		gp1.setPrefHeight(height);
+//		gp1.setPrefWidth(width);
+//		gp1.getChildren().addAll(canvas);
+//		this.setCenter(gp1);
+		this.setCenter(canvas);
+		drawViewableArea();
+	}
+
+	public void drawViewableArea() {
+
+		int pc = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();
+		int pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();
+//		int cc = 0;
+//		int rc = 0;
+		double rc = 0;
+		double cc = 0;
+		int lowerBound = -19;
+		int upperBound = 20;
+
+		Tile temp = new Tile();
+		Image img;
+		String path = "";
+
+		for (int r = lowerBound; r < upperBound; r++) {
+			for (int c = lowerBound; c < upperBound; c++) {
+				try {
+					temp = theGame.getMap().getTile(pr + r, pc + c);
+					path = temp.getImagePath();
+					img = new Image("file:" + path);
+					gc.drawImage(img, (cc * imageSize), (rc * imageSize));
+					cc++;
+//					cc += 0.5;
+				} catch (NullPointerException npe) {
+					// needed just in case some weird shit happens
+				}
+			}
+			cc = 0;
+			rc++;
+//			rc += 0.5;
+		}
+
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		// TODO Auto-generated method stub
+//		gc.clearRect(0, 0, width, height);
+		theGame = (SafariZone) o;
+//		drawViewableArea();
+	}
+
 	
 	public void animateTrainer(char c, boolean d) {
 		timeline.play();
@@ -69,7 +124,7 @@ public class GraphicView extends BorderPane implements Observer {
 			sy = 0;
 			sw = 19;
 			sh = 25;
-			dx = 288;
+			dx = 304;//288
 			dy = 297;
 			dw = 19;
 			dh = 25;
@@ -82,7 +137,7 @@ public class GraphicView extends BorderPane implements Observer {
 			tic++;
 //			g2.drawImage(dirt, 0, 0);
 			drawViewableArea();
-			System.out.println(direction + " -> " + tic);
+//			System.out.println(direction + " -> " + tic);
 			
 			if (direction == 'R') {
 //				dx += 5;
@@ -132,63 +187,4 @@ public class GraphicView extends BorderPane implements Observer {
 
 		}
 	}
-
-	// initialize Pane for the first time
-	private void initializePane() {
-		gc = canvas.getGraphicsContext2D();
-		gp1.setPrefHeight(height);
-		gp1.setPrefWidth(width);
-		gp1.getChildren().addAll(canvas);
-		this.setCenter(gp1);
-		drawViewableArea();
-	}
-
-	public void drawViewableArea() {
-
-		int pc = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();
-		int pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();
-		int cc = 0;
-		int rc = 0;
-		int lowerBound = -19;
-		int upperBound = 20;
-
-		Tile temp = new Tile();
-		Image img;
-		String path = "";
-
-		for (int r = lowerBound; r < upperBound; r++) {
-			for (int c = lowerBound; c < upperBound; c++) {
-				try {
-					temp = theGame.getMap().getTile(pr + r, pc + c);
-					path = temp.getImagePath();
-					img = new Image("file:" + path);
-					gc.drawImage(img, (cc * imageSize), (rc * imageSize));
-//					if (r == 0 && c == 0)
-//						gc.drawImage(spritesheet, 0, 0, 19, 25, (cc * imageSize), (rc * imageSize), 19, 25);
-//						gc.drawImage(trainer, (cc * imageSize), (rc * imageSize));
-					// else gc.drawImage(temp.getImage(), (cc * imageSize), (rc * imageSize));
-//					else
-//						gc.drawImage(img, (cc * imageSize), (rc * imageSize));
-					cc++;
-				} catch (NullPointerException npe) {
-					System.out.println("(r,c) = [" + r + "," + c + "]");
-					System.out.println("Tile -> " + "[" + (pr + r) + "," + (pc + c) + "]");
-					System.out.println();
-					// System.out.println("Not found -> " + temp.getImagePath()); //idk
-				}
-			}
-			cc = 0;
-			rc++;
-		}
-
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
-//		gc.clearRect(0, 0, width, height);
-		theGame = (SafariZone) o;
-		drawViewableArea();
-	}
-
 }
