@@ -3,6 +3,7 @@ package model;
 import java.awt.Point;
 import java.util.Observable;
 
+import controller.Settings;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import map.Map;
@@ -10,9 +11,11 @@ import map.Map;
 public class SafariZone extends Observable {
 
 	private Map theMap;
-
+	private Settings settings; 
+	
 	public SafariZone() {
 		theMap = new Map();
+		settings = new Settings();
 		startNewGame();
 	}
 
@@ -30,6 +33,10 @@ public class SafariZone extends Observable {
 		return theMap;
 	}
 
+	public Settings getSettings() {
+		return settings;
+	}
+	
 	// Move Player
 	public void movePlayer(char direction) {
 		if (!gameOver()) {

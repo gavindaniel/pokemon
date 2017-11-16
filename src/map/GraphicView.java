@@ -25,18 +25,22 @@ public class GraphicView extends BorderPane implements Observer {
 	private boolean done;
 	private int tic;
 
-	private static final double height = 400;
-	private static final double width = 600;
-	private static final double imageSize = 32; // 16px by 16px
-
+	private static double displaySize;	// 32px by 32px
+	private static double imageSize;		// 16px by 16px
+	private static int lowerBound, upperBound;	//	bounds for display
 	/**
 	 * @param instance of the game 'PokemonGame'
 	 */
 	public GraphicView(SafariZone PokemonGame) {
 		theGame = PokemonGame;
-		canvas = new Canvas(width, height);		
+		lowerBound = theGame.getSettings().getLowerBound("graphic");
+		upperBound = theGame.getSettings().getUpperBound("graphic");
+		imageSize = theGame.getSettings().getImageSize("original");
+		displaySize = theGame.getSettings().getImageSize("display");
+		canvas = new Canvas(theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene"));		
 		spritesheet = new Image("file:images/sheets/trainer.png", false);
 		timeline = new Timeline(new KeyFrame(Duration.millis(200), new AnimateStarter()));
+//		timeline = new Timeline(new KeyFrame(Duration.millis(500), new AnimateStarter2()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		
 		initializePane();
@@ -56,20 +60,18 @@ public class GraphicView extends BorderPane implements Observer {
 		int pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();
 		double rc = 0;
 		double cc = 0;
-		int lowerBound = -9; //-19
-		int upperBound = 10; //20
 
 		Tile temp = new Tile();
 		Image img;
 		String path = "";
 
-		for (int r = lowerBound; r < upperBound; r++) {
-			for (int c = lowerBound; c < upperBound; c++) {
+		for (int r = lowerBound; r <= upperBound; r++) {
+			for (int c = lowerBound; c <= upperBound; c++) {
 				try {
 					temp = theGame.getMap().getTile(pr + r, pc + c);
 					path = temp.getImagePath();
 					img = new Image("file:" + path);
-					gc.drawImage(img, 0, 0, 16, 16, (cc * imageSize), (rc * imageSize), imageSize, imageSize);
+					gc.drawImage(img, 0, 0, imageSize, imageSize, (cc * displaySize), (rc * displaySize), displaySize, displaySize);
 					cc++;
 				} catch (NullPointerException npe) {
 					// needed just in case some weird shit happens
@@ -86,6 +88,16 @@ public class GraphicView extends BorderPane implements Observer {
 		theGame = (SafariZone) o;
 	}
 
+	
+	/*
+	 * When the player hits 'M' in-game a sub-menu will appear 
+	 * */
+	public void showInGameMenu() {
+		
+	}
+	
+	
+	// Animation related funcitons
 	
 	public void animateTrainer(char c, boolean d) {
 		timeline.play();
@@ -162,4 +174,149 @@ public class GraphicView extends BorderPane implements Observer {
 
 		}
 	}
+	
+	
+	public void animateMap(char c, boolean d) {
+		timeline.play();
+		direction = c;
+		done = d;
+	}
+
+
+	// TODO 2: handle the TimeLine calls until tic gets too big
+	private class AnimateStarter2 implements EventHandler<ActionEvent> {
+
+		double sx, sy, sw, sh, dx, dy, dw, dh;
+		Tile temp = new Tile();
+		Image img;
+		String path = "";
+		int pc = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();
+		int pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();
+		double rc = 0;
+		double cc = 0;
+		int xShift, yShift;
+		
+		public AnimateStarter2() {
+			tic = 0;
+			sx = -2;
+			sy = 0;
+			sw = 19;
+			sh = 25;
+			dx = 289;//304
+			dy = 272;//297
+			dw = 32; //38
+			dh = 44; //50
+			
+			xShift = 0;
+			yShift = 0;
+		}
+
+		@Override
+		// This handle method gets called every 100 ms to draw the ship on a new
+		// location
+		public void handle(ActionEvent event) {
+			tic++;
+	//		drawViewableArea();
+			
+			if (tic == 1) {
+			pc = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();
+			pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();
+			}
+			
+			if (direction == 'R') {
+	//			xShift += 16;
+				yShift = 0;
+				if (tic == 1) {
+					sx = 89;
+					sy = 30;
+					xShift = 16;
+	//				yShift = 0;
+				}
+				if (tic == 2) {
+					sy -= 30;
+					xShift = 32;
+	//				yShift = 0;
+				}
+			}
+			if (direction == 'L') {
+				xShift -= 16;
+				yShift = 0;
+				if (tic == 1) {
+					sx = 28;
+					sy = 30;
+	//				xShift = -16;
+	//				yShift = 0;
+				}
+				if (tic == 2) {
+					sy -= 30;
+	//				xShift = 0;
+	//				yShift = 0;
+				}
+			}
+			if (direction == 'U') {
+				xShift = 0;
+				yShift -= 16;
+				if (tic == 1) {
+					sx = 58;
+					sy = 30;
+	//				xShift = 0;
+	//				yShift = -16;
+				}
+				if (tic == 2) {
+					sy -= 30;
+	//				xShift = 0;
+	//				yShift = 0;
+				}
+ 			}
+			if (direction == 'D') {
+				xShift = 0;
+				yShift += 16;
+				if (tic == 1) {
+					sx = -2;
+					sy = 30;
+	//				xShift = 0;
+	//				yShift = 16;
+				}
+				if (tic == 2) { 
+					sy -= 30;
+	//				xShift = 0;
+	//				yShift = 0;
+				}
+			}
+			
+	
+			System.out.println("x-shift: " + xShift + "\ty-shift: " + yShift);
+			
+
+			for (int r = lowerBound; r <= upperBound; r++) {
+				for (int c = lowerBound; c <= upperBound; c++) {
+					try {
+						temp = theGame.getMap().getTile(pr + r, pc + c);
+						path = temp.getImagePath();
+						img = new Image("file:" + path);
+						gc.drawImage(img, 0, 0, imageSize, imageSize, (cc * displaySize) + xShift, (rc * displaySize) + yShift, displaySize, displaySize);
+						cc++;
+					} catch (NullPointerException npe) {
+						// needed just in case some weird shit happens
+					}
+				}
+				cc = 0;
+				rc++;
+			}
+			
+			
+			
+			gc.drawImage(spritesheet, sx, sy, sw, sh, dx, dy, dw, dh);
+				
+			if (tic > 1) {
+				tic = 0;
+				if (done)
+					timeline.stop();
+			}
+			
+
+		}
+	}
+	
+	
 }

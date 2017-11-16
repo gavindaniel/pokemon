@@ -13,18 +13,16 @@ public class TextView extends BorderPane implements Observer {
 
 	private SafariZone theGame;
 	private GridPane gp1;
-
 	private TextArea gameDisplay;
 
-	private static final double height = 400;
-	private static final double width = 600;
-	
-	private static final int lb = -4;	// lower bound of viewable area 
-	private static final int ub = 5;		// upper bound of viewable area
+	private static int lowerBound;	// lower bound of viewable area 
+	private static int upperBound;	// upper bound of viewable area
 
 	// constructor
 	public TextView(SafariZone PokemonGame) {
 		theGame = PokemonGame;
+		lowerBound = theGame.getSettings().getLowerBound("text");
+		upperBound = theGame.getSettings().getUpperBound("text");
 		gp1 = new GridPane();
 		initializePane();
 	}
@@ -33,10 +31,10 @@ public class TextView extends BorderPane implements Observer {
 		gameDisplay = new TextArea();
 		gameDisplay.setFont(new Font("Courier", 34));
 		gameDisplay.setEditable(false);
-		gp1.setPrefWidth(width);
-		gp1.setPrefHeight(height);
-		gameDisplay.setPrefWidth(width);
-		gameDisplay.setPrefHeight(height);
+		gp1.setPrefWidth(theGame.getSettings().getWidth("map"));
+		gp1.setPrefHeight(theGame.getSettings().getHeight("map"));
+		gameDisplay.setPrefWidth(theGame.getSettings().getWidth("map"));
+		gameDisplay.setPrefHeight(theGame.getSettings().getHeight("map"));
 		gameDisplay.setStyle("-fx-font-alignment: center");
 
 		gp1.getChildren().addAll(gameDisplay);
@@ -56,8 +54,8 @@ public class TextView extends BorderPane implements Observer {
 		int pc = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();
 		int pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();
 
-		for (int r = lb; r < ub; r++) {
-			for (int c = lb; c < ub; c++) {
+		for (int r = lowerBound; r <= upperBound; r++) {
+			for (int c = lowerBound; c <= upperBound; c++) {
 				if (r == 0 && c == 0) {
 					result += " P ";
 				} else {

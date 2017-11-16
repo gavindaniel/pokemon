@@ -7,17 +7,14 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
+
 import model.SafariZone;
 
 public class MapView extends BorderPane implements Observer {
 
 	private SafariZone theGame;
 	private GridPane gp1;
-
 	private TextArea gameDisplay;
-
-	private static final double height = 650;
-	private static final double width = 1100;
 
 	// constructor
 	public MapView(SafariZone PokemonGame) {
@@ -30,10 +27,10 @@ public class MapView extends BorderPane implements Observer {
 		gameDisplay = new TextArea();
 		gameDisplay.setFont(new Font("Courier", 12));
 		gameDisplay.setEditable(false);
-		gp1.setPrefWidth(width);
-		gp1.setPrefHeight(height);
-		gameDisplay.setPrefWidth(width);
-		gameDisplay.setPrefHeight(height);
+		gp1.setPrefWidth(theGame.getSettings().getWidth("map"));
+		gp1.setPrefHeight(theGame.getSettings().getHeight("map"));
+		gameDisplay.setPrefWidth(theGame.getSettings().getWidth("map"));
+		gameDisplay.setPrefHeight(theGame.getSettings().getHeight("map"));
 		gameDisplay.setStyle("-fx-font-alignment: center");
 
 		gp1.getChildren().addAll(gameDisplay);

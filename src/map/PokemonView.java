@@ -16,9 +16,6 @@ public class PokemonView extends BorderPane implements Observer {
 
 	private TextArea gameDisplay;
 
-	private static final double height = 650;
-	private static final double width = 1100;
-
 	// constructor
 	public PokemonView(SafariZone PokemonGame) {
 		theGame = PokemonGame;
@@ -30,10 +27,10 @@ public class PokemonView extends BorderPane implements Observer {
 		gameDisplay = new TextArea();
 		gameDisplay.setFont(new Font("Courier", 12));
 		gameDisplay.setEditable(false);
-		gp1.setPrefWidth(width);
-		gp1.setPrefHeight(height);
-		gameDisplay.setPrefWidth(width);
-		gameDisplay.setPrefHeight(height);
+		gp1.setPrefWidth(theGame.getSettings().getWidth("map"));
+		gp1.setPrefHeight(theGame.getSettings().getHeight("map"));
+		gameDisplay.setPrefWidth(theGame.getSettings().getWidth("map"));
+		gameDisplay.setPrefHeight(theGame.getSettings().getHeight("map"));
 		gameDisplay.setStyle("-fx-font-alignment: center");
 
 		gp1.getChildren().addAll(gameDisplay);
