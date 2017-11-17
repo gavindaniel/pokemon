@@ -1,4 +1,4 @@
-package map;
+package model;
 
 import java.awt.Point;
 import java.io.File;
@@ -10,7 +10,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import model.Trainer;
+import map.Tile;
 import pokemon.Pikachu;
 import pokemon.Pokemon;
 

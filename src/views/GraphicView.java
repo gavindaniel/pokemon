@@ -1,4 +1,4 @@
-package map;
+package views;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -12,6 +12,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
+import map.Tile;
 import model.SafariZone;
 
 public class GraphicView extends BorderPane implements Observer {
@@ -80,7 +81,10 @@ public class GraphicView extends BorderPane implements Observer {
 			cc = 0;
 			rc++;
 		}
-
+	}
+	
+	public void drawTrainer() {
+		gc.drawImage(spritesheet, -2, 0, 19, 25, 289, 272, 32, 44);
 	}
 
 	@Override

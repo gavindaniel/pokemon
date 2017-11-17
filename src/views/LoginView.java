@@ -1,4 +1,4 @@
-package menus;
+package views;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -22,7 +22,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
-import map.TextView;
 import network.User;
 import persistence.FileManager;
 import persistence.GameLoader;
