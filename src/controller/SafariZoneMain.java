@@ -333,6 +333,7 @@ public class SafariZoneMain extends Application {
 			if (event.getSource()==newGameButton) {
 				theGame.startNewGame();
 				graphicView.drawViewableArea();
+				graphicView.resetTrainer();
 				graphicView.drawTrainer();
 				setViewTo(graphicView);
 				stage.setScene(scene2);

@@ -45,14 +45,7 @@ public class GraphicView extends Canvas implements Observer {
 		timeline = new Timeline(new KeyFrame(Duration.millis(200), new AnimateStarter()));
 //		timeline = new Timeline(new KeyFrame(Duration.millis(500), new AnimateStarter2()));
 		timeline.setCycleCount(Animation.INDEFINITE);
-		sx = theGame.getSettings().getX("sprite");
-		sy = theGame.getSettings().getY("sprite");
-		sw = theGame.getSettings().getWidth("source");
-		sh = theGame.getSettings().getHeight("source");
-		dx = theGame.getSettings().getX("trainer");
-		dy = theGame.getSettings().getY("trainer");
-		dw = theGame.getSettings().getWidth("display");
-		dh = theGame.getSettings().getHeight("display");
+		resetTrainer();
 		initializePane();
 	}
 	
@@ -62,7 +55,7 @@ public class GraphicView extends Canvas implements Observer {
 		drawViewableArea();
 		drawTrainer();
 	}
-
+	
 	public void drawViewableArea() {
 
 		int pc = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();
@@ -89,6 +82,17 @@ public class GraphicView extends Canvas implements Observer {
 			cc = 0;
 			rc++;
 		}
+	}
+	
+	public void resetTrainer() {
+		sx = theGame.getSettings().getX("sprite");
+		sy = theGame.getSettings().getY("sprite");
+		sw = theGame.getSettings().getWidth("source");
+		sh = theGame.getSettings().getHeight("source");
+		dx = theGame.getSettings().getX("trainer");
+		dy = theGame.getSettings().getY("trainer");
+		dw = theGame.getSettings().getWidth("display");
+		dh = theGame.getSettings().getHeight("display");
 	}
 	
 	public void drawTrainer() {
