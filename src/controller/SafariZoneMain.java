@@ -12,6 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -22,7 +23,6 @@ import model.SafariZone;
 import views.GraphicView;
 import views.LoginView;
 import views.MapView;
-import views.PokemonView;
 import views.TextView;
 
 /**************************************************************/
@@ -45,7 +45,7 @@ public class SafariZoneMain extends Application {
 
 	private Stage stage;
 	private Scene scene1, scene2, scene3;
-	private BorderPane window1, window2;
+	private BorderPane window1, window2, window3;
 	
 	private SafariZone theGame;
 	private MenuBar menuBar;
@@ -86,6 +86,7 @@ public class SafariZoneMain extends Application {
 		
 		setupScenes();
 		setupWindow1();
+		setupWindow3();
 		setupMenus();
 		
 		window2.setTop(menuBar);
@@ -94,6 +95,7 @@ public class SafariZoneMain extends Application {
 		scene2.setOnKeyPressed(new KeyPressListener());
 		scene2.setOnKeyReleased(new KeyReleaseListener());
 
+		scene3.setOnMouseClicked(new MouseClickListener());
 		// Setup the views
 		textView = new TextView(theGame);
 		graphicView = new GraphicView(theGame);
@@ -114,7 +116,7 @@ public class SafariZoneMain extends Application {
 		
 		setViewTo(graphicView); //setViewTo(graphicView);
 
-		primaryStage.setScene(scene1);
+		primaryStage.setScene(scene3);
 		primaryStage.show();
 
 	}
@@ -132,9 +134,10 @@ public class SafariZoneMain extends Application {
 	private void setupScenes() {
 		window1 = new BorderPane(); // Main Menu
 		window2 = new BorderPane();	// Game 
+		window3 = new BorderPane(); // Start screen
 		scene1 = new Scene(window1, settings.getWidth("scene"), settings.getHeight("scene"));
 		scene2 = new Scene(window2, settings.getWidth("scene"), settings.getHeight("scene"));
-//		scene3 = new Scene(mapView, settings.getWidth("map"), settings.getHeight("map"));
+		scene3 = new Scene(window3, settings.getWidth("scene"), settings.getHeight("scene"));
 	}
 	private void setupWindow1() {
 		newGameButton = new Button("New Game");
@@ -150,6 +153,12 @@ public class SafariZoneMain extends Application {
 		gp.setVgap(10);
 		gp.getChildren().addAll(newGameButton, loadGameButton);
 		window1.setCenter(gp);
+	}
+	private void setupWindow3() {
+		Image startScreen = new Image("file:images/misc/start-screen.jpg");
+		Canvas canvas = new Canvas(settings.getWidth("scene"), settings.getHeight("scene"));
+		canvas.getGraphicsContext2D().drawImage(startScreen, 0, 0);
+		window3.setCenter(canvas);
 	}
 	private void setupMenus() {
 		// game menu options
@@ -259,6 +268,15 @@ public class SafariZoneMain extends Application {
 
 	}
 
+	private class MouseClickListener implements EventHandler<MouseEvent> {
+
+		@Override
+		public void handle(MouseEvent event) {
+			// TODO Auto-generated method stub
+			stage.setScene(scene1);
+		}
+		
+	}
 	private class MenuItemListener implements EventHandler<ActionEvent> {
 
 		@Override
@@ -274,15 +292,13 @@ public class SafariZoneMain extends Application {
 			else if (text.equals("Map")) {
 //				stage.setScene(scene3);			
 				Stage stage = new Stage();
-				MapView mv = new MapView(theGame);
 				stage.setTitle("Map View");
-				stage.setScene(new Scene(mv, theGame.getSettings().getWidth("map"), theGame.getSettings().getHeight("map")));
+				stage.setScene(new Scene(mapView, theGame.getSettings().getWidth("map"), theGame.getSettings().getHeight("map")));
 				stage.show();
 			} else if (text.equals("Pokemon")) {
 				Stage stage = new Stage();
-				PokemonView pv = new PokemonView(theGame);
 				stage.setTitle("Pokemon View");
-				stage.setScene(new Scene(pv, theGame.getSettings().getWidth("map"), theGame.getSettings().getHeight("map")));
+				stage.setScene(new Scene(new BorderPane(), theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene")));
 				stage.show();
 			} 
 			else if (text.equals("Exit")) {

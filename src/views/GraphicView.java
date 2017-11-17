@@ -28,6 +28,8 @@ public class GraphicView extends Canvas implements Observer {
 	private static double imageSize, displaySize;	//  16px by 16px	 ,  32px by 32px 
 	private static int lowerBound, upperBound;	//	bounds for display
 	
+	private double sx, sy, sw, sh, dx, dy, dw, dh;
+	
 	/**
 	 * @param instance of the game 'PokemonGame'
 	 */
@@ -43,7 +45,14 @@ public class GraphicView extends Canvas implements Observer {
 		timeline = new Timeline(new KeyFrame(Duration.millis(200), new AnimateStarter()));
 //		timeline = new Timeline(new KeyFrame(Duration.millis(500), new AnimateStarter2()));
 		timeline.setCycleCount(Animation.INDEFINITE);
-		
+		sx = theGame.getSettings().getX("sprite");
+		sy = theGame.getSettings().getY("sprite");
+		sw = theGame.getSettings().getWidth("source");
+		sh = theGame.getSettings().getHeight("source");
+		dx = theGame.getSettings().getX("trainer");
+		dy = theGame.getSettings().getY("trainer");
+		dw = theGame.getSettings().getWidth("display");
+		dh = theGame.getSettings().getHeight("display");
 		initializePane();
 	}
 	
@@ -51,7 +60,7 @@ public class GraphicView extends Canvas implements Observer {
 	private void initializePane() {
 		gc = this.getGraphicsContext2D();
 		drawViewableArea();
-		gc.drawImage(spritesheet, -2, 0, 19, 25, 289, 272, 32, 44); //38, 50
+		drawTrainer();
 	}
 
 	public void drawViewableArea() {
@@ -83,7 +92,7 @@ public class GraphicView extends Canvas implements Observer {
 	}
 	
 	public void drawTrainer() {
-		gc.drawImage(spritesheet, -2, 0, 19, 25, 289, 272, 32, 44);
+		gc.drawImage(spritesheet, sx, sy, sw, sh, dx, dy, dw, dh);
 	}
 
 	@Override
@@ -112,18 +121,10 @@ public class GraphicView extends Canvas implements Observer {
 	// TODO 2: handle the TimeLine calls until tic gets too big
 	private class AnimateStarter implements EventHandler<ActionEvent> {
 
-		double sx, sy, sw, sh, dx, dy, dw, dh;
+//		double sx, sy, sw, sh, dx, dy, dw, dh;
 
 		public AnimateStarter() {
 			tic = 0;
-			sx = -2;
-			sy = 0;
-			sw = 19;
-			sh = 25;
-			dx = 289;//304
-			dy = 272;//297
-			dw = 32; //38
-			dh = 44; //50
 		}
 
 		@Override
@@ -166,7 +167,8 @@ public class GraphicView extends Canvas implements Observer {
 				if (tic == 2) 
 					sy -= 30;
 			}
-			gc.drawImage(spritesheet, sx, sy, sw, sh, dx, dy, dw, dh);
+//			gc.drawImage(spritesheet, sx, sy, sw, sh, dx, dy, dw, dh);
+			drawTrainer();
 				
 			if (tic > 1) {
 				tic = 0;
