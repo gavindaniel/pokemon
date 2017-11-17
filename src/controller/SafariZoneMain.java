@@ -58,6 +58,7 @@ public class SafariZoneMain extends Application {
 	char keyPressed;
 	
 	private Button newGameButton;
+	private Button loadGameButton;
 
 /***************************************/
 //		private GameLoader gameLoader;
@@ -138,13 +139,16 @@ public class SafariZoneMain extends Application {
 	private void setupWindow1() {
 		newGameButton = new Button("New Game");
 		newGameButton.setOnAction(new ButtonListener());
+		loadGameButton = new Button("Load Game...");
+		loadGameButton.setOnAction(new ButtonListener());
 		GridPane gp = new GridPane();
 		gp.setPrefHeight(settings.getHeight("scene"));
 		gp.setPrefWidth(settings.getWidth("scene"));
 		GridPane.setConstraints(newGameButton, 1, 1);
+		GridPane.setConstraints(loadGameButton, 1, 2);
 		gp.setHgap(10);
 		gp.setVgap(10);
-		gp.getChildren().addAll(newGameButton);
+		gp.getChildren().addAll(newGameButton, loadGameButton);
 		window1.setCenter(gp);
 	}
 	private void setupMenus() {
@@ -315,11 +319,16 @@ public class SafariZoneMain extends Application {
 		@Override
 		public void handle(ActionEvent event) {
 			// TODO Auto-generated method stub
-			if (event.getSource()==newGameButton)
+			if (event.getSource()==newGameButton) {
 				theGame.startNewGame();
 				graphicView.drawViewableArea();
 				graphicView.drawTrainer();
 				stage.setScene(scene2);
+			}
+			else if (event.getSource()==loadGameButton) {
+				// TODO
+				System.out.println("loading..");
+			}
 		}
 		
 	}

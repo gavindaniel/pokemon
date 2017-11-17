@@ -11,8 +11,8 @@ public class Settings {
 	public Settings() {
 		scene_height = 400;				//	the display height of the Game View
 		scene_width = 600;				//	the display width of the Game View
-		map_height = 650;				//	the display height of the entire Map View
-		map_width = 1100;				//	the display width of the entire Map View
+		map_height = 510;				//	the display height of the entire Map View
+		map_width = 1110;				//	the display width of the entire Map View
 		original_image_size = 16;		//	original background image size:	16px by 16px
 		image_display_size = 32;			//	desired display background image size:	32px by 32px
 		graphic_display_lowerbound = -9;	//	prints 9 images to the left of the trainer in the viewable area

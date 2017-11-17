@@ -171,9 +171,9 @@ public class Map extends Observable {
 	 */
 	public String drawGameMap() {
 		String result = "";
-
-		for (int r = 0; r < size; r++) {
-			for (int c = 0; c < size; c++)
+		int treeline = 28;
+		for (int r = treeline; r < (size-110); r++) {
+			for (int c = treeline; c < (size-85); c++)
 				if (r == trainer.getCurrentLocation().getY() && c == trainer.getCurrentLocation().getX())
 					result += " P ";
 				else

@@ -15,10 +15,9 @@ import javafx.util.Duration;
 import map.Tile;
 import model.SafariZone;
 
-public class GraphicView extends BorderPane implements Observer {
+public class GraphicView extends Canvas implements Observer {
 
 	private SafariZone theGame;
-	private Canvas canvas;
 	private GraphicsContext gc;
 	private Image spritesheet;
 	private Timeline timeline;
@@ -26,9 +25,9 @@ public class GraphicView extends BorderPane implements Observer {
 	private boolean done;
 	private int tic;
 
-	private static double displaySize;	// 32px by 32px
-	private static double imageSize;		// 16px by 16px
+	private static double imageSize, displaySize;	//  16px by 16px	 ,  32px by 32px 
 	private static int lowerBound, upperBound;	//	bounds for display
+	
 	/**
 	 * @param instance of the game 'PokemonGame'
 	 */
@@ -38,7 +37,8 @@ public class GraphicView extends BorderPane implements Observer {
 		upperBound = theGame.getSettings().getUpperBound("graphic");
 		imageSize = theGame.getSettings().getImageSize("original");
 		displaySize = theGame.getSettings().getImageSize("display");
-		canvas = new Canvas(theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene"));		
+		this.setWidth(theGame.getSettings().getWidth("scene"));
+		this.setHeight(theGame.getSettings().getHeight("scene"));	
 		spritesheet = new Image("file:images/sheets/trainer.png", false);
 		timeline = new Timeline(new KeyFrame(Duration.millis(200), new AnimateStarter()));
 //		timeline = new Timeline(new KeyFrame(Duration.millis(500), new AnimateStarter2()));
@@ -49,8 +49,7 @@ public class GraphicView extends BorderPane implements Observer {
 	
 	// initialize Pane for the first time
 	private void initializePane() {
-		gc = canvas.getGraphicsContext2D();
-		this.setCenter(canvas);
+		gc = this.getGraphicsContext2D();
 		drawViewableArea();
 		gc.drawImage(spritesheet, -2, 0, 19, 25, 289, 272, 32, 44); //38, 50
 	}

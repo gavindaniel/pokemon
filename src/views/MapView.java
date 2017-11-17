@@ -25,7 +25,7 @@ public class MapView extends BorderPane implements Observer {
 
 	private void initializePane() {
 		gameDisplay = new TextArea();
-		gameDisplay.setFont(new Font("Courier", 12));
+		gameDisplay.setFont(new Font("Courier", 7));
 		gameDisplay.setEditable(false);
 		gp1.setPrefWidth(theGame.getSettings().getWidth("map"));
 		gp1.setPrefHeight(theGame.getSettings().getHeight("map"));
