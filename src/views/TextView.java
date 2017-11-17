@@ -29,7 +29,7 @@ public class TextView extends BorderPane implements Observer {
 
 	private void initializePane() {
 		gameDisplay = new TextArea();
-		gameDisplay.setFont(new Font("Courier", 34));
+		gameDisplay.setFont(new Font("Courier", 28));
 		gameDisplay.setEditable(false);
 		gp1.setPrefWidth(theGame.getSettings().getWidth("map"));
 		gp1.setPrefHeight(theGame.getSettings().getHeight("map"));
@@ -54,7 +54,7 @@ public class TextView extends BorderPane implements Observer {
 		int pc = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();
 		int pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();
 
-		for (int r = lowerBound; r <= upperBound; r++) {
+		for (int r = lowerBound; r <= upperBound+1; r++) {
 			for (int c = lowerBound; c <= upperBound; c++) {
 				if (r == 0 && c == 0) {
 					result += " P ";
@@ -66,7 +66,7 @@ public class TextView extends BorderPane implements Observer {
 					}
 				}
 			}
-			if (r < 4)
+			if (r < upperBound+1)
 				result += "\n";
 		}
 

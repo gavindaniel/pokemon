@@ -99,18 +99,9 @@ public class GraphicView extends Canvas implements Observer {
 	public void update(Observable o, Object arg) {
 		theGame = (SafariZone) o;
 	}
-
-	
-	/*
-	 * When the player hits 'M' in-game a sub-menu will appear 
-	 * */
-	public void showInGameMenu() {
-		
-	}
 	
 	
-	// Animation related funcitons
-	
+	// Animation related functions
 	public void animateTrainer(char c, boolean d) {
 		timeline.play();
 		direction = c;

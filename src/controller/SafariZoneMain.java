@@ -141,8 +141,10 @@ public class SafariZoneMain extends Application {
 	}
 	private void setupWindow1() {
 		newGameButton = new Button("New Game");
+		newGameButton.setMinSize(300, 100);
 		newGameButton.setOnAction(new ButtonListener());
 		loadGameButton = new Button("Load Game...");
+		loadGameButton.setMinSize(300, 100);
 		loadGameButton.setOnAction(new ButtonListener());
 		GridPane gp = new GridPane();
 		gp.setPrefHeight(settings.getHeight("scene"));
@@ -179,8 +181,6 @@ public class SafariZoneMain extends Application {
 		// add the options
 		Menu views = new Menu ("View");
 		views.getItems().addAll(textV, graphicV);
-		
-//		MenuItem newGame = new MenuItem("New Game");
 		
 /***************************************/
 //		Menu user = new Menu("User");
@@ -269,19 +269,15 @@ public class SafariZoneMain extends Application {
 	}
 
 	private class MouseClickListener implements EventHandler<MouseEvent> {
-
 		@Override
 		public void handle(MouseEvent event) {
-			// TODO Auto-generated method stub
 			stage.setScene(scene1);
 		}
 		
 	}
 	private class MenuItemListener implements EventHandler<ActionEvent> {
-
 		@Override
 		public void handle(ActionEvent e) {
-			// Find out the text of the JMenuItem that was just clicked
 			String text = ((MenuItem) e.getSource()).getText();
 			if (text.equals("New Game"))
 				theGame.startNewGame(); 
@@ -303,8 +299,7 @@ public class SafariZoneMain extends Application {
 			} 
 			else if (text.equals("Exit")) {
 				stage.setScene(scene1);
-			}
-		
+			}	
 /**************************************************************/
 //			else if (text.equals("Sign In")){
 //		  		setViewTo(loginView);
@@ -339,6 +334,7 @@ public class SafariZoneMain extends Application {
 				theGame.startNewGame();
 				graphicView.drawViewableArea();
 				graphicView.drawTrainer();
+				setViewTo(graphicView);
 				stage.setScene(scene2);
 			}
 			else if (event.getSource()==loadGameButton) {

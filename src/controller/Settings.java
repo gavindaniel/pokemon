@@ -23,10 +23,10 @@ public class Settings {
 		trainer_source_height = 25;			//	height of the source image of the trainer on the spritesheet
 		trainer_display_width = 32;			// 	display width of the trainer image in graphic view
 		trainer_display_height = 44;			//	display height of the trainer image in graphic view
-		graphic_display_lowerbound = -12;	//	prints 9 images to the left of the trainer in the viewable area
-		graphic_display_upperbound = 12;		//	prints 9 images to the right of the trainer in the viewable area
-		text_display_lowerbound = -4;		//	prints 4 chars to the left of the trainer in the viewable area
-		text_display_upperbound = 4;			//	prints 4 chars to the right of the trainer in the viewable area 
+		graphic_display_lowerbound = -12;	//	prints 12 images to the left of the trainer in the viewable area
+		graphic_display_upperbound = 12;		//	prints 12 images to the right of the trainer in the viewable area
+		text_display_lowerbound = -7;		//	prints 4 chars to the left of the trainer in the viewable area
+		text_display_upperbound = 7;			//	prints 4 chars to the right of the trainer in the viewable area 
 		trainer_x = 385;						//	trainer x location to be displayed in the game
 		trainer_y = 368;						//	trainer y location to be displayed in the game
 		sprite_x = -2;						//	trainer x location on the sprite sheet
