@@ -25,9 +25,15 @@ public class GraphicView extends Canvas implements Observer {
 	private int tic;
 
 	private static double imageSize, displaySize;	//  16px by 16px	 ,  32px by 32px 
-	private static int lowerBound, upperBound;	//	bounds for display
+	private static int lowerBound, upperBound;		//	bounds for display
 	
 	private double sx, sy, sw, sh, dx, dy, dw, dh;
+	
+	
+	@Override
+	public void update(Observable o, Object arg) {
+		theGame = (SafariZone) o;
+	}
 	
 	/**
 	 * @param instance of the game 'PokemonGame'
@@ -59,8 +65,7 @@ public class GraphicView extends Canvas implements Observer {
 
 		int pc = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();
 		int pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();
-		double rc = 0;
-		double cc = 0;
+		double rc = 0, cc = 0;
 
 		Tile temp = new Tile();
 		Image img;
@@ -96,13 +101,7 @@ public class GraphicView extends Canvas implements Observer {
 	
 	public void drawTrainer() {
 		gc.drawImage(spritesheet, sx, sy, sw, sh, dx, dy, dw, dh);
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		theGame = (SafariZone) o;
-	}
-	
+	}	
 	
 	// Animation related functions
 	public void animateTrainer(char c, boolean d) {
