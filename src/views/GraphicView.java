@@ -10,7 +10,6 @@ import javafx.event.EventHandler;
 import javafx.scene.canvas.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.layout.BorderPane;
 import javafx.util.Duration;
 import map.Tile;
 import model.SafariZone;

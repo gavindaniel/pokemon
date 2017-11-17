@@ -96,6 +96,7 @@ public class SafariZoneMain extends Application {
 		scene2.setOnKeyReleased(new KeyReleaseListener());
 
 		scene3.setOnMouseClicked(new MouseClickListener());
+		scene3.setOnKeyPressed(new KeyPress2Listener());
 		// Setup the views
 		textView = new TextView(theGame);
 		graphicView = new GraphicView(theGame);
@@ -268,13 +269,22 @@ public class SafariZoneMain extends Application {
 
 	}
 
+	// start menu listeners
 	private class MouseClickListener implements EventHandler<MouseEvent> {
 		@Override
 		public void handle(MouseEvent event) {
 			stage.setScene(scene1);
 		}
+	}
+	private class KeyPress2Listener implements EventHandler<KeyEvent> {
+		@Override
+		public void handle(KeyEvent event) {
+			if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE)
+				stage.setScene(scene1);
+		}
 		
 	}
+	
 	private class MenuItemListener implements EventHandler<ActionEvent> {
 		@Override
 		public void handle(ActionEvent e) {
@@ -326,10 +336,8 @@ public class SafariZoneMain extends Application {
 	}
 	
 	private class ButtonListener implements EventHandler<ActionEvent> {
-
 		@Override
 		public void handle(ActionEvent event) {
-			// TODO Auto-generated method stub
 			if (event.getSource()==newGameButton) {
 				theGame.startNewGame();
 				graphicView.drawViewableArea();
@@ -342,8 +350,7 @@ public class SafariZoneMain extends Application {
 				// TODO
 				System.out.println("loading..");
 			}
-		}
-		
+		}	
 	}
 	
 	
