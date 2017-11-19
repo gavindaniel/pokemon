@@ -12,19 +12,19 @@ public class Trainer {
 
 	private String name;
 	private Point currentLocation;
+	private int zone;
 	private int numSteps;
 	private int numPokeBalls;
-//	private Vector<Pokemon> pokemon;
 	private List<Pokemon> ownedPokemonList;		//List of all owned pokemon
 	private List<Pokemon> battlePokemonList;		//List of 3 pokemon to be used in battle
-	private Pokemon activeBattlePokemon;			//Active pokemon in battle
 	public List<Item> itemList;
-	private Point currLocation;		//Position on map
-
+	private Pokemon activeBattlePokemon;			//Active pokemon in battle
+	
 //	private TrainerAnimation trainerAnimation;
 	
 	public Trainer(String name) {
 		currentLocation = new Point((50 / 2), (50 / 2) + 15);
+		zone = 1;
 		numSteps = 500;
 		numPokeBalls = 30;
 //		pokemon = new Vector<Pokemon>();
@@ -40,46 +40,55 @@ public class Trainer {
 	public String getName() {
 		return name;
 	}
-	
 	/**
 	 * @param name the name to set
 	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	/**
+	 * @return the zone the trainer is in (default is 1 the starting zone)
+	 */
+	public int getZone() {
+		return zone;
+	}
+	/**
+	 * @param the zone the trainer is in (default is 1 the starting zone)
+	 */
+	public void setZone(int z) {
+		zone = z;
+	}
+	/**
+	 * @return the trainer's number of steps left
+	 */
 	public int getNumSteps() {
 		return numSteps;
 	}
-
+	/**
+	 * @param the number of steps the trainer has
+	 */
 	public void setNumSteps(int n) {
 		numSteps = n;
 	}
-
+	/**
+	 * @return the number of pokeballs the trainer has
+	 */
 	public int getNumPokeballs() {
 		return numPokeBalls;
 	}
-
+	/**
+	 * @param the number of pokeballs the trainer has
+	 */
 	public void setNumPokeballs(int np) {
 		numPokeBalls = np;
 	}
-
-//	public Vector<Pokemon> getPokemon() {
-//		return pokemon;
-//	}
-//
-//	public void setPokemon(Vector<Pokemon> p) {
-//		pokemon = p;
-//	}
 	
 	public boolean addItem() {
 	return false;
-
 }
 
 public boolean removeItem() {
 	return false;
-
 }
 	
 	/**
@@ -158,14 +167,14 @@ public boolean removeItem() {
 	 * @return the position
 	 */
 	public Point getCurrentLocation() {
-		return currLocation;
+		return currentLocation;
 	}
 
 	/**
 	 * @param position the position to set
 	 */
 	public void setCurrentLocation(Point p) {
-		currLocation = p;
+		currentLocation = p;
 	}
 	
 //	public void move() {

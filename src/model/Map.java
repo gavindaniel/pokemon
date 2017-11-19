@@ -8,6 +8,7 @@ import java.util.Observable;
 import java.util.Scanner;
 import java.util.concurrent.ThreadLocalRandom;
 
+import controller.Settings;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import map.Tile;
@@ -20,9 +21,11 @@ public class Map extends Observable {
 	private Trainer trainer;
 	private Tile[][] tiles;
 	private static final int numPokemon = 50;
+	private static Settings settings;
 
 	public Map() {
-		size = 200; // # columns, rows
+		settings = new Settings();
+		size = settings.getZoneSize(); // # columns, rows
 		trainer = new Trainer("Player1");
 		tiles = new Tile[size][size];
 		clearBoard();
@@ -62,14 +65,15 @@ public class Map extends Observable {
 	public void clearBoard() {
 		for (int r = 0; r < size; r++)
 			for (int c = 0; c < size; c++)
-				tiles[r][c] = new Tile();
+				tiles[r][c] = new Tile('T');
 	}
-	
+
 	public void ReadMapFromFile() {
+//		File file = new File("./files/original-map.txt");
 		File file = new File("./files/zone1.txt");
 		Tile temp = new Tile();
-		int r = 0;
-		int c = 0;
+		int r = settings.getTreeLine();
+		int c = settings.getTreeLine();
 		try {
 			Scanner sc = new Scanner(file);
 			while (sc.hasNextLine()) {
@@ -82,7 +86,7 @@ public class Map extends Observable {
 						c++;
 					}
 				}
-				c = 0;
+				c = settings.getTreeLine();
 				r++;
 			}
 			sc.close();
@@ -171,9 +175,9 @@ public class Map extends Observable {
 	 */
 	public String drawGameMap() {
 		String result = "";
-		int treeline = 28;
-		for (int r = treeline; r < (size-110); r++) {
-			for (int c = treeline; c < (size-85); c++)
+		int tree_line = settings.getTreeLine();
+		for (int r = tree_line; r < (size - tree_line); r++) {
+			for (int c = tree_line; c < (size - tree_line); c++)
 				if (r == trainer.getCurrentLocation().getY() && c == trainer.getCurrentLocation().getX())
 					result += " P ";
 				else

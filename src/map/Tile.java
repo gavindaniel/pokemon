@@ -43,15 +43,19 @@ public class Tile {
 //			img = new Image("/images/shrubs/bush.bmp");
 			imgPath = "images/shrubs/bush.bmp";
 		}
-		else if (c == 'T') {
+		else if (c == 'T') {		// trees
 			type = "tree";
 //			img = new Image("/images/shrubs/tree.bmp");
 			imgPath = "images/shrubs/tree.bmp";
 		}
-		else if (c == 'E') {
+		else if (c == 'F') {		// fence marking the exits of zones
 			type = "fence";
 //			img = new Image("/images/misc/fence.bmp");
 			imgPath = "images/misc/fence.bmp";
+		}
+		else if (c == 'E') {		//transition to other zone
+			type = "exit";
+			imgPath = "images/shrubs/tree.bmp";
 		}
 		//d
 		else if (c == 's') {

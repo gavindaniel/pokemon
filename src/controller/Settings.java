@@ -2,6 +2,7 @@ package controller;
 
 public class Settings {
 	
+	private static int zone_size, tree_line;
 	private static double scene_height, scene_width;
 	private static double map_height, map_width;
 	private static double tile_source_size, tile_display_size;
@@ -13,6 +14,8 @@ public class Settings {
 	private static double sprite_x, sprite_y;
 	
 	public Settings() {
+		zone_size = 80;						//  the tile height and width of the zone map
+		tree_line = 15;						//	number of trees that will border the zone 
 		scene_height = 550;					//	the display height of the Game View
 		scene_width = 800;					//	the display width of the Game View
 		map_height = 510;					//	the display height of the entire Map View
@@ -33,6 +36,12 @@ public class Settings {
 		sprite_y = 0;						//	trainer y location on the sprite sheet
 	}
 	
+	public int getZoneSize() {
+		return zone_size;
+	}
+	public int getTreeLine() {
+		return tree_line;
+	}
 	public double getX(String key) {
 		if (key == "trainer")
 			return trainer_x;
