@@ -70,7 +70,7 @@ public class Map extends Observable {
 
 	public void ReadMapFromFile() {
 //		File file = new File("./files/original-map.txt");
-		File file = new File("./files/zone1.txt");
+		File file = new File("./files/zone2.txt");
 		Tile temp = new Tile();
 		int r = settings.getTreeLine();
 		int c = settings.getTreeLine();
