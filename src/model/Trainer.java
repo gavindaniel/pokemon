@@ -11,24 +11,7 @@ import pokemon.Pokemon;
 public class Trainer {
 
 	private String name;
-<<<<<<< HEAD
-	private int numSteps;
-	private int numPokeBalls;
-	private List<Pokemon> ownedPokemonList; // List of all owned pokemon
-	public List<Item> itemList;
-	private Point currLocation; // Position on map
-	
-	private List<Pokemon> battlePokemonList; // List of 3 pokemon to be used in battle
-	private Pokemon activeBattlePokemon; // Active pokemon in battle
 
-	// private TrainerAnimation trainerAnimation;
-
-	public Trainer(String name) {
-		this.name = name;
-		currLocation = new Point((50 / 2), (50 / 2) + 15);
-		numSteps = 500;
-		numPokeBalls = 30;
-=======
 	private Point currentLocation;
 	private int zone_number;
 	private int numSteps;
@@ -46,17 +29,12 @@ public class Trainer {
 		currentLocation = new Point((50 / 2), (50 / 2) + 15);
 		zone_number = settings.getStartingZone();
 		numSteps = 500;
->>>>>>> gavin
 		ownedPokemonList = new ArrayList<Pokemon>();
 		itemList = new ArrayList<Item>();
-<<<<<<< HEAD
 		
 		battlePokemonList = new ArrayList<Pokemon>(3);
 		activeBattlePokemon = null;
-=======
-		activeBattlePokemon = null;
-		
->>>>>>> gavin
+
 	}
 
 	/**
@@ -65,16 +43,13 @@ public class Trainer {
 	public String getName() {
 		return name;
 	}
-<<<<<<< HEAD
 
-=======
->>>>>>> gavin
 	/**
 	 * @param name
 	 *            the name to set
 	 */
-	public void setName(String name) {
-		this.name = name;
+	public void setName(String n) {
+		name = n;
 	}
 	/**
 	 * @return the zone the trainer is in (default is 1 the starting zone)
