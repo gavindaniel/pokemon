@@ -3,7 +3,6 @@ package model;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Vector;
 
 import controller.Settings;
 import items.Item;
@@ -23,16 +22,17 @@ public class Trainer {
 	
 //	private TrainerAnimation trainerAnimation;
 	
-	public Trainer(String name) {
+	public Trainer(String _name) {
+		name = _name;
 		settings = new Settings();
 		currentLocation = new Point((50 / 2), (50 / 2) + 15);
 		zone_number = settings.getStartingZone();
 		numSteps = 500;
-//		pokemon = new Vector<Pokemon>();
 		ownedPokemonList = new ArrayList<Pokemon>();
 		battlePokemonList = new ArrayList<Pokemon>(3);
 		itemList = new ArrayList<Item>();
-		this.name = name;
+		activeBattlePokemon = null;
+		
 	}
 
 	/**
@@ -85,12 +85,12 @@ public class Trainer {
 //	}
 	
 	public boolean addItem() {
-	return false;
-}
+		return false;
+	}
 
-public boolean removeItem() {
-	return false;
-}
+	public boolean removeItem() {
+		return false;
+	}
 	
 	/**
 	 * @return the ownedPokemonList
