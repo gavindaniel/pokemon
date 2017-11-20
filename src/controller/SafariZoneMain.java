@@ -7,19 +7,23 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import map.GraphicView;
-import map.MapView;
-import map.PokemonView;
-import map.TextView;
-import menus.LoginView;
 import model.SafariZone;
+import views.GraphicView;
+import views.LoginView;
+import views.MapView;
+import views.TextView;
 
 /**************************************************************/
 import java.net.*;
@@ -39,16 +43,22 @@ import javafx.concurrent.Task;
 
 public class SafariZoneMain extends Application {
 
+	private Stage stage;
+	private Scene scene1, scene2, scene3;
+	private BorderPane window1, window2, window3;
+	
 	private SafariZone theGame;
 	private MenuBar menuBar;
 	private Observer currentView;
-	private Observer textView;
-	private Observer graphicView; // to be implemented after textView
-	private BorderPane window;
-	public static final int height = 400;
-	public static final int width = 600;
+	private GraphicView graphicView;
+	private TextView textView;
+	private MapView mapView;
+	
+	private Settings settings;
 	char keyPressed;
-	boolean surfEnabled;
+	
+	private Button newGameButton;
+	private Button loadGameButton;
 
 /***************************************/
 //		private GameLoader gameLoader;
@@ -70,19 +80,28 @@ public class SafariZoneMain extends Application {
 //      openConnection();
 /***************************************/
 		primaryStage.setTitle("Pokemon: Safari Zone");
+		stage = primaryStage;
 		keyPressed = 'z';
-		window = new BorderPane();
-		Scene scene = new Scene(window, width, height);
-
-		setupMenus();
-		window.setTop(menuBar);
+		settings = new Settings();
+		
+		setupScenes();
+		setupMainMenu();
+		setupStartScreen();
+		setupGameMenus();
+		
+		window2.setTop(menuBar);
 		initializeGameForTheFirstTime();
 
-		scene.setOnKeyReleased(new moveListener());
+		scene2.setOnKeyPressed(new KeyPressListener());
+		scene2.setOnKeyReleased(new KeyReleaseListener());
 
+		scene3.setOnMouseClicked(new MouseClickListener());
+		scene3.setOnKeyPressed(new KeyPressListener2());
 		// Setup the views
 		textView = new TextView(theGame);
 		graphicView = new GraphicView(theGame);
+		mapView = new MapView(theGame);
+		
 		
 /***************************************/
 //		textView = new TextView(gameLoader.getSafariZone());
@@ -96,34 +115,71 @@ public class SafariZoneMain extends Application {
 		//gameLoader.getPokemon().addObserver(textView);
 /***********************/
 		
-		setViewTo(graphicView);
+		setViewTo(graphicView); //setViewTo(graphicView);
 
-		primaryStage.setScene(scene);
+		primaryStage.setScene(scene3);
 		primaryStage.show();
 
 	}
 
 	private void setViewTo(Observer newView) {
-		window.setCenter(null);
+		window2.setCenter(null);
 		currentView = newView;
-		window.setCenter((Node) currentView);
+		window2.setCenter((Node) currentView);
 	}
 
 	public void initializeGameForTheFirstTime() {
 		theGame = new SafariZone();
 	}
 
-	private void setupMenus() {
+	private void setupScenes() {
+		window1 = new BorderPane(); // Main Menu
+		window2 = new BorderPane();	// Game 
+		window3 = new BorderPane(); // Start screen
+		scene1 = new Scene(window1, settings.getWidth("scene"), settings.getHeight("scene"));
+		scene2 = new Scene(window2, settings.getWidth("scene"), settings.getHeight("scene"));
+		scene3 = new Scene(window3, settings.getWidth("scene"), settings.getHeight("scene"));
+	}
+	private void setupStartScreen() {
+		Image startScreen = new Image("file:images/misc/start-screen.jpg");
+		Canvas canvas = new Canvas(settings.getWidth("scene"), settings.getHeight("scene"));
+		canvas.getGraphicsContext2D().drawImage(startScreen, 0, 0);
+		window3.setCenter(canvas);
+	}
+	private void setupMainMenu() {
+		newGameButton = new Button("New Game");
+		newGameButton.setMinSize(300, 100);
+		newGameButton.setOnAction(new ButtonListener());
+		loadGameButton = new Button("Load Game...");
+		loadGameButton.setMinSize(300, 100);
+		loadGameButton.setOnAction(new ButtonListener());
+		GridPane gp = new GridPane();
+		gp.setPrefSize(settings.getWidth("scene"), settings.getHeight("scene"));
+		GridPane.setConstraints(newGameButton, 1, 1);
+		GridPane.setConstraints(loadGameButton, 1, 2);
+		gp.setHgap(10);
+		gp.setVgap(10);
+		gp.getChildren().addAll(newGameButton, loadGameButton);
+		window1.setCenter(gp);
+	}
+	private void setupGameMenus() {
+		// game menu options
+		MenuItem pokemon = new MenuItem("Pokemon");
+		MenuItem bag = new MenuItem("Bag");
+		MenuItem map = new MenuItem("Map");
+		MenuItem trainer = new MenuItem("Trainer");
+		MenuItem save = new MenuItem("Save");
+		MenuItem option = new MenuItem("Option");
+		MenuItem exit = new MenuItem("Exit");
+		// add the options
+		Menu menu = new Menu("Menu");
+		menu.getItems().addAll(pokemon, bag, map, trainer, save, option, exit);		
+		// view menu options
 		MenuItem textV = new MenuItem("Text");
 		MenuItem graphicV = new MenuItem("Graphics");
-		Menu views = new Menu("Views");
+		// add the options
+		Menu views = new Menu ("View");
 		views.getItems().addAll(textV, graphicV);
-
-		MenuItem newGame = new MenuItem("New Game");
-		MenuItem map = new MenuItem("Map");
-		MenuItem pokemon = new MenuItem("Pokemon");
-		Menu options = new Menu("Options");
-		options.getItems().addAll(newGame, map, pokemon, views);
 		
 /***************************************/
 //		Menu user = new Menu("User");
@@ -132,7 +188,7 @@ public class SafariZoneMain extends Application {
 /***************************************/
             
 		menuBar = new MenuBar();
-		menuBar.getMenus().addAll(options);
+		menuBar.getMenus().addAll(menu,views);
 		
 /***************************************/
 //		menuBar.getMenus().addAll(options, user);
@@ -140,12 +196,17 @@ public class SafariZoneMain extends Application {
 		
 		// Add the same listener to all menu items requiring action
 		MenuItemListener menuListener = new MenuItemListener();
-		newGame.setOnAction(menuListener);
+		pokemon.setOnAction(menuListener);
+		bag.setOnAction(menuListener);
+		map.setOnAction(menuListener);
+		trainer.setOnAction(menuListener);
+		save.setOnAction(menuListener);
+		option.setOnAction(menuListener);
+		exit.setOnAction(menuListener);
+		// view menu listeners
 		textV.setOnAction(menuListener);
 		graphicV.setOnAction(menuListener);
-		map.setOnAction(menuListener);
-		pokemon.setOnAction(menuListener);
-
+		
 /***************************************/
 //		signIn.setOnAction(menuListener); 
 //        signOut.setOnAction(menuListener);
@@ -153,48 +214,80 @@ public class SafariZoneMain extends Application {
 		
 	}
 
-	public class moveListener implements EventHandler<KeyEvent> {
+	public class KeyPressListener implements EventHandler<KeyEvent> {
 		@Override
 		public void handle(KeyEvent event) {
 			if (event.getCode() == KeyCode.UP) {
-				theGame.movePlayer('U');	//keyPressed = 'U';
+				graphicView.animateTrainer('U', false);
+				theGame.movePlayer('U');
 			} else if (event.getCode() == KeyCode.DOWN) {
-				theGame.movePlayer('D');//keyPressed = 'D';
+				graphicView.animateTrainer('D', false);
+				theGame.movePlayer('D');
 			} else if (event.getCode() == KeyCode.LEFT) {
-				theGame.movePlayer('L');//keyPressed = 'L';
+				graphicView.animateTrainer('L', false);
+				theGame.movePlayer('L');
 			} else if (event.getCode() == KeyCode.RIGHT) {
-				theGame.movePlayer('R');//keyPressed = 'R';
+				graphicView.animateTrainer('R', false);
+				theGame.movePlayer('R');
+			}
+		}
+	}
+	public class KeyReleaseListener implements EventHandler<KeyEvent> {
+		@Override
+		public void handle(KeyEvent event) {
+			if (event.getCode() == KeyCode.UP) {
+				graphicView.animateMap('U', true);
+			} else if (event.getCode() == KeyCode.DOWN) {
+				graphicView.animateMap('D', true);
+			} else if (event.getCode() == KeyCode.LEFT) {
+				graphicView.animateMap('L', true);
+			} else if (event.getCode() == KeyCode.RIGHT) {
+				graphicView.animateMap('R', true);
 			}
 		}
 
 	}
-
+	// start menu listeners
+	private class MouseClickListener implements EventHandler<MouseEvent> {
+		@Override
+		public void handle(MouseEvent event) {
+			stage.setScene(scene1);
+		}
+	}
+	private class KeyPressListener2 implements EventHandler<KeyEvent> {
+		@Override
+		public void handle(KeyEvent event) {
+			if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE)
+				stage.setScene(scene1);
+		}
+		
+	}
+	
 	private class MenuItemListener implements EventHandler<ActionEvent> {
-
 		@Override
 		public void handle(ActionEvent e) {
-			// Find out the text of the JMenuItem that was just clicked
 			String text = ((MenuItem) e.getSource()).getText();
 			if (text.equals("New Game"))
-				theGame.startNewGame(); // The computer player has been set and should not change.
+				theGame.startNewGame(); 
 			else if (text.equals("Text"))
 				setViewTo(textView);
 			else if (text.equals("Graphics"))
 				setViewTo(graphicView);
 			else if (text.equals("Map")) {
+//				stage.setScene(scene3);			
 				Stage stage = new Stage();
-				MapView mv = new MapView(theGame);
 				stage.setTitle("Map View");
-				stage.setScene(new Scene(mv, 1100, 650));
+				stage.setScene(new Scene(mapView, theGame.getSettings().getWidth("map"), theGame.getSettings().getHeight("map")));
 				stage.show();
 			} else if (text.equals("Pokemon")) {
 				Stage stage = new Stage();
-				PokemonView pv = new PokemonView(theGame);
 				stage.setTitle("Pokemon View");
-				stage.setScene(new Scene(pv, 1100, 650));
+				stage.setScene(new Scene(new BorderPane(), theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene")));
 				stage.show();
 			} 
-		
+			else if (text.equals("Exit")) {
+				stage.setScene(scene1);
+			}	
 /**************************************************************/
 //			else if (text.equals("Sign In")){
 //		  		setViewTo(loginView);
@@ -219,6 +312,23 @@ public class SafariZoneMain extends Application {
 		}
 	}
 	
+	private class ButtonListener implements EventHandler<ActionEvent> {
+		@Override
+		public void handle(ActionEvent event) {
+			if (event.getSource()==newGameButton) {
+				theGame.startNewGame();
+				graphicView.drawViewableArea();
+				graphicView.resetTrainer();
+				graphicView.drawTrainer();
+				setViewTo(graphicView);
+				stage.setScene(scene2);
+			}
+			else if (event.getSource()==loadGameButton) {
+				// TODO
+				System.out.println("loading..");
+			}
+		}	
+	}
 	
 	
 	
