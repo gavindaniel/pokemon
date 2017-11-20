@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
+import controller.Settings;
 import items.Item;
 import pokemon.Pokemon;
 
@@ -12,21 +13,21 @@ public class Trainer {
 
 	private String name;
 	private Point currentLocation;
-	private int zone;
+	private int zone_number;
 	private int numSteps;
-	private int numPokeBalls;
 	private List<Pokemon> ownedPokemonList;		//List of all owned pokemon
 	private List<Pokemon> battlePokemonList;		//List of 3 pokemon to be used in battle
 	public List<Item> itemList;
 	private Pokemon activeBattlePokemon;			//Active pokemon in battle
+	private Settings settings;
 	
 //	private TrainerAnimation trainerAnimation;
 	
 	public Trainer(String name) {
+		settings = new Settings();
 		currentLocation = new Point((50 / 2), (50 / 2) + 15);
-		zone = 1;
+		zone_number = settings.getStartingZone();
 		numSteps = 500;
-		numPokeBalls = 30;
 //		pokemon = new Vector<Pokemon>();
 		ownedPokemonList = new ArrayList<Pokemon>();
 		battlePokemonList = new ArrayList<Pokemon>(3);
@@ -50,13 +51,13 @@ public class Trainer {
 	 * @return the zone the trainer is in (default is 1 the starting zone)
 	 */
 	public int getZone() {
-		return zone;
+		return zone_number;
 	}
 	/**
 	 * @param the zone the trainer is in (default is 1 the starting zone)
 	 */
 	public void setZone(int z) {
-		zone = z;
+		zone_number = z;
 	}
 	/**
 	 * @return the trainer's number of steps left
@@ -70,18 +71,18 @@ public class Trainer {
 	public void setNumSteps(int n) {
 		numSteps = n;
 	}
-	/**
-	 * @return the number of pokeballs the trainer has
-	 */
-	public int getNumPokeballs() {
-		return numPokeBalls;
-	}
-	/**
-	 * @param the number of pokeballs the trainer has
-	 */
-	public void setNumPokeballs(int np) {
-		numPokeBalls = np;
-	}
+//	/**
+//	 * @return the number of pokeballs the trainer has
+//	 */
+//	public int getNumPokeballs() {
+//		return numPokeBalls;
+//	}
+//	/**
+//	 * @param the number of pokeballs the trainer has
+//	 */
+//	public void setNumPokeballs(int np) {
+//		numPokeBalls = np;
+//	}
 	
 	public boolean addItem() {
 	return false;

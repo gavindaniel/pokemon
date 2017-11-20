@@ -54,15 +54,16 @@ public class TextView extends BorderPane implements Observer {
 		int pc = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();
 		int pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();
 
+		int zoneNum = theGame.getMap().getTrainer().getZone();
 		for (int r = lowerBound; r <= upperBound+1; r++) {
 			for (int c = lowerBound; c <= upperBound; c++) {
 				if (r == 0 && c == 0) {
 					result += " P ";
 				} else {
-					if (theGame.getMap().getTiles()[pr + r][pc + c].getType() == "ground") {
+					if (theGame.getMap().getZone(zoneNum).getTile(pr + r,pc + c).getType() == "ground") {
 						result += "   ";
 					} else {
-						result += " " + theGame.getMap().getTiles()[pr + r][pc + c].getSourceChar() + " ";
+						result += " " + theGame.getMap().getZone(zoneNum).getTile(pr + r,pc + c).getSourceChar() + " ";
 					}
 				}
 			}

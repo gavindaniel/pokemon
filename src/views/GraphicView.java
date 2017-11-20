@@ -74,7 +74,8 @@ public class GraphicView extends Canvas implements Observer {
 		for (int r = lowerBound; r <= upperBound; r++) {
 			for (int c = lowerBound; c <= upperBound; c++) {
 				try {
-					temp = theGame.getMap().getTile(pr + r, pc + c);
+					int zoneNum = theGame.getMap().getTrainer().getZone();
+					temp = theGame.getMap().getZone(zoneNum).getTile(pr + r, pc + c);
 					path = temp.getImagePath();
 					img = new Image("file:" + path);
 					gc.drawImage(img, 0, 0, imageSize, imageSize, (cc * displaySize), (rc * displaySize), displaySize, displaySize);
@@ -289,7 +290,8 @@ public class GraphicView extends Canvas implements Observer {
 			for (int r = lowerBound; r <= upperBound; r++) {
 				for (int c = lowerBound; c <= upperBound; c++) {
 					try {
-						temp = theGame.getMap().getTile(pr + r, pc + c);
+						int zoneNum = theGame.getMap().getTrainer().getZone();
+						temp = theGame.getMap().getZone(zoneNum).getTile(pr + r, pc + c);
 						path = temp.getImagePath();
 						img = new Image("file:" + path);
 						gc.drawImage(img, 0, 0, imageSize, imageSize, (cc * displaySize) + xShift, (rc * displaySize) + yShift, displaySize, displaySize);

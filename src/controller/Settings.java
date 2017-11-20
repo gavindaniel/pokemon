@@ -2,6 +2,7 @@ package controller;
 
 public class Settings {
 	
+	private static int starting_zone;
 	private static int zone_size, tree_line;
 	private static double scene_height, scene_width;
 	private static double map_height, map_width;
@@ -14,6 +15,7 @@ public class Settings {
 	private static double sprite_x, sprite_y;
 	
 	public Settings() {
+		starting_zone = 1;					//  the zone # that the trainer starts in (this will be changed once the safari zone building is done
 		zone_size = 80;						//  the tile height and width of the zone map
 		tree_line = 15;						//	number of trees that will border the zone 
 		scene_height = 550;					//	the display height of the Game View
@@ -35,7 +37,9 @@ public class Settings {
 		sprite_x = -2;						//	trainer x location on the sprite sheet
 		sprite_y = 0;						//	trainer y location on the sprite sheet
 	}
-	
+	public int getStartingZone() {
+		return starting_zone;
+	}
 	public int getZoneSize() {
 		return zone_size;
 	}

@@ -46,7 +46,7 @@ public class MapView extends BorderPane implements Observer {
 
 	public void updateTextArea() {
 //		gameDisplay.setText(theGame.getMap().toString(theGame.getMap().getBoard()));
-		gameDisplay.setText(theGame.getMap().drawGameMap());
+		gameDisplay.setText(theGame.getMap().drawGameMap(theGame.getMap().getTrainer().getZone()));
 	}
 
 }
