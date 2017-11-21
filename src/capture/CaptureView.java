@@ -73,6 +73,7 @@ public class CaptureView extends Application {
   private Timeline timeline,timeline2,retreatTimeline,captureTimeline,emoteTimeline;
   Trainer currentTrainer;
   Capture currentCapture;
+  boolean captureSuccess;
 
   /**
    * Layout the GUI and initialize everything (which is too much)
@@ -134,7 +135,7 @@ public class CaptureView extends Application {
   
 //Pokemon emotion animator
   private class EmoteAnimateStarter implements EventHandler<ActionEvent> {
-    int tic = 0;
+    int tic4 = 0;
     @Override
     // This handle method gets called every 100 ms to draw the ship on a new location
     public void handle(ActionEvent event) {
@@ -144,7 +145,7 @@ public class CaptureView extends Application {
     	
       
       // TODO 2: handle the TimeLine calls until tic gets too big 
-      System.out.println(tic);
+      System.out.println("Emotion tic: "+tic4);
       
       
       
@@ -173,7 +174,7 @@ public class CaptureView extends Application {
     	
       
       // TODO 2: handle the TimeLine calls until tic gets too big 
-      System.out.println(tic);
+      System.out.println("Retreat tic: "+tic);
       
       
       
@@ -185,7 +186,7 @@ public class CaptureView extends Application {
   
   //Character throw animator
   private class AnimateStarter implements EventHandler<ActionEvent> {
-    int tic = 0;
+    int tic3 = 0;
 
     @Override
     // This handle method gets called every 100 ms to draw the ship on a new location
@@ -194,14 +195,14 @@ public class CaptureView extends Application {
         sx+=72;
         g2.drawImage(characterSheet, sx, 8, 70, 70, 20, 165, 150, 150);
         g2.drawImage(currentPokemonImage, 270, 70, 125, 125);
-        tic++;
-    	if(tic==4) {
+        tic3++;
+    	if(tic3==4) {
     		g2.drawImage(backGround, 0, 0,450,300);
     		g2.drawImage(characterSheet, 8, 8, 70, 70, 20, 165, 150, 150);
     		g2.drawImage(currentPokemonImage, 270, 70, 125, 125);
     		sx=8;
     	    sy=8;
-    		tic=0;
+    		tic3=0;
     		if(itemsx==50) {
     		timeline2=new Timeline(new KeyFrame(Duration.millis(50), new ItemAnimateStarter()));
     	    timeline2.setCycleCount(Animation.INDEFINITE);
@@ -212,7 +213,55 @@ public class CaptureView extends Application {
     	}
       
       // TODO 2: handle the TimeLine calls until tic gets too big 
-      System.out.println(tic);
+      System.out.println("Throw animate tic: "+tic3);
+      
+      
+      
+      
+    }
+  }
+  
+  
+//Pokemon Capture animator
+  private class CaptureAnimateStarter implements EventHandler<ActionEvent> {
+    int tic3 = 0;
+    int sizex=125;
+    int sizey=125;
+    int itemx=270;
+    int itemy=70;
+    @Override
+    // This handle method gets called every 100 ms to draw the ship on a new location
+    public void handle(ActionEvent event) {
+    	if(tic3>30 && tic3<50) {
+    	g2.drawImage(currentItemImage, itemx, itemy, 30, 30);
+    	}
+    	if(tic3>50 && tic3<80) {
+    	g2.drawImage(backGround, 0, 0,450,300);
+        g2.drawImage(characterSheet, 8, 8, 70, 70, 20, 165, 150, 150);
+        g2.drawImage(currentPokemonImage, 270, 70, sizex, sizey);
+        g2.drawImage(currentItemImage, itemx, itemy, 30, 30);
+        if(sizex>5 && sizey>5) {
+        sizex-=10;
+        sizey-=10;
+        }
+    	}
+        tic3++;
+        if(tic3>80) {
+        	g2.drawImage(backGround, 0, 0,450,300);
+            g2.drawImage(characterSheet, 8, 8, 70, 70, 20, 165, 150, 150);
+            g2.drawImage(currentItemImage, itemx, itemy, 30, 30);
+            if(itemy<140) {
+                itemy+=10;
+            }
+        	if(tic3==110) {
+            captureTimeline.stop();
+            Platform.exit();
+        	}
+        }
+    	
+      
+      // TODO 2: handle the TimeLine calls until tic gets too big 
+      System.out.println("Capture tic: "+tic3);
       
       
       
@@ -230,7 +279,20 @@ public class CaptureView extends Application {
 	    	if(currentItem.getClass()==new SafariBall().getClass()) {
 	    		currentItemImage=new Image("file:C:\\Classes\\CSC 335\\gitrepos\\pokemon-teammoltres\\images\\items\\safariBall.png", false);
 	    		if(tic2==0) {
-	    		currentCapture.throwBall(new Random().nextInt(100));
+	    		if(currentCapture.throwBall(new Random().nextInt(100))) {
+	    			/*
+	    			 * 
+	    			 * 
+	    			 * 
+	    			 */
+	    			captureSuccess=true;
+	    			captureTimeline=new Timeline(new KeyFrame(Duration.millis(50), new CaptureAnimateStarter()));
+	    		    captureTimeline.setCycleCount(Animation.INDEFINITE);
+	    		    captureTimeline.play();
+	    		}
+	    		else {
+	    			captureSuccess=false;
+	    		}
 	    		}
 	    	}
 	    	else if(currentItem.getClass()==new Rock().getClass()) {
@@ -265,15 +327,17 @@ public class CaptureView extends Application {
 	        g2.drawImage(backGround, 0, 0,450,300);
 	    	g2.drawImage(currentPokemonImage, 270, 70, 125, 125);
     		g2.drawImage(characterSheet, 8, 8, 70, 70, 20, 165, 150, 150);
-    		if(currentCapture.retreat(new Random().nextInt(100))) {
+    		if(currentCapture.retreat(new Random().nextInt(100)) && captureSuccess==false) {
     			System.out.println(currentPokemon.getName()+" retreated");
     			retreatTimeline=new Timeline(new KeyFrame(Duration.millis(50), new RetreatAnimateStarter()));
     		    retreatTimeline.setCycleCount(Animation.INDEFINITE);
     		    retreatTimeline.play();
     		}
+    		/*
     		emoteTimeline=new Timeline(new KeyFrame(Duration.millis(50), new EmoteAnimateStarter()));
     		emoteTimeline.setCycleCount(Animation.INDEFINITE);
     		emoteTimeline.play();
+    		*/
     		}
     		tic2++;
 	    }
