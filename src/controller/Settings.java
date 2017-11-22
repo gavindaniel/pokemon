@@ -6,6 +6,7 @@ public class Settings {
 	private static int zone_size, tree_line;
 	private static double scene_height, scene_width;
 	private static double map_height, map_width;
+	private static double info_height, info_width;
 	private static double tile_source_size, tile_display_size;
 	private static double trainer_source_width, trainer_source_height;
 	private static double trainer_display_width, trainer_display_height;
@@ -23,6 +24,8 @@ public class Settings {
 		scene_width = 800;					//	the display width of the Game View
 		map_height = 500;					//	the display height of the entire Map View
 		map_width = 800;						//	the display width of the entire Map View
+		info_height = 400;					//	the display height of the trainer / bag / pokemon view
+		info_width = 200;					//	the display height of the trainer / bag / pokemon view
 		tile_source_size = 16;				//	original background image size:	16px by 16px
 		tile_display_size = 32;				//	desired display background image size:	32px by 32px
 		trainer_source_width = 19;			//	width of the source image of the trainer on the spritesheet
@@ -64,10 +67,12 @@ public class Settings {
 	public double getHeight(String key) {
 		if (key == "scene")
 			return scene_height;
-		else if(key == "map")
+		else if (key == "map")
 			return map_height;
-		else if(key == "source")
+		else if (key == "source")
 			return trainer_source_height;
+		else if (key == "info")
+			return info_height;
 		else //if(key == "display")
 			return trainer_display_height;
 	}
@@ -76,8 +81,10 @@ public class Settings {
 			return scene_width;
 		else if (key == "map")
 			return map_width;
-		else if(key == "source")
+		else if (key == "source")
 			return trainer_source_width;
+		else if (key == "info")
+			return info_width;
 		else //if(key == "display")
 			return trainer_display_width;
 	}

@@ -20,9 +20,12 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.SafariZone;
+import views.BagView;
 import views.GraphicView;
 import views.MapView;
+import views.PokemonView;
 import views.TextView;
+import views.TrainerView;
 import network.User;
 
 /**************************************************************/
@@ -263,11 +266,11 @@ public class SafariZoneMain extends Application {
 		MenuItem map = new MenuItem("Map");
 		MenuItem trainer = new MenuItem("Trainer");
 		MenuItem save = new MenuItem("Save");
-		MenuItem option = new MenuItem("Option");
+//		MenuItem option = new MenuItem("Option");
 		MenuItem exit = new MenuItem("Exit");
 		// add the options
 		Menu menu = new Menu("Menu");
-		menu.getItems().addAll(pokemon, bag, map, trainer, save, option, exit);
+		menu.getItems().addAll(pokemon, bag, map, trainer, save, exit); //, option
 		// view menu options
 		MenuItem textV = new MenuItem("Text");
 		MenuItem graphicV = new MenuItem("Graphics");
@@ -285,7 +288,7 @@ public class SafariZoneMain extends Application {
 		map.setOnAction(menuListener);
 		trainer.setOnAction(menuListener);
 		save.setOnAction(menuListener);
-		option.setOnAction(menuListener);
+//		option.setOnAction(menuListener);
 		exit.setOnAction(menuListener);
 		// view menu listeners
 		textV.setOnAction(menuListener);
@@ -353,10 +356,15 @@ public class SafariZoneMain extends Application {
 			if (text.equals("Pokemon")) {
 				Stage stage = new Stage();
 				stage.setTitle("Pokemon View");
-				stage.setScene(new Scene(new BorderPane(), gameLoader.getSafariZone().getSettings().getWidth("scene"),
-						gameLoader.getSafariZone().getSettings().getHeight("scene")));
+				stage.setScene(new Scene(new PokemonView(gameLoader.getSafariZone()), gameLoader.getSafariZone().getSettings().getWidth("info"), gameLoader.getSafariZone().getSettings().getHeight("info")));
 				stage.show();
-			} else if (text.equals("Save")) {
+			} else if (text.equals("Bag")) {
+				Stage stage = new Stage();
+				stage.setTitle("Bag View");
+				stage.setScene(new Scene(new BagView(gameLoader.getSafariZone()), gameLoader.getSafariZone().getSettings().getWidth("info"), gameLoader.getSafariZone().getSettings().getHeight("info")));
+				stage.show();
+			}
+			else if (text.equals("Save")) {
 				if (loggedIn == 0) {
 					stage.setScene(scene4);
 				}
@@ -366,7 +374,13 @@ public class SafariZoneMain extends Application {
 				stage.setTitle("Map View");
 				stage.setScene(new Scene(new MapView(gameLoader.getSafariZone()), gameLoader.getSafariZone().getSettings().getWidth("map"), gameLoader.getSafariZone().getSettings().getHeight("map")));
 				stage.show();
-			} else if (text.equals("Exit")) {
+			} else if (text.equals("Trainer")) { 
+				Stage stage = new Stage();
+				stage.setTitle("Trainer View");
+				stage.setScene(new Scene(new TrainerView(gameLoader.getSafariZone()), gameLoader.getSafariZone().getSettings().getWidth("info"), gameLoader.getSafariZone().getSettings().getHeight("info")));
+				stage.show();
+			}
+			else if (text.equals("Exit")) {
 				// UD man.pushUserData();
 				loggedIn = 0;
 //				gameLoader.setSafariZone(null);

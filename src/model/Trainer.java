@@ -6,6 +6,7 @@ import java.util.List;
 
 import controller.Settings;
 import items.Item;
+import pokemon.Pikachu;
 import pokemon.Pokemon;
 
 public class Trainer {
@@ -30,6 +31,7 @@ public class Trainer {
 		zone_number = settings.getStartingZone();
 		numSteps = 500;
 		ownedPokemonList = new ArrayList<Pokemon>();
+			ownedPokemonList.add(new Pikachu());
 		itemList = new ArrayList<Item>();
 		battlePokemonList = new ArrayList<Pokemon>(3);
 		activeBattlePokemon = null;
