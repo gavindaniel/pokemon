@@ -19,7 +19,7 @@ import pokemon.Pikachu;
 import pokemon.Pokemon;
 import pokemon.Squirtle;
 
-public class BattleRunner extends Application {
+public class BattleViewRunner extends Application {
 
 	private BattleLogic battle;
 	private Trainer trainer1;
@@ -31,9 +31,6 @@ public class BattleRunner extends Application {
 	public static final double SCENE_WIDTH = 800;
 	public static final double SCENE_HEIGHT = 550;
 	
-	private static final Image bgImg = new Image("file:images/battle/battle-background.png", false);
-	private static final Image standbyImg = new Image("file:images/battle/Pikachu/pikachu-standby.png", false);
-
 
 	public static void main(String[] args) {
 		launch(args);

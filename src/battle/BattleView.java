@@ -1,5 +1,7 @@
 package battle;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -46,11 +48,12 @@ public class BattleView extends Canvas implements Observer {
 	}
 	
 	public void animate() {
-		String bgPath = "file:images/battle/battle-background.png";
-		String standbyPath = "file:images/battle/Pikachu/pikachu-standby.png";
-		String firstAttackPath = "file:images/battle/Pikachu/pikachu-thunderbolt.png";
+		List<String> paths = new ArrayList<>();
+		paths.add("file:images/battle/battle-background.png");
+		paths.add("file:images/battle/Pikachu/pikachu-standby.png");
+		paths.add("file:images/battle/Pikachu/pikachu-thunderbolt.png");
 		
-		pokeAnimation = new PokeBattleAnimation(this, bgPath, standbyPath, firstAttackPath);
+		pokeAnimation = new PokeBattleAnimation(this, paths);
 //		pokeAnimation.animateStandby();
 		pokeAnimation.animateFirstAttack();
 	}
