@@ -2,6 +2,7 @@ package pokemon;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Parent class of all pokemon. Provides name, type, and battle stats for a pokemon.
@@ -23,6 +24,7 @@ public abstract class Pokemon {
 	private int special;	// Determines strength of special moves
 	private int speed;		// Determines the order of pokemon that can act in battle
 	private String mood;		//State of pokemon during capture.
+	private PokeBattleAnimation battleAnimation;
 	
 	/**
 	 * Contructor initializing name, elemental type, and commonness of pokemon.
@@ -231,8 +233,22 @@ public abstract class Pokemon {
 		this.speed = speed;
 	}
 	
-	/*********************************************************************************************/
+	/**
+	 * @return the battleAnimation
+	 */
+	public PokeBattleAnimation getBattleAnimation() {
+		return battleAnimation;
+	}
+
+	/**
+	 * @param battleAnimation the battleAnimation to set
+	 */
+	public void setBattleAnimation(PokeBattleAnimation battleAnimation) {
+		this.battleAnimation = battleAnimation;
+	}
 	
+	/*********************************************************************************************/
+
 	/**
 	 * Sets the four attacks available to the pokemon.
 	 * @param attack1 first attack
@@ -312,5 +328,11 @@ public abstract class Pokemon {
 	 * @return list of 4 attacks
 	 */
 	public abstract ArrayList<Attack> initializeAttacks();
+	
+	/**
+	 * Provide paths to sprite sheets for animation.
+	 * @param animationList [standbyPath, firstAttackPath, secondAttackPath, thirdAttackPath, fourthAttackPath]
+	 */
+	public abstract void initializeBattleAnimations();
 }
 
