@@ -316,8 +316,7 @@ System.out.println("Set SafariZone current for ret User");
                       stage.setScene(scene2);
 
 
-//UD 
-                     man.pushUserData();
+//UD                      man.pushUserData();
                    }
                       // set up admin User menu and game view
                    if(temp.name.equals("Merlin") && temp.password.equals("7777777")){
@@ -338,8 +337,7 @@ System.out.println("Set SafariZone current for new");
 
 //                    man.getUser(acctT.getText(),pswdT.getText()).setSafariZone(gameLoader.getSafariZone());
 
-//UD    
-                  man.pushUserData();
+//UD                      man.pushUserData();
 
 
                     setViewTo(graphicView);
@@ -361,8 +359,7 @@ System.out.println("View:Admin Create New User");
             // set created user new SafariZone 
                     man.getUser(acctT.getText(),pswdT.getText()).setSafariZone(new SafariZone());
 
-//UD   
-                      man.pushUserData();
+//UD                         man.pushUserData();
               //      adminHelper();
               //      setUpAdminMenus();
               //      setViewToAdmin(textView);
@@ -543,8 +540,7 @@ System.out.println("View:Admin Create New User");
                               if(loggedIn==0){	       
                  stage.setScene(scene4);
                               }
-//UD   
-                            man.pushUserData();
+//UD                               man.pushUserData();
 	        	}else if (text.equals("Graphics")){
 				setViewTo(graphicView);
 			}else if (text.equals("Map")) {
@@ -560,8 +556,7 @@ System.out.println("View:Admin Create New User");
 				stage.show();
 			} 
 			else if (text.equals("Exit")) {
-//UD		 
-                         man.pushUserData();		
+//UD		                          man.pushUserData();		
                          loggedIn=0;
                 gameLoader.setSafariZone(null);
                 gameLoader.setSafariZone(new SafariZone());
