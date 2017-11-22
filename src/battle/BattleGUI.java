@@ -396,18 +396,19 @@ public class BattleGUI extends Application {
 		private Trainer defendTrainer;
 		
 		public AttackButtonListener() {
-
 			label = (Label) attackPane.getChildren().get(0);			
-			attackTrainer = battle.getActiveTrainer();
-			defendTrainer = (attackTrainer == battle.getTrainer1()) 
-					? battle.getTrainer2() : battle.getTrainer1();
-			
 		}
 
 		@Override
 		public void handle(ActionEvent event) {
 			
+			//Get Text from clicked button
 			String buttonText = ((Button) event.getSource()).getText();
+			
+			//Identify current active trainer
+			attackTrainer = battle.getActiveTrainer();
+			defendTrainer = (attackTrainer == battle.getTrainer1()) 
+					? battle.getTrainer2() : battle.getTrainer1();
 			
 			Attack chosenAttack = null;
 			
