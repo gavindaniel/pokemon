@@ -23,6 +23,9 @@ public abstract class Pokemon {
 	private int special;	// Determines strength of special moves
 	private int speed;		// Determines the order of pokemon that can act in battle
 	private String mood;		//State of pokemon during capture.
+	String standByPath,runAwayPath,capturePath;
+
+		
 	
 	/**
 	 * Contructor initializing name, elemental type, and commonness of pokemon.
@@ -312,5 +315,21 @@ public abstract class Pokemon {
 	 * @return list of 4 attacks
 	 */
 	public abstract ArrayList<Attack> initializeAttacks();
+
+	public String getStandByPath() {
+		// TODO Auto-generated method stub
+		return standByPath;
+	}
+
+	public String getRunAwayPath() {
+		// TODO Auto-generated method stub
+		return runAwayPath;
+	}
+
+	public String getCapturePath() {
+		// TODO Auto-generated method stub
+		return capturePath;
+	}
+
 }
 

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Observer;
 
 import battle.BattleLogic;
-import battle.BattleView;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

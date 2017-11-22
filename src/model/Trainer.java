@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import items.Item;
+import items.SafariBall;
 import pokemon.Pokemon;
 
 public class Trainer {
@@ -28,11 +29,17 @@ public class Trainer {
 		numPokeBalls = 30;
 		ownedPokemonList = new ArrayList<Pokemon>();
 		itemList = new ArrayList<Item>();
-		
+		givePokeBalls();
 		battlePokemonList = new ArrayList<Pokemon>(3);
 		activeBattlePokemon = null;
 	}
 
+	//Give the trainer 30 pokeballs to start
+	public void givePokeBalls() {
+		for(int i=0;i<30;i++) {
+			itemList.add(new SafariBall());
+		}
+	}
 	/**
 	 * @return the name
 	 */
@@ -186,5 +193,14 @@ public class Trainer {
 	 */
 	public boolean removePokemonFromOwned(Pokemon p) {
 		return this.ownedPokemonList.remove(p);
+	}
+
+	public void removeSafariBall() {
+		for(Item item:itemList) {
+			if(item.getClass()==SafariBall.class) {
+				itemList.remove(item);
+			}
+		}
+		
 	}
 }

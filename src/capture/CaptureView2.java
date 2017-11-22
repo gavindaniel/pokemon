@@ -79,7 +79,7 @@ public class CaptureView2 extends Canvas implements Observer {
 	    public void handle(ActionEvent event) {
 	    	if(captureAnimation.canUseItem()) {
 	    	if(event.getSource()==throwBallButton) {
-	    		if(capture.checkHasSafariBalls()) {
+	    		if(capture.checkSafariBalls()) {
 	    		captureAnimation.animateItemThrow(new SafariBall());
 	    		capture.currentTrain.removeSafariBall();
 	    		}
