@@ -31,10 +31,8 @@ public class Trainer {
 		numSteps = 500;
 		ownedPokemonList = new ArrayList<Pokemon>();
 		itemList = new ArrayList<Item>();
-		
 		battlePokemonList = new ArrayList<Pokemon>(3);
 		activeBattlePokemon = null;
-
 	}
 
 	/**

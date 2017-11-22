@@ -127,7 +127,7 @@ public class Map extends Observable {
 				newP = changeZone(oldLoc);
 			trainer.setCurrentLocation(newP);
 			trainer.setNumSteps(trainer.getNumSteps() - 1);
-			System.out.println("r: "+trainer.getCurrentLocation().getY()+"\tc: "+trainer.getCurrentLocation().getX());
+//			System.out.println("r: "+trainer.getCurrentLocation().getY()+"\tc: "+trainer.getCurrentLocation().getX());
 //			if (trainer.getNumSteps() % 100 == 0)
 //				System.out.println("Steps left: " + (trainer.getNumSteps()));
 			checkForPokemon(trainer.getZone()-1, newLoc);
@@ -154,7 +154,7 @@ public class Map extends Observable {
 		} 
 		
 		catch (ArrayIndexOutOfBoundsException aiobe) {
-			System.out.println(aiobe.toString() + "\tr: " + new_r + "\tc: " + new_c);
+//			System.out.println(aiobe.toString() + "\tr: " + new_r + "\tc: " + new_c);
 			return false;
 		} 
 		
@@ -191,7 +191,7 @@ public class Map extends Observable {
 		} 
 		
 		catch (ArrayIndexOutOfBoundsException aiobe) {
-			System.out.println(aiobe.toString() + "\tr: " + new_r + "\tc: " + new_c);
+	//		System.out.println(aiobe.toString() + "\tr: " + new_r + "\tc: " + new_c);
 			return false;
 		} 
 	}
@@ -205,17 +205,41 @@ public class Map extends Observable {
 			if (c == 58) {
 				r += 8;
 				c = 21;
+				trainer.setZone(2); // might need to be 1 
 			}
-			trainer.setZone(2); // might need to be 1 
+			else if (r == 18) {
+				r = 44;
+				c += 10;
+				trainer.setZone(3);
+			}
 			return new Point(c,r);
 		}
 		else if (prevZone == 2) {
-			if (c == 21) {
+			if (r == 38 || r == 39 || r == 40) {
 				r -= 8;
 				c = 58; 
+				trainer.setZone(1); // might need to be 1 
+				return new Point(c,r);
 			}
-			trainer.setZone(1); // might need to be 1 
-			return new Point(c,r);
+			else if (r == 21 || r == 22) {
+				r += 17;
+				c = 68;
+				trainer.setZone(3);
+			}
+			return new Point(c,r); //don't change 
+		}
+		else if (prevZone == 3) {
+			if (r == 38 || r == 39) {
+				r -= 17;
+				c = 21;
+				trainer.setZone(2);
+			}
+			else if (c == 47 || c == 48 || c == 49) {
+				r = 18;
+				c -= 10;
+				trainer.setZone(1);
+			}
+			return new Point(c,r); //don't change 
 		}
 		else return new Point(c,r); //don't change 
 	}
