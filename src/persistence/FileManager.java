@@ -21,7 +21,7 @@ public class FileManager {
 
      users = new Vector<User>();
 
-//UD     pullUserData();
+//UD          pullUserData();
 
 
    }
@@ -126,6 +126,9 @@ System.out.println("FileMan:New User");
 
  public User getUserFromSafariZone(SafariZone pokemon){
 
+System.out.println("Man: get user");
+
+
        for( User user : users ){
 
         if(user.getSafariZone() == pokemon){
@@ -142,10 +145,13 @@ System.out.println("FileMan:New User");
 
 
 
- public void setUser(String name, String pswd){
+ public void setUser(String name, String pswd, SafariZone pokemon){
 
-    users.add(new User(name,pswd));
-//UD    pushUserData();
+System.out.println("Man: set user");
+    User temp = new User(name,pswd);
+    temp.setSafariZone(pokemon);
+    users.add(temp);
+//UD       pushUserData();
 
  }
 
