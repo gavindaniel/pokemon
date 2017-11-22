@@ -87,10 +87,10 @@ public class CaptureView extends Application {
     squirtleButton = new Button("Squirtle");
     
     //Get images for the pokemon
-    pikachu = new Image("file:C:\\Classes\\CSC 335\\gitrepos\\pokemon-teammoltres\\images\\pokemon\\pikachu.png", false);
-    bulbasaur = new Image("file:C:\\Classes\\CSC 335\\gitrepos\\pokemon-teammoltres\\images\\pokemon\\bulbasaur.png", false);
-    squirtle = new Image("file:C:\\Classes\\CSC 335\\gitrepos\\pokemon-teammoltres\\images\\pokemon\\squirtle.png", false);
-    charmander = new Image("file:C:\\Classes\\CSC 335\\gitrepos\\pokemon-teammoltres\\images\\pokemon\\charmander.png", false);
+    pikachu = new Image("file:images/pokemon/pikachu.png", false);
+    bulbasaur = new Image("file:images/pokemon/bulbasaur.png", false);
+    squirtle = new Image("file:images/pokemon/squirtle.png", false);
+    charmander = new Image("file:images/pokemon/charmander.png", false);
     pokemonButtons=new GridPane();
     pokemonButtons.add(pikachuButton, 0, 0);
     pokemonButtons.add(bulbasaurButton, 1, 0);
@@ -105,8 +105,8 @@ public class CaptureView extends Application {
     holder.setStyle("-fx-background-color: black");
     pane.setCenter(holder);
     g2 = canvas.getGraphicsContext2D();
-    backGround = new Image("file:C:\\Classes\\CSC 335\\gitrepos\\pokemon-teammoltres\\images\\capture\\battle_background.png", false);
-    characterSheet = new Image("file:C:\\Classes\\CSC 335\\gitrepos\\pokemon-teammoltres\\images\\sheets\\Game Boy Advance - Pokemon FireRed LeafGreen - Trainers Backs-Transparent.png", false);
+    backGround = new Image("file:images/capture/battle_background.png", false);
+    characterSheet = new Image("file:images/sheets/Game Boy Advance - Pokemon FireRed LeafGreen - Trainers Backs-Transparent.png", false);
     g2.drawImage(backGround, 0, 0,450,300);
     g2.drawImage(characterSheet, 8, 8, 70, 70, 20, 165, 150, 150);
     sx=8;
@@ -277,7 +277,7 @@ public class CaptureView extends Application {
 	    // This handle method gets called every 100 ms to draw the ship on a new location
 	    public void handle(ActionEvent event) {
 	    	if(currentItem.getClass()==new SafariBall().getClass()) {
-	    		currentItemImage=new Image("file:C:\\Classes\\CSC 335\\gitrepos\\pokemon-teammoltres\\images\\items\\safariBall.png", false);
+	    		currentItemImage=new Image("file:images/items/safariBall.png", false);
 	    		if(tic2==0) {
 	    		if(currentCapture.throwBall(new Random().nextInt(100))) {
 	    			/*
@@ -296,13 +296,13 @@ public class CaptureView extends Application {
 	    		}
 	    	}
 	    	else if(currentItem.getClass()==new Rock().getClass()) {
-	    		currentItemImage=new Image("file:C:\\Classes\\CSC 335\\gitrepos\\pokemon-teammoltres\\images\\items\\rock.png", false);
+	    		currentItemImage=new Image("file:images/items/rock.png", false);
 	    		if(tic2==0) {
 	    		currentCapture.throwRock();
 	    		}
 	    	}
 	    	else if(currentItem.getClass()==new Bait().getClass()) {
-	    		currentItemImage=new Image("file:C:\\Classes\\CSC 335\\gitrepos\\pokemon-teammoltres\\images\\items\\bait.png", false);
+	    		currentItemImage=new Image("file:images/items/bait.png", false);
 	    		if(tic2==0) {
 	    		currentCapture.throwBait();
 	    		}
