@@ -195,12 +195,14 @@ public class Trainer {
 		return this.ownedPokemonList.remove(p);
 	}
 
-	public void removeSafariBall() {
+	public boolean removeSafariBall() {
 		for(Item item:itemList) {
 			if(item.getClass()==SafariBall.class) {
 				itemList.remove(item);
+				return true;
 			}
 		}
+		return false;
 		
 	}
 }

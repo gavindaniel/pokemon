@@ -14,16 +14,16 @@ import javafx.scene.image.Image;
 import javafx.util.Duration;
 
 
-public class PokeCaptureAnimation {
+public class CaptureAnimations {
 
 	private Timeline standby,itemThrow,runAway,capture,emotion;
 	private Image bgImg;
-	private CaptureView2 captureView;
+	private CaptureView captureView;
 	private GraphicsContext gc;
 	private String runAwayPath,capturePath;
 	
 	
-	public PokeCaptureAnimation(CaptureView2 captureView, String bgPath, String standbyPath,String runAwayPath,String capturePath) {
+	public CaptureAnimations(CaptureView captureView, String bgPath, String standbyPath,String runAwayPath,String capturePath) {
 		
 		this.captureView = captureView;
 		gc = captureView.getGraphicsContext2D();

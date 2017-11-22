@@ -52,7 +52,7 @@ public class CaptureRunner extends Application {
 		//Add battle view observer
 		trainer1=new Trainer("Person");
 		capture=new Capture(new Pikachu(), trainer1);
-		captureView = new CaptureView2(capture, SCENE_WIDTH, SCENE_HEIGHT,window);
+		captureView = new CaptureView(capture, SCENE_WIDTH, SCENE_HEIGHT,window);
 		window.setCenter((Node) captureView);
 		stage.setScene(scene);
 		stage.show();
