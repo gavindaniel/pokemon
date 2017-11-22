@@ -13,13 +13,13 @@ import pokemon.PassiveStatBuff;
 import pokemon.PokeType;
 import pokemon.Pokemon;
 
-public class BattleLogic extends Observable {
+public class BattleLogicForView extends Observable {
 
 	private Trainer trainer1;
 	private Trainer trainer2;
 	private double[][] effectLookupTable; // Lookup table with values determining elemental attack effectiveness
 
-	public BattleLogic(Trainer trainer1, Trainer trainer2) {
+	public BattleLogicForView(Trainer trainer1, Trainer trainer2) {
 
 		this.trainer1 = trainer1;
 		this.trainer2 = trainer2;
@@ -61,14 +61,8 @@ public class BattleLogic extends Observable {
 	 * Top level function to handle battle sequence.
 	 */
 	public void runBattle() {
-
-		// Each trainer selects pokemon.
-		trainerSelectsPokemonForBattle(trainer1);
-		trainerSelectsPokemonForBattle(trainer2);
-
-		// Head of list is automatically selected at start.
-		trainer1.setActiveBattlePokemon(trainer1.getBattlePokemonList().get(0));
-		trainer2.setActiveBattlePokemon(trainer2.getBattlePokemonList().get(0));
+		
+		initializeActiveBattlePokemon();
 
 		int order = determineWhoStarts();
 
@@ -94,69 +88,16 @@ public class BattleLogic extends Observable {
 			System.out.println(trainer1.getName() + " has defeated " + trainer2.getName());
 		}
 	}
-
+	
 	/**
-	 * 3 pokemon are selected for use in battle.
+	 * First pokemon selected automatically starts in battle.
 	 */
-	private void trainerSelectsPokemonForBattle(Trainer trainer) {
+	public void initializeActiveBattlePokemon() {
 
-		List<Pokemon> pokeList = trainer.getBattlePokemonList();
-
-		Pokemon chosenPoke;
-
-		while (pokeList.size() < 3) {
-
-			printPokeListChooser(trainer);
-
-			chosenPoke = getPokeChoiceFromUser(trainer);
-
-			if (!pokeList.contains(chosenPoke)) {
-				pokeList.add(chosenPoke);
-				System.out.println("\n" + chosenPoke.getName() + " Successfully added.\n");
-			} else
-				System.out.println("\n" + chosenPoke.getName() + " is already chosen. Pick another one.\n");
-		}
-	}
-
-	/**
-	 * Prints list of available pokemon to console for trainer to choose from.
-	 */
-	private void printPokeListChooser(Trainer trainer) {
-
-		List<Pokemon> pokeList = trainer.getOwnedPokemonList();
-
-		System.out.println();
-		System.out.println(trainer.getName() + ", Choose from the following pokemon: ");
-
-		for (int i = 0; i < pokeList.size(); i++) {
-			System.out.println((i) + ": " + pokeList.get(i).getName());
-		}
-	}
-
-	/**
-	 * Obtains choice for pokemon from user.
-	 * 
-	 * @return Chosen pokemon
-	 */
-	private Pokemon getPokeChoiceFromUser(Trainer trainer) {
-
-		Scanner in = new Scanner(System.in);
-		int choice;
-
-		while (true) {
-
-			if (in.hasNextInt()) {
-
-				choice = in.nextInt();
-
-				if (choice >= 0 && choice < trainer.getOwnedPokemonList().size())
-					break;
-				else
-					System.out.println("Invalid Choice. Try Again");
-			} else
-				in.next();
-		}
-		return trainer.getOwnedPokemonList().get(choice);
+		trainer1.setActiveBattlePokemon(trainer1.getBattlePokemonList().get(0));
+		trainer2.setActiveBattlePokemon(trainer2.getBattlePokemonList().get(0));
+		setChanged();
+		notifyObservers();
 	}
 
 	/**

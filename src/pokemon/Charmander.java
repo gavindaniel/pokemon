@@ -1,6 +1,8 @@
 package pokemon;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Class represents the common, fire pokemon 'Charmander'.
@@ -13,6 +15,7 @@ public class Charmander extends Pokemon {
 		super("Charmander", PokeType.FIRE, null, OccurrenceRate.COMMON);
 		initializeStats(250, 171, 151, 167, 219);
 		initializeAttacks();
+		initializeBattleAnimations();
 	}
 
 	@Override
@@ -28,4 +31,29 @@ public class Charmander extends Pokemon {
 		return listOfAttacks;
 	}
 
+	@Override
+	public void initializeBattleAnimations() {
+		List<String> spritePaths = new ArrayList<>(5);
+		spritePaths.add("file:images/battle/Charmander/charmander-standby.png");
+		spritePaths.add("file:images/battle/Charmander/charmander-flamethrower.png");
+		spritePaths.add("file:images/battle/Charmander/charmander-tackle.png");
+		spritePaths.add("file:images/battle/Charmander/charmander-tackle.png");
+		spritePaths.add("file:images/battle/Charmander/charmander-standby.png");
+		spritePaths.add("file:images/battle/Charmander/charmander-back.png");
+		
+		String bgPath = "file:images/battle/battle-background.png";
+		
+		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
+																	 //Rows
+		int[][] coordinates = {{0,0,60,60,575,230,100,100, 60, 33}, //standBy
+				{0,0,60,60,575,230,100,100, 60, 33},				 //First Attack
+				{0,0,60,60,575,230,100,100, 60, 33},				 //Second Attack
+				{0,0,60,60,575,230,100,100, 60, 33},				 //Third Attack
+				{0,0,60,60,575,230,100,100, 60, 33},				 //Fourth Attack
+				{0,0,63,60,50,400,150,150, 64, 38},				 //Back Standby
+		};
+		
+		PokeBattleAnimation pba = new PokeBattleAnimation(bgPath, spritePaths, coordinates);
+		this.setBattleAnimation(pba);
+	}
 }

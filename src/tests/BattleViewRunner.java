@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Observer;
 
 import battle.BattleLogic;
+import battle.BattleLogicForView;
 import battle.BattleView;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import model.Trainer;
@@ -21,7 +21,7 @@ import pokemon.Squirtle;
 
 public class BattleViewRunner extends Application {
 
-	private BattleLogic battle;
+	private BattleLogicForView battle;
 	private Trainer trainer1;
 	private Trainer trainer2;
 	private Observer battleView;
@@ -46,7 +46,7 @@ public class BattleViewRunner extends Application {
 		
 		//Initialize logic model
 		initializeTrainers();
-		battle = new BattleLogic(trainer1, trainer2);
+		battle = new BattleLogicForView(trainer1, trainer2);
 		
 		//Add battle view observer
 		battleView = new BattleView(battle, SCENE_WIDTH, SCENE_HEIGHT);
@@ -56,7 +56,6 @@ public class BattleViewRunner extends Application {
 		stage.setScene(scene);
 		stage.show();
 		
-		((BattleView) battleView).animate();
 		
 	}
 

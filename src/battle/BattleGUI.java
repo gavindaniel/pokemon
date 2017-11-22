@@ -38,7 +38,7 @@ public class BattleGUI extends Application {
 	}
 
 	//Declare Model
-	private BattleLogic battle;
+	private BattleLogicForView battle;
 
 	//Declare JavaFX nodes
 	private BorderPane window;
@@ -73,12 +73,40 @@ public class BattleGUI extends Application {
 		
 		//Trainers select pokemon
 		initializeGUINodes();
-		setupPokeSelectionMenu(battle.getTrainer1());
-
+//		setupPokeSelectionMenu(battle.getTrainer1());
+		
 		//Add battle view observer
 		battleView = new BattleView(battle, SCENE_WIDTH, SCENE_HEIGHT);
 		battle.addObserver(battleView);
+		
+		/******************************For Quick Testing************************************/
+		  
+		List<Pokemon> pokeList1 = new ArrayList<>();
+		pokeList1.add(new Pikachu());
+		pokeList1.add(new Charmander());
+		pokeList1.add(new Bulbasaur());
+		for(Pokemon p : pokeList1) {
+			p.getBattleAnimation().setBattleView((BattleView) battleView);
+		}
 
+		List<Pokemon> pokeList2 = new ArrayList<>();
+		pokeList2.add(new Charmander());
+		pokeList2.add(new Pikachu());
+		pokeList2.add(new Squirtle());
+		
+		for(Pokemon p : pokeList2) {
+			p.getBattleAnimation().setBattleView((BattleView) battleView);
+		}
+
+		battle.getTrainer1().setBattlePokemonList(pokeList1);
+		battle.getTrainer2().setBattlePokemonList(pokeList2);
+		 
+		/**********************************************************************************/
+
+		setViewToBattle();
+		
+		//Run Battle
+		runBattle();
 		
 		stage.setScene(scene);
 		stage.show();
@@ -112,8 +140,7 @@ public class BattleGUI extends Application {
 		Trainer trainer2 = new Trainer("Player2");
 		trainer2.setOwnedPokemonList(pokeList2);
 
-		battle = new BattleLogic(trainer1, trainer2);
-		//		battle.runBattle();
+		battle = new BattleLogicForView(trainer1, trainer2);
 	}
 	
 	/**
@@ -214,6 +241,7 @@ public class BattleGUI extends Application {
 				chosenPoke = ownedPokeTable.getSelectionModel().getSelectedItem();
 	
 				if (!battleList.contains(chosenPoke)) {
+					chosenPoke.getBattleAnimation().setBattleView((BattleView) battleView); //Set battleView for pokemon
 					battleList.add(chosenPoke);
 					selectedPokemonList.add(chosenPoke.getName());
 				}
@@ -229,9 +257,7 @@ public class BattleGUI extends Application {
 				
 				else if (battleList.size() == 3) {
 					removePokeSelectionMenu();
-					
-					//Setup menu for next trainer
-					setupPokeSelectionMenu(battle.getTrainer2());
+					setupPokeSelectionMenu(battle.getTrainer2()); //Setup menu for next trainer
 				}
 		}
 	}
@@ -261,6 +287,15 @@ public class BattleGUI extends Application {
 		alert.setTitle(title);
 		alert.setHeaderText(message);
 		alert.showAndWait();
+	}
+	
+	
+	private void runBattle() {
+		
+		battle.initializeActiveBattlePokemon();
+		
+		
+		
 	}
 				
 				

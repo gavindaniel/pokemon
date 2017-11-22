@@ -1,10 +1,10 @@
 package battle;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import javafx.animation.ParallelTransition;
+import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -12,12 +12,13 @@ import pokemon.PokeBattleAnimation;
 
 public class BattleView extends Canvas implements Observer {
 	
-	private BattleLogic battle;
+	private BattleLogicForView battle;
 	private GraphicsContext gc;
 	private Image battleGround;
 	private PokeBattleAnimation pokeAnimation;
+	private ParallelTransition pTransition;
 	
-	public BattleView(BattleLogic battle, double width, double height) {
+	public BattleView(BattleLogicForView battle, double width, double height) {
 		
 		this.setWidth(width);
 		this.setHeight(height);
@@ -45,17 +46,12 @@ public class BattleView extends Canvas implements Observer {
 		
 		//Draw Background
 		gc.drawImage(battleGround, 0, 0, this.getWidth(), this.getHeight());
-	}
-	
-	public void animate() {
-		List<String> paths = new ArrayList<>();
-		paths.add("file:images/battle/battle-background.png");
-		paths.add("file:images/battle/Pikachu/pikachu-standby.png");
-		paths.add("file:images/battle/Pikachu/pikachu-thunderbolt.png");
-		
-		pokeAnimation = new PokeBattleAnimation(this, paths);
-//		pokeAnimation.animateStandby();
-		pokeAnimation.animateFirstAttack();
+				
+		pTransition = new ParallelTransition();
+		pTransition.getChildren().add(battle.getTrainer1().getActiveBattlePokemon().getBattleAnimation().getStandby());
+		pTransition.getChildren().add(battle.getTrainer2().getActiveBattlePokemon().getBattleAnimation().getBackStandby());
+		pTransition.setCycleCount(Timeline.INDEFINITE);
+		pTransition.play();
 	}
 	
 	
