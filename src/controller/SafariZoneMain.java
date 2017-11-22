@@ -21,11 +21,20 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.SafariZone;
 import views.GraphicView;
-import views.LoginView;
 import views.MapView;
 import views.TextView;
+import network.User;
 
 /**************************************************************/
+
+import javafx.scene.control.Alert.AlertType;
+
+import javafx.event.*;
+import javafx.scene.control.*;
+import javafx.scene.text.Font;
+import javafx.geometry.*;
+
+
 import java.net.*;
 import java.io.*;
 import javafx.concurrent.Task;
@@ -38,36 +47,60 @@ import java.net.Socket;
 import java.util.Optional;
 //import controller.SafariZoneMain.ServerListener;
 import javafx.concurrent.Task;
-//import views.LoginView;
+import views.LoginView;
+import persistence.FileManager;
+import persistence.GameLoader;
+
+
 /**************************************************************/
 
 public class SafariZoneMain extends Application {
 
 	private Stage stage;
-	private Scene scene1, scene2, scene3;
-	private BorderPane window1, window2, window3;
+	private Scene scene1, scene2, scene3, scene4;
+	private BorderPane window1, window2, window3, window4;
+        private int loggedIn;
+
 	
-	private SafariZone theGame;
+//	private SafariZone gameLoader.getSafariZone();
 	private MenuBar menuBar;
 	private Observer currentView;
 	private GraphicView graphicView;
 	private TextView textView;
 	private MapView mapView;
-	
-	private Settings settings;
+
+ 	private Settings settings;
 	char keyPressed;
 	
 	private Button newGameButton;
 	private Button loadGameButton;
 
+
 /***************************************/
-//		private GameLoader gameLoader;
-		private Socket socket;
+
+
+        private Button loginButton;
+
+        public FileManager man;
+        private GameLoader gameLoader;
+
+        private Menu userMenuBar, adminMenuBar;
+        private TextField acctT;
+        private PasswordField pswdT;
+        private Button loginB, exitLgn, createU;
+        private GridPane acctGrid, loginGrid, buttonGrid;
+        private Label acctLabl, pswdLabl, loginMsg, userMsg;
+
+
+
+
+/////////////////////
+
+        private Socket socket;
         private ObjectOutputStream outputToServer;
         private ObjectInputStream inputFromServer;
         private static final String Address = "localhost";
         public Point altPlayer;
- //       FileManager man = new FileManager();
 /***************************************/
         
 	public static void main(String[] args) {
@@ -79,37 +112,52 @@ public class SafariZoneMain extends Application {
 /***************************************/
 //      openConnection();
 /***************************************/
+                acctGrid = new GridPane();
+
+                loginGrid = new GridPane();
+                loggedIn=0;
+
+                man = new FileManager();
+
 		primaryStage.setTitle("Pokemon: Safari Zone");
 		stage = primaryStage;
 		keyPressed = 'z';
 		settings = new Settings();
 		
+		initializeGameForTheFirstTime();
+//	        loginView = new LoginView(man,gameLoader,graphicView);
 		setupScenes();
 		setupMainMenu();
 		setupStartScreen();
 		setupGameMenus();
 		
+                setUpLoginGrids();
 		window2.setTop(menuBar);
-		initializeGameForTheFirstTime();
 
 		scene2.setOnKeyPressed(new KeyPressListener());
 		scene2.setOnKeyReleased(new KeyReleaseListener());
 
 		scene3.setOnMouseClicked(new MouseClickListener());
 		scene3.setOnKeyPressed(new KeyPressListener2());
+
+//		scene4.setOnKeyPressed(new KeyPressListener3());
+
+
+
 		// Setup the views
-		textView = new TextView(theGame);
-		graphicView = new GraphicView(theGame);
-		mapView = new MapView(theGame);
-		
+		textView = new TextView(gameLoader.getSafariZone());
+		graphicView = new GraphicView(gameLoader.getSafariZone());
+		mapView = new MapView(gameLoader.getSafariZone());
 		
 /***************************************/
 //		textView = new TextView(gameLoader.getSafariZone());
 //        loginView = new LoginView(man,gameLoader,textView);
 /***************************************/
 		
-		theGame.addObserver(textView);
-		theGame.addObserver(graphicView);
+		gameLoader.getSafariZone().addObserver(textView);
+		gameLoader.getSafariZone().addObserver(graphicView);
+//                gameLoader.getSafariZone().addObserver(loginView);
+
 
 /***********************/
 		//gameLoader.getPokemon().addObserver(textView);
@@ -126,19 +174,226 @@ public class SafariZoneMain extends Application {
 		window2.setCenter(null);
 		currentView = newView;
 		window2.setCenter((Node) currentView);
+               
 	}
 
 	public void initializeGameForTheFirstTime() {
-		theGame = new SafariZone();
+               gameLoader = new GameLoader( new SafariZone());
+
 	}
+
+
+
+    public void setUpLoginGrids(){
+
+    loginB = new Button("Login");
+    loginB.setFont( new Font("Arial", 14));
+    exitLgn = new Button("Exit");
+    exitLgn.setFont( new Font("Arial", 14));
+
+
+
+    acctT = new TextField();
+    pswdT = new PasswordField();
+    acctLabl = new Label("Account Name");
+    pswdLabl = new Label("Password");
+    loginMsg = new Label("Sign In");
+    acctLabl.setFont( new Font("Arial", 18));
+    pswdLabl.setFont( new Font("Arial", 18));
+    loginMsg.setFont( new Font("Arial", 24));
+
+
+    window4.setAlignment(loginMsg, Pos.CENTER);
+    window4.setMargin(loginMsg, new Insets(10,10,10,10));
+    window4.setTop(loginMsg);
+
+
+    acctT.setMaxHeight(15.0);
+    pswdT.setMaxHeight(15.0);
+    acctT.setMaxWidth(125.0);
+    pswdT.setMaxWidth(125.0);
+
+    acctGrid.add(acctLabl,1,1);
+    acctGrid.add(pswdLabl,1,2);
+    acctGrid.add(acctT,2,1);
+    acctGrid.add(pswdT,2,2);
+    acctGrid.setHgap(5);
+    acctGrid.setVgap(5);
+
+    window4.setAlignment(acctGrid, Pos.CENTER);
+    window4.setMargin(acctGrid, new Insets(10,10,10,10));
+    window4.setCenter(acctGrid);
+
+
+    window4.setAlignment(loginGrid, Pos.CENTER);
+    window4.setMargin(loginGrid, new Insets(10,10,100,125));
+    window4.setBottom(loginGrid);
+
+    loginGrid.setHgap(5);
+    loginGrid.setVgap(5);
+
+
+    loginGrid.add(loginB,1,1);
+    loginGrid.add(exitLgn,1,10);
+
+    createU = new Button("Create");
+    window4.setAlignment(createU, Pos.CENTER);
+    window4.setMargin(createU, new Insets(10,10,100,125));
+
+
+    LoginButtonListener handler1 = new LoginButtonListener();
+
+    loginB.setOnAction(handler1);
+    exitLgn.setOnAction(handler1);
+
+    createU.setOnAction(handler1);
+
+
+    }
+
+
+
+
+        private class LoginButtonListener implements EventHandler<ActionEvent>{
+
+      @Override
+      public void handle(ActionEvent arg0){
+  
+         if(exitLgn==(Button) arg0.getSource()){
+ 
+               stage.setScene(scene1);
+          }
+ 
+        if(loginB==(Button) arg0.getSource()){
+
+         // make one call to check user.... 
+           if(acctT.getText().equals("") || pswdT.getText().equals("")){
+System.out.println("View:User Error1");
+           } else {
+               loggedIn=1;
+
+               User temp=man.getUser(acctT.getText(),pswdT.getText());
+            
+               if(temp!=null){
+System.out.println("View:Returning User");              
+                   // have confirm to load last game
+                  Alert alert = new Alert(AlertType.CONFIRMATION);
+                  alert.setHeaderText("Load Previous Game?");
+                  Optional<ButtonType> result = alert.showAndWait();
+   
+                  if(result.get() == ButtonType.OK){
+System.out.println("Set SafariZone previous for ret User"); 
+                  // check player loc in loaded game
+//System.out.println("Player Previous: "+temp.getSafariZone().getTrainerLoc().getX()+" "+temp.getSafariZone().getTrainerLoc().getY());   
+                      // load User prev game
+                      gameLoader.setSafariZone(null);
+                      gameLoader.setSafariZone(temp.getSafariZone());
+
+                      
+
+                      graphicView = null;
+                      graphicView = new GraphicView(gameLoader.getSafariZone());
+                      gameLoader.getSafariZone().addObserver(graphicView);
+                      setViewTo(graphicView);
+                      stage.setScene(scene2);
+
+
+
+
+                   } else {
+System.out.println("Set SafariZone current for ret User");
+                      // set User SafariZone to current game   
+
+
+                      temp.setSafariZone(gameLoader.getSafariZone());
+                      graphicView = null;
+
+                      graphicView = new GraphicView(gameLoader.getSafariZone());
+                      gameLoader.getSafariZone().addObserver(graphicView);
+
+                      setViewTo(graphicView);
+ 
+                      stage.setScene(scene2);
+
+
+//UD 
+                     man.pushUserData();
+                   }
+                      // set up admin User menu and game view
+                   if(temp.name.equals("Merlin") && temp.password.equals("7777777")){
+System.out.println("View:Admin");
+ //                        setUpAdminMenus();
+ //                        setViewToAdmin(textView);
+                   } else {
+                    // set up current User game view
+      //                   setViewTo(textView);   
+                    }
+//                     setUserMsg("Welcome Back User");               
+
+               } else {
+                   man.setUser(acctT.getText(),pswdT.getText(),gameLoader.getSafariZone());
+System.out.println("View:New User");
+System.out.println("Set SafariZone current for new");
+                   //get user and set SafariZone to current game 
+
+//                    man.getUser(acctT.getText(),pswdT.getText()).setSafariZone(gameLoader.getSafariZone());
+
+//UD    
+                  man.pushUserData();
+
+
+                    setViewTo(graphicView);
+                    stage.setScene(scene2);
+
+               }
+           }
+          acctT.setText("");
+          pswdT.setText("");
+        }
+                      
+         if(createU==(Button) arg0.getSource()){
+
+    System.out.println("Got Create");
+
+
+System.out.println("View:Admin Create New User");
+                    man.setUser(acctT.getText(),pswdT.getText(),new SafariZone());
+            // set created user new SafariZone 
+                    man.getUser(acctT.getText(),pswdT.getText()).setSafariZone(new SafariZone());
+
+//UD   
+                      man.pushUserData();
+              //      adminHelper();
+              //      setUpAdminMenus();
+              //      setViewToAdmin(textView);
+                    acctT.setText("");
+                    pswdT.setText("");
+
+
+         }
+
+
+
+      }
+
+   
+      }
+
+
+
 
 	private void setupScenes() {
 		window1 = new BorderPane(); // Main Menu
 		window2 = new BorderPane();	// Game 
 		window3 = new BorderPane(); // Start screen
+       		window4 = new BorderPane(); // Login screen
+       
 		scene1 = new Scene(window1, settings.getWidth("scene"), settings.getHeight("scene"));
 		scene2 = new Scene(window2, settings.getWidth("scene"), settings.getHeight("scene"));
 		scene3 = new Scene(window3, settings.getWidth("scene"), settings.getHeight("scene"));
+        	scene4 = new Scene(window4, settings.getWidth("scene"), settings.getHeight("scene"));
+		
+
 	}
 	private void setupStartScreen() {
 		Image startScreen = new Image("file:images/misc/start-screen.jpg");
@@ -162,6 +417,8 @@ public class SafariZoneMain extends Application {
 		gp.getChildren().addAll(newGameButton, loadGameButton);
 		window1.setCenter(gp);
 	}
+
+
 	private void setupGameMenus() {
 		// game menu options
 		MenuItem pokemon = new MenuItem("Pokemon");
@@ -170,10 +427,13 @@ public class SafariZoneMain extends Application {
 		MenuItem trainer = new MenuItem("Trainer");
 		MenuItem save = new MenuItem("Save");
 		MenuItem option = new MenuItem("Option");
+		MenuItem newGame = new MenuItem("New Game");
+
+
 		MenuItem exit = new MenuItem("Exit");
 		// add the options
 		Menu menu = new Menu("Menu");
-		menu.getItems().addAll(pokemon, bag, map, trainer, save, option, exit);		
+		menu.getItems().addAll(pokemon, bag, map, trainer, newGame, save, option, exit);		
 		// view menu options
 		MenuItem textV = new MenuItem("Text");
 		MenuItem graphicV = new MenuItem("Graphics");
@@ -202,6 +462,9 @@ public class SafariZoneMain extends Application {
 		trainer.setOnAction(menuListener);
 		save.setOnAction(menuListener);
 		option.setOnAction(menuListener);
+		newGame.setOnAction(menuListener);
+
+
 		exit.setOnAction(menuListener);
 		// view menu listeners
 		textV.setOnAction(menuListener);
@@ -219,16 +482,16 @@ public class SafariZoneMain extends Application {
 		public void handle(KeyEvent event) {
 			if (event.getCode() == KeyCode.UP) {
 				graphicView.animateTrainer('U', false);
-				theGame.movePlayer('U');
+				gameLoader.getSafariZone().movePlayer('U');
 			} else if (event.getCode() == KeyCode.DOWN) {
 				graphicView.animateTrainer('D', false);
-				theGame.movePlayer('D');
+				gameLoader.getSafariZone().movePlayer('D');
 			} else if (event.getCode() == KeyCode.LEFT) {
 				graphicView.animateTrainer('L', false);
-				theGame.movePlayer('L');
+				gameLoader.getSafariZone().movePlayer('L');
 			} else if (event.getCode() == KeyCode.RIGHT) {
 				graphicView.animateTrainer('R', false);
-				theGame.movePlayer('R');
+				gameLoader.getSafariZone().movePlayer('R');
 			}
 		}
 	}
@@ -267,26 +530,52 @@ public class SafariZoneMain extends Application {
 		@Override
 		public void handle(ActionEvent e) {
 			String text = ((MenuItem) e.getSource()).getText();
-			if (text.equals("New Game"))
-				theGame.startNewGame(); 
-			else if (text.equals("Text"))
+			if (text.equals("New Game")){
+				gameLoader.getSafariZone().startNewGame(); 
+                                graphicView=null;
+                                graphicView = new GraphicView(gameLoader.getSafariZone());
+                                setViewTo(graphicView);
+                                stage.setScene(scene2);
+
+            		}else if (text.equals("Text")){
 				setViewTo(textView);
-			else if (text.equals("Graphics"))
+			}else if (text.equals("Save")){
+                              if(loggedIn==0){	       
+                 stage.setScene(scene4);
+                              }
+//UD   
+                            man.pushUserData();
+	        	}else if (text.equals("Graphics")){
 				setViewTo(graphicView);
-			else if (text.equals("Map")) {
+			}else if (text.equals("Map")) {
 //				stage.setScene(scene3);			
 				Stage stage = new Stage();
 				stage.setTitle("Map View");
-				stage.setScene(new Scene(mapView, theGame.getSettings().getWidth("map"), theGame.getSettings().getHeight("map")));
+				stage.setScene(new Scene(mapView, gameLoader.getSafariZone().getSettings().getWidth("map"), gameLoader.getSafariZone().getSettings().getHeight("map")));
 				stage.show();
 			} else if (text.equals("Pokemon")) {
 				Stage stage = new Stage();
 				stage.setTitle("Pokemon View");
-				stage.setScene(new Scene(new BorderPane(), theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene")));
+				stage.setScene(new Scene(new BorderPane(), gameLoader.getSafariZone().getSettings().getWidth("scene"), gameLoader.getSafariZone().getSettings().getHeight("scene")));
 				stage.show();
 			} 
 			else if (text.equals("Exit")) {
-				stage.setScene(scene1);
+//UD		 
+                         man.pushUserData();		
+                         loggedIn=0;
+                gameLoader.setSafariZone(null);
+                gameLoader.setSafariZone(new SafariZone());
+                graphicView = null;
+
+
+
+                graphicView = new GraphicView(gameLoader.getSafariZone());
+//                window4 = new LoginView(man,gameLoader,graphicView);
+                gameLoader.getSafariZone().addObserver(graphicView);
+
+
+
+                              stage.setScene(scene1);
 			}	
 /**************************************************************/
 //			else if (text.equals("Sign In")){
@@ -316,7 +605,7 @@ public class SafariZoneMain extends Application {
 		@Override
 		public void handle(ActionEvent event) {
 			if (event.getSource()==newGameButton) {
-				theGame.startNewGame();
+				gameLoader.getSafariZone().startNewGame();
 				graphicView.drawViewableArea();
 				graphicView.resetTrainer();
 				graphicView.drawTrainer();
@@ -324,7 +613,9 @@ public class SafariZoneMain extends Application {
 				stage.setScene(scene2);
 			}
 			else if (event.getSource()==loadGameButton) {
-				// TODO
+                               // setViewTo(loginView);       
+                         	stage.setScene(scene4);
+                 
 				System.out.println("loading..");
 			}
 		}	

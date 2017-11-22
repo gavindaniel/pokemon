@@ -21,7 +21,7 @@ public class FileManager {
 
      users = new Vector<User>();
 
-     pullUserData();
+//UD     pullUserData();
 
 
    }
@@ -145,7 +145,7 @@ System.out.println("FileMan:New User");
  public void setUser(String name, String pswd){
 
     users.add(new User(name,pswd));
-    pushUserData();
+//UD    pushUserData();
 
  }
 
@@ -184,7 +184,7 @@ System.out.println("FileMan:New User");
              if (result.get() == ButtonType.OK){
 
              iter.remove(); 
-             pushUserData(); 
+//UD             pushUserData(); 
 
 System.out.println("removed user"); 
 
