@@ -45,7 +45,7 @@ public class Pikachu extends Pokemon {
 		
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 															 //Rows
-		int[][] coordinates = {{0,0,60,60,575,230,100,100, 60, 33}, //standBy
+		int[][] coordinates = {{0,0,60,60,570,240,100,100, 60, 33}, //standBy
 				{0,0,60,60,575,230,100,100, 60, 33},				 //First Attack
 				{0,0,60,60,575,230,100,100, 60, 33},				 //Second Attack
 				{0,0,60,60,575,230,100,100, 60, 33},				 //Third Attack

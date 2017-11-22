@@ -16,7 +16,7 @@ public class BattleView extends Canvas implements Observer {
 	private GraphicsContext gc;
 	private Image battleGround;
 	private PokeBattleAnimation pokeAnimation;
-	private ParallelTransition pTransition;
+	private ParallelTransition standbyTimeline;
 	
 	public BattleView(BattleLogicForView battle, double width, double height) {
 		
@@ -47,11 +47,11 @@ public class BattleView extends Canvas implements Observer {
 		//Draw Background
 		gc.drawImage(battleGround, 0, 0, this.getWidth(), this.getHeight());
 				
-		pTransition = new ParallelTransition();
-		pTransition.getChildren().add(battle.getTrainer1().getActiveBattlePokemon().getBattleAnimation().getStandby());
-		pTransition.getChildren().add(battle.getTrainer2().getActiveBattlePokemon().getBattleAnimation().getBackStandby());
-		pTransition.setCycleCount(Timeline.INDEFINITE);
-		pTransition.play();
+		standbyTimeline = new ParallelTransition();
+		standbyTimeline.getChildren().add(battle.getTrainer1().getActiveBattlePokemon().getBattleAnimation().getStandby());
+		standbyTimeline.getChildren().add(battle.getTrainer2().getActiveBattlePokemon().getBattleAnimation().getBackStandby());
+		standbyTimeline.setCycleCount(Timeline.INDEFINITE);
+		standbyTimeline.play();
 	}
 	
 	
