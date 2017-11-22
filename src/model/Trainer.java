@@ -7,6 +7,7 @@ import java.util.List;
 import controller.Settings;
 import items.Item;
 import pokemon.Pikachu;
+import items.SafariBall;
 import pokemon.Pokemon;
 
 public class Trainer {
@@ -33,10 +34,17 @@ public class Trainer {
 		ownedPokemonList = new ArrayList<Pokemon>();
 			ownedPokemonList.add(new Pikachu());
 		itemList = new ArrayList<Item>();
+		givePokeBalls();
 		battlePokemonList = new ArrayList<Pokemon>(3);
 		activeBattlePokemon = null;
 	}
 
+	//Give the trainer 30 pokeballs to start
+	public void givePokeBalls() {
+		for(int i=0;i<30;i++) {
+			itemList.add(new SafariBall());
+		}
+	}
 	/**
 	 * @return the name
 	 */
@@ -209,5 +217,16 @@ public class Trainer {
 	 */
 	public boolean removePokemonFromOwned(Pokemon p) {
 		return this.ownedPokemonList.remove(p);
+	}
+
+	public boolean removeSafariBall() {
+		for(Item item:itemList) {
+			if(item.getClass()==SafariBall.class) {
+				itemList.remove(item);
+				return true;
+			}
+		}
+		return false;
+		
 	}
 }

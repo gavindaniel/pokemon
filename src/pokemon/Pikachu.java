@@ -11,11 +11,15 @@ import java.util.List;
  */
 public class Pikachu extends Pokemon {
 
+	String standByPath,runAwayPath,capturePath;
 	public Pikachu() {
 		super("Pikachu", PokeType.ELECTRIC, null, OccurrenceRate.COMMON);
 		initializeStats(242, 177, 125, 167, 247);
 		initializeAttacks();
 		initializeBattleAnimations();
+		this.standByPath="file:images/battle/Pikachu2/pikachu-standby.png";
+		this.runAwayPath="file:images/battle/Pikachu2/pikachu-quickattack.png";
+		this.capturePath="file:images/battle/Pikachu2/pikachu-standby.png";
 	}
 
 	@Override
@@ -55,5 +59,25 @@ public class Pikachu extends Pokemon {
 		
 		PokeBattleAnimation pba = new PokeBattleAnimation(bgPath, spritePaths, coordinates);
 		this.setBattleAnimation(pba);
+	}
+
+	
+	@Override
+	public String getStandByPath() {
+		// TODO Auto-generated method stub
+		return standByPath;
+	}
+
+	@Override
+	public String getRunAwayPath() {
+		// TODO Auto-generated method stub
+		return runAwayPath;
+	}
+
+	@Override
+	public String getCapturePath() {
+		// TODO Auto-generated method stub
+		return capturePath;
+
 	}
 }
