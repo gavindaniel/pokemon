@@ -96,6 +96,9 @@ public class CaptureView extends Canvas implements Observer {
 	    		captureAnimation.animateItemThrow(new Rock());
 	    		capture.throwRock();
 	    }
+	    	if(event.getSource()==runButton) {
+	    		System.exit(0);
+	    }
 	  }
 	    	
 	    }
@@ -133,7 +136,7 @@ public class CaptureView extends Canvas implements Observer {
 		 throwBallButton = new Button("Throw Ball");
 		 throwBaitButton = new Button("Throw Bait");
 		 throwRockButton = new Button("Throw Rock");
-		 //runButton
+		 runButton = new Button("Run Away");
 		 captureButtons.add(throwBallButton, 0, 0);
 		 captureButtons.add(throwBaitButton, 1, 0);
 		 captureButtons.add(throwRockButton, 2, 0);
