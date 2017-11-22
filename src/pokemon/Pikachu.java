@@ -35,9 +35,9 @@ public class Pikachu extends Pokemon {
 	public void initializeBattleAnimations() {
 		List<String> spritePaths = new ArrayList<>(5);
 		spritePaths.add("file:images/battle/Pikachu/pikachu-standby.png");
-		spritePaths.add("file:images/battle/Pikachu/pikachu-thnderbolt.png");
+		spritePaths.add("file:images/battle/Pikachu/pikachu-thunderbolt.png");
 		spritePaths.add("file:images/battle/Pikachu/pikachu-quickattack.png");
-		spritePaths.add("file:images/battle/Pikachu/pikachu-swift.png");
+		spritePaths.add("file:images/battle/Pikachu/pikachu-quickattack.png");
 		spritePaths.add("file:images/battle/Pikachu/pikachu-charge.png");
 		spritePaths.add("file:images/battle/Pikachu/pikachu-back.png");
 		
@@ -46,10 +46,10 @@ public class Pikachu extends Pokemon {
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 															 //Rows
 		int[][] coordinates = {{0,0,60,60,570,240,100,100, 60, 33}, //standBy
-				{0,0,60,60,575,230,100,100, 60, 33},				 //First Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Second Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Third Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Fourth Attack
+				{0,15,69,82,530,255,100,100, 73, 60},				 //First Attack
+				{10,10,80,82,530,245,100,100, 96, 60},				 //Second Attack
+				{10,10,80,82,530,245,100,100, 96, 60},				 //Third Attack
+				{0,0,70,125,530,220,120,120, 67, 60},				 //Fourth Attack
 				{0,0,60,60,575,230,100,100, 60, 33},				 //Back Standby
 		};
 		

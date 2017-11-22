@@ -187,37 +187,6 @@ public class BattleLogicForView extends Observable {
 		System.out.println();
 	}
 
-//	/**
-//	 * Choose to attack opponent or switch pokemon.
-//	 * 
-//	 * @param trainer
-//	 *            trainer making choice
-//	 * @return 1 for Attack, 2 For switch
-//	 */
-//	private int selectAttackOrSwitch(Trainer trainer) {
-//
-//		System.out.println(trainer.getName() + ". What would you like to do?");
-//		System.out.print("1- Attack\n2- Switch Pokemon\n");
-//
-//		Scanner in = new Scanner(System.in);
-//		int choice;
-//
-//		while (true) {
-//
-//			if (in.hasNextInt()) {
-//
-//				choice = in.nextInt();
-//
-//				if (choice == 1 || choice == 2)
-//					break;
-//				else
-//					System.out.println("Invalid Choice. Try Again");
-//			} else
-//				in.next();
-//		}
-//		return choice;
-//	}
-
 	/**
 	 * Effects from an attack are applied.
 	 * 

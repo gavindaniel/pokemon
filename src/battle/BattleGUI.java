@@ -162,6 +162,7 @@ public class BattleGUI extends Application {
 		
 		//Initializing Attack Label
 		Label attackLabel = new Label(battle.getActiveTrainer() + ". Your Turn.");
+		attackLabel.setStyle("-fx-font-size: 14pt");
 		
 		//Initializing attack buttons
 		Button attack1 = new Button("Attack 1");
@@ -172,10 +173,10 @@ public class BattleGUI extends Application {
 		//Adding button to grid pane
 		attackPane = new GridPane();
 		attackPane.add(attackLabel, 0, 0);
-		attackPane.add(attack1, 1, 0);
-		attackPane.add(attack2, 2, 0);
-		attackPane.add(attack3, 3, 0);
-		attackPane.add(attack4, 4, 0);
+		attackPane.add(attack1, 2, 0);
+		attackPane.add(attack2, 3, 0);
+		attackPane.add(attack3, 4, 0);
+		attackPane.add(attack4, 5, 0);
 		
 		//formating grid pane
 		attackPane.setHgap(10.0);
