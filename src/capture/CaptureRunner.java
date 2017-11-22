@@ -27,7 +27,6 @@ public class CaptureRunner extends Application {
 
 	private Capture capture;
 	private Trainer trainer1;
-	private Trainer trainer2;
 	private Observer captureView;
 
 	private BorderPane window;
