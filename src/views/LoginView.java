@@ -257,7 +257,7 @@ System.out.println("View:Admin");
 //                     setUserMsg("Welcome Back User");               
                   
                } else {
-                   man.setUser(acctT.getText(),pswdT.getText());
+//                   man.setUser(acctT.getText(),pswdT.getText());
 System.out.println("View:New User");              
 System.out.println("Set Pokemon current for new"); 
                    //get user and set Pokemon to current game 

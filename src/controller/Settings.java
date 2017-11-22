@@ -13,15 +13,16 @@ public class Settings {
 	private static int text_display_lowerbound, text_display_upperbound;
 	private static double trainer_x, trainer_y;
 	private static double sprite_x, sprite_y;
+	private static double timeline_1_duration, timeline_2_duration;
 	
 	public Settings() {
-		starting_zone = 1;					//  the zone # that the trainer starts in (this will be changed once the safari zone building is done
-		zone_size = 80;						//  the tile height and width of the zone map
+		starting_zone = 1;					//  zone # that the trainer starts in (this will be changed once the safari zone building is done)
+		zone_size = 80;						//  number of tiles that make up the height and width of the zone map
 		tree_line = 15;						//	number of trees that will border the zone 
 		scene_height = 550;					//	the display height of the Game View
 		scene_width = 800;					//	the display width of the Game View
-		map_height = 510;					//	the display height of the entire Map View
-		map_width = 1110;					//	the display width of the entire Map View
+		map_height = 500;					//	the display height of the entire Map View
+		map_width = 800;						//	the display width of the entire Map View
 		tile_source_size = 16;				//	original background image size:	16px by 16px
 		tile_display_size = 32;				//	desired display background image size:	32px by 32px
 		trainer_source_width = 19;			//	width of the source image of the trainer on the spritesheet
@@ -36,6 +37,8 @@ public class Settings {
 		trainer_y = 368;						//	trainer y location to be displayed in the game
 		sprite_x = -2;						//	trainer x location on the sprite sheet
 		sprite_y = 0;						//	trainer y location on the sprite sheet
+		timeline_1_duration = 250;			//	duration of timeline 1 to animate Trainer movement (in miliseconds)
+		timeline_2_duration = 500;			//	***this may not be needed*** trying to animate the background independently 
 	}
 	public int getStartingZone() {
 		return starting_zone;
@@ -95,5 +98,11 @@ public class Settings {
 			return graphic_display_upperbound;
 		else //if (key == "text")
 			return text_display_upperbound;
+	}
+	public double getTimelineDuration(int key) {
+		if (key == 1)
+			return timeline_1_duration;
+		else // key == 2
+			return timeline_2_duration;
 	}
 }

@@ -25,14 +25,13 @@ public class MapView extends BorderPane implements Observer {
 
 	private void initializePane() {
 		gameDisplay = new TextArea();
-		gameDisplay.setFont(new Font("Courier", 7));
+		gameDisplay.setFont(new Font("Courier", 10));
 		gameDisplay.setEditable(false);
 		gp1.setPrefWidth(theGame.getSettings().getWidth("map"));
 		gp1.setPrefHeight(theGame.getSettings().getHeight("map"));
 		gameDisplay.setPrefWidth(theGame.getSettings().getWidth("map"));
 		gameDisplay.setPrefHeight(theGame.getSettings().getHeight("map"));
 		gameDisplay.setStyle("-fx-font-alignment: center");
-
 		gp1.getChildren().addAll(gameDisplay);
 		this.setCenter(gp1);
 		updateTextArea();
@@ -45,8 +44,7 @@ public class MapView extends BorderPane implements Observer {
 	}
 
 	public void updateTextArea() {
-//		gameDisplay.setText(theGame.getMap().toString(theGame.getMap().getBoard()));
-		gameDisplay.setText(theGame.getMap().drawGameMap(theGame.getMap().getTrainer().getZone()));
+		gameDisplay.setText(theGame.getMap().drawGameMap(theGame.getMap().getTrainer().getZone()-1));
 	}
 
 }

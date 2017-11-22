@@ -1,34 +1,21 @@
 package persistence;
 
-
-
-
 import model.SafariZone;
 
+public class GameLoader {
 
-public class GameLoader{
+	SafariZone game;
 
-   SafariZone game;
+	public GameLoader(SafariZone game) {
+		this.game = game;
+	}
 
+	public SafariZone getSafariZone() {
+		return game;
+	}
 
-   public GameLoader(SafariZone game){
-
-    this.game=game;
-   }
-
-
-   public SafariZone getSafariZone(){
-
-    return game;
-
-   }
-
-   public void setSafariZone(SafariZone game){
-
-    this.game=game;
-
-   }
-
-
+	public void setSafariZone(SafariZone game) {
+		this.game = game;
+	}
 
 }
