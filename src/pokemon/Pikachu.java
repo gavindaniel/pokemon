@@ -50,7 +50,7 @@ public class Pikachu extends Pokemon {
 				{10,10,80,82,530,245,100,100, 96, 60},				 //Second Attack
 				{10,10,80,82,530,245,100,100, 96, 60},				 //Third Attack
 				{0,0,70,125,530,220,120,120, 67, 60},				 //Fourth Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Back Standby
+				{0,0,65,60,50,390,150,150, 65, 33},				 //Back Standby
 		};
 		
 		PokeBattleAnimation pba = new PokeBattleAnimation(bgPath, spritePaths, coordinates);

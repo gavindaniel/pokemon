@@ -101,8 +101,8 @@ public class BattleGUI extends Application {
 			p.getBattleAnimation().setBattleView((BattleView) battleView);
 		}
 
-		battle.getTrainer1().setBattlePokemonList(pokeList1);
-		battle.getTrainer2().setBattlePokemonList(pokeList2);
+		battle.getTrainer1().setBattlePokemonList(pokeList2);
+		battle.getTrainer2().setBattlePokemonList(pokeList1);
 		 
 		/**********************************************************************************/
 

@@ -162,19 +162,19 @@ public class PokeBattleAnimation {
 
 		//First Attack Timeline
 		firstAttack = new Timeline(new KeyFrame(Duration.millis(50), new AnimateFirstAttack(paths.get(1))));
-		firstAttack.setCycleCount(Animation.INDEFINITE);
+		firstAttack.setCycleCount(coordinates[1][9]);
 
 		//secondAttack Timeline
 		secondAttack = new Timeline(new KeyFrame(Duration.millis(50), new AnimateSecondAttack(paths.get(2))));
-		secondAttack.setCycleCount(Animation.INDEFINITE);
+		secondAttack.setCycleCount(coordinates[2][9]);
 
 		//Third Attack Timeline
 		thirdAttack = new Timeline(new KeyFrame(Duration.millis(50), new AnimateThirdAttack(paths.get(3))));
-		thirdAttack.setCycleCount(Animation.INDEFINITE);
+		thirdAttack.setCycleCount(coordinates[3][9]);
 		
 		//Fourth Attack Timeline
 		fourthAttack = new Timeline(new KeyFrame(Duration.millis(50), new AnimateFourthAttack(paths.get(4))));
-		fourthAttack.setCycleCount(Animation.INDEFINITE);
+		fourthAttack.setCycleCount(coordinates[4][9]);
 		
 		//Back Timeline
 		backStandby = new Timeline(new KeyFrame(Duration.millis(50), new AnimateBackStandby(paths.get(5))));
@@ -266,7 +266,7 @@ public class PokeBattleAnimation {
 
 		@Override
 		public void handle(ActionEvent e) {
-
+			
 			gc.drawImage(bgImg, 0, 0, battleView.getWidth(), battleView.getHeight());
 			/*
 			 * sx the source rectangle's X coordinate position. 
@@ -286,7 +286,7 @@ public class PokeBattleAnimation {
 			sx += coordinates[1][8];
 			
 			if (sx >= coordinates[1][8]*coordinates[1][9]) {
-				firstAttack.stop();
+//				firstAttack.stop();
 				sx = coordinates[1][0];
 //				animateStandby();
 			}
@@ -332,7 +332,7 @@ public class PokeBattleAnimation {
 			sx += coordinates[2][8];
 
 			if (sx >= coordinates[2][8]*coordinates[2][9]) {
-				secondAttack.stop();
+//				secondAttack.stop();
 				sx = coordinates[2][0];
 			}
 		}
@@ -377,7 +377,7 @@ public class PokeBattleAnimation {
 			sx += coordinates[3][8];
 			
 			if (sx >= coordinates[3][8]*coordinates[3][9]) {
-				thirdAttack.stop();
+//				thirdAttack.stop();
 				sx = coordinates[3][0];
 			}
 		}
@@ -422,7 +422,7 @@ public class PokeBattleAnimation {
 			sx += coordinates[4][8];
 			
 			if (sx >= coordinates[4][8]*coordinates[4][9]) {
-				fourthAttack.stop();
+//				fourthAttack.stop();
 				sx = coordinates[4][0];
 			}
 		}

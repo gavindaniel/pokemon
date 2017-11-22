@@ -45,7 +45,7 @@ public class Charmander extends Pokemon {
 		
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 																	 //Rows
-		int[][] coordinates = {{0,0,60,60,575,230,100,100, 60, 33}, //standBy
+		int[][] coordinates = {{0,0,50,60,545,235,110,110, 48, 33}, //standBy
 				{0,10,60,70,545,250,100,100, 59, 59},				 //First Attack
 				{5,0,70,70,545,250,100,100, 70, 56},				 //Second Attack
 				{5,0,70,70,545,250,100,100, 70, 56},				 //Third Attack
