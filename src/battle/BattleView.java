@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import javafx.animation.Animation;
 import javafx.animation.ParallelTransition;
 import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
@@ -69,14 +70,16 @@ public class BattleView extends Canvas implements Observer {
 		idleTimeline.play();
 	}
 	
+	private void stopIdle() {
+		idleTimeline.stop();
+	}
 	
 	private void startAttack(Attack attack) {
 		
 		Pokemon activePoke = battle.getActiveTrainer().getActiveBattlePokemon();
 		
 		//Stop any active timelines.
-		idleTimeline.stop();
-		
+		stopIdle();
 		
 		int attackNumber = findAttackNumber(activePoke, attack);
 		

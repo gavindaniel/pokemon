@@ -286,9 +286,7 @@ public class PokeBattleAnimation {
 			sx += coordinates[1][8];
 			
 			if (sx >= coordinates[1][8]*coordinates[1][9]) {
-//				firstAttack.stop();
 				sx = coordinates[1][0];
-//				animateStandby();
 			}
 		}
 	}
@@ -332,7 +330,6 @@ public class PokeBattleAnimation {
 			sx += coordinates[2][8];
 
 			if (sx >= coordinates[2][8]*coordinates[2][9]) {
-//				secondAttack.stop();
 				sx = coordinates[2][0];
 			}
 		}

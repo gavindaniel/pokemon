@@ -76,34 +76,34 @@ public class BattleLogicForView extends Observable {
 	/**
 	 * Top level function to handle battle sequence.
 	 */
-	public void runBattle() {
-		
-		initializeActiveBattlePokemon();
-
-		activeTrainer = determineWhoStarts();
-
-		boolean isPokemonDrained = false;
-
-		while (!isBattleOver()) {
-
-			if (isPokemonDrained) {
-				activeTrainer = determineWhoStarts();
-			}
-
-			if (activeTrainer == trainer1)
-				isPokemonDrained = playRound(trainer1, trainer2);
-			else
-				isPokemonDrained = playRound(trainer2, trainer1);
-		}
-
-		System.out.println("\nBattle is over.");
-
-		if (areAllPokemonDrained(trainer1.getBattlePokemonList())) {
-			System.out.println(trainer2.getName() + " has defeated " + trainer1.getName());
-		} else {
-			System.out.println(trainer1.getName() + " has defeated " + trainer2.getName());
-		}
-	}
+//	public void runBattle() {
+//		
+//		initializeActiveBattlePokemon();
+//
+//		activeTrainer = determineWhoStarts();
+//
+//		boolean isPokemonDrained = false;
+//
+//		while (!isBattleOver()) {
+//
+//			if (isPokemonDrained) {
+//				activeTrainer = determineWhoStarts();
+//			}
+//
+//			if (activeTrainer == trainer1)
+//				isPokemonDrained = playRound(trainer1, trainer2);
+//			else
+//				isPokemonDrained = playRound(trainer2, trainer1);
+//		}
+//
+//		System.out.println("\nBattle is over.");
+//
+//		if (areAllPokemonDrained(trainer1.getBattlePokemonList())) {
+//			System.out.println(trainer2.getName() + " has defeated " + trainer1.getName());
+//		} else {
+//			System.out.println(trainer1.getName() + " has defeated " + trainer2.getName());
+//		}
+//	}
 	
 	/**
 	 * First pokemon selected automatically starts in battle.
