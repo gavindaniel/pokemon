@@ -37,7 +37,7 @@ public class Settings {
 		text_display_lowerbound = -7;		//	prints 4 chars to the left of the trainer in the viewable area
 		text_display_upperbound = 7;			//	prints 4 chars to the right of the trainer in the viewable area 
 		trainer_x = 385;						//	trainer x location to be displayed in the game
-		trainer_y = 368;//368						//	trainer y location to be displayed in the game
+		trainer_y = 368;						//	trainer y location to be displayed in the game
 		sprite_x = -2;						//	trainer x location on the sprite sheet
 		sprite_y = 0;						//	trainer y location on the sprite sheet
 		timeline_1_duration = 250;			//	duration of timeline 1 to animate Trainer movement (in miliseconds)
