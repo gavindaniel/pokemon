@@ -23,6 +23,7 @@ import model.SafariZone;
 import views.BagView;
 import views.GraphicView;
 import views.MapView;
+import views.NewGameView;
 import views.PokemonView;
 import views.TextView;
 import views.TrainerView;
@@ -56,8 +57,8 @@ import persistence.GameLoader;
 public class SafariZoneMain extends Application {
 
 	private Stage stage;
-	private Scene scene1, scene2, scene3, scene4;
-	private BorderPane window1, window2, window3, window4;
+	private Scene scene1, scene2, scene3, scene4, scene5;
+	private BorderPane window1, window2, window3, window4, window5;
 
 	// private SafariZone gameLoader.getSafariZone();
 	private MenuBar menuBar;
@@ -218,20 +219,23 @@ public class SafariZoneMain extends Application {
 	
 
 	private void setupScenes() {
-		window1 = new BorderPane(); // Main Menu
-		window2 = new BorderPane(); // Game
-		window3 = new BorderPane(); // Start screen
-		window4 = new BorderPane(); // Login screen
+		window1 = new BorderPane();	//	Main Menu
+		window2 = new BorderPane();	//	Game
+		window3 = new BorderPane();	//	Start screen
+		window4 = new BorderPane();	//	Login screen
+		window5 = new BorderPane();	//	New Game 
 
 		scene1 = new Scene(window1, settings.getWidth("scene"), settings.getHeight("scene"));
 		scene2 = new Scene(window2, settings.getWidth("scene"), settings.getHeight("scene"));
 		scene3 = new Scene(window3, settings.getWidth("scene"), settings.getHeight("scene"));
 		scene4 = new Scene(window4, settings.getWidth("scene"), settings.getHeight("scene"));
+		scene5 = new Scene(window5, settings.getWidth("scene"), settings.getHeight("scene"));
 		
 		scene2.setOnKeyPressed(new KeyPressListener());
 		scene2.setOnKeyReleased(new KeyReleaseListener());
 		scene3.setOnMouseClicked(new MouseClickListener());
 		scene3.setOnKeyPressed(new KeyPressListener2());
+		scene5.setOnKeyPressed(new KeyPressListener3());
 		// scene4.setOnKeyPressed(new KeyPressListener3());
 	}
 
@@ -295,6 +299,10 @@ public class SafariZoneMain extends Application {
 		graphicV.setOnAction(menuListener);
 	}
 
+	private void setupNewGame() {
+		gameLoader.getSafariZone().startNewGame();
+		window5.setCenter(new NewGameView(gameLoader.getSafariZone()));
+	}
 	public class KeyPressListener implements EventHandler<KeyEvent> {
 		@Override
 		public void handle(KeyEvent event) {
@@ -402,18 +410,30 @@ public class SafariZoneMain extends Application {
 		@Override
 		public void handle(ActionEvent event) {
 			if (event.getSource() == newGameButton) {
-				gameLoader.getSafariZone().startNewGame();
-				graphicView.drawViewableArea();
-				graphicView.resetTrainer();
-				graphicView.drawTrainer();
-				setViewTo(graphicView);
-				stage.setScene(scene2);
+//				gameLoader.getSafariZone().startNewGame();
+//				graphicView.drawViewableArea();
+//				graphicView.resetTrainer();
+//				graphicView.drawTrainer();
+//				setViewTo(graphicView);
+//				stage.setScene(scene2);
+				setupNewGame();
+				stage.setScene(scene5);
 			} 
 			else if (event.getSource() == loadGameButton) {
 				stage.setScene(scene4);
 				System.out.println("loading..");
 			}
 		}
+	}
+	
+	private class KeyPressListener3 implements EventHandler<KeyEvent> {
+
+		@Override
+		public void handle(KeyEvent event) {
+			// TODO Auto-generated method stub
+			
+		}
+		
 	}
 
 	//////////////// work in progress
