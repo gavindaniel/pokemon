@@ -301,7 +301,7 @@ public class SafariZoneMain extends Application {
 
 	private void setupNewGame() {
 		gameLoader.getSafariZone().startNewGame();
-		window5.setCenter(new NewGameView(gameLoader.getSafariZone()));
+		window5.setCenter(new NewGameView(gameLoader.getSafariZone(), scene5, scene2, stage));
 	}
 	public class KeyPressListener implements EventHandler<KeyEvent> {
 		@Override

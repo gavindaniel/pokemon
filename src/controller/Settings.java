@@ -7,6 +7,8 @@ public class Settings {
 	private static double scene_height, scene_width;
 	private static double map_height, map_width;
 	private static double info_height, info_width;
+	private static double input_height, input_width;
+	private static double input_display_height, input_display_width;
 	private static double tile_source_size, tile_display_size;
 	private static double trainer_source_width, trainer_source_height;
 	private static double trainer_display_width, trainer_display_height;
@@ -26,6 +28,10 @@ public class Settings {
 		map_width = 800;						//	the display width of the entire Map View
 		info_height = 400;					//	the display height of the trainer / bag / pokemon view
 		info_width = 200;					//	the display height of the trainer / bag / pokemon view
+		input_height = 50;					//	the display height of the info text input 
+		input_width = 200;					//	the display width of the info text input 
+		input_display_height = 100;			//	the display height of the info input stage
+		input_display_width = 200;			//	the display width of the info input stage
 		tile_source_size = 16;				//	original background image size:	16px by 16px
 		tile_display_size = 32;				//	desired display background image size:	32px by 32px
 		trainer_source_width = 19;			//	width of the source image of the trainer on the spritesheet
@@ -42,7 +48,7 @@ public class Settings {
 		sprite_y = 0;						//	trainer y location on the sprite sheet
 		timeline_1_duration = 250;			//	duration of timeline 1 to animate Trainer movement (in miliseconds)
 		timeline_2_duration = 500;			//	***this may not be needed*** trying to animate the background independently 
-		timeline_3_duration = 150;			//	duration of timeline 3 to animate the speech of professor Oak
+		timeline_3_duration = 10;			//	duration of timeline 3 to animate the speech of professor Oak
 	}
 	public int getStartingZone() {
 		return starting_zone;
@@ -74,6 +80,10 @@ public class Settings {
 			return trainer_source_height;
 		else if (key == "info")
 			return info_height;
+		else if (key == "text")
+			return input_height;
+		else if (key == "input")
+			return input_display_height;
 		else //if(key == "display")
 			return trainer_display_height;
 	}
@@ -86,6 +96,10 @@ public class Settings {
 			return trainer_source_width;
 		else if (key == "info")
 			return info_width;
+		else if (key == "text")
+			return input_width;
+		else if (key == "input")
+			return input_display_width;
 		else //if(key == "display")
 			return trainer_display_width;
 	}

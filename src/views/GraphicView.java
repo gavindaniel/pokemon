@@ -180,7 +180,6 @@ public class GraphicView extends Canvas implements Observer {
 	 *	animation class relating to animation of the background
 	 */
 	private class AnimateStarter2 implements EventHandler<ActionEvent> {
-		double sx, sy, sw, sh, dx, dy, dw, dh;
 		Tile temp = new Tile();
 		Image img;
 		String path = "";
@@ -192,14 +191,6 @@ public class GraphicView extends Canvas implements Observer {
 		
 		public AnimateStarter2() {
 			tic = 0;
-			sx = -2;
-			sy = 0;
-			sw = 19;
-			sh = 25;
-			dx = 385;//304
-			dy = 368;//297
-			dw = 32; //38
-			dh = 44; //50
 			
 			xShift = 0;
 			yShift = 0;
