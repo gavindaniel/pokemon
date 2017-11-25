@@ -21,7 +21,7 @@ public class Settings {
 	public Settings() {
 		starting_zone = 1;					//  zone # that the trainer starts in (this will be changed once the safari zone building is done)
 		zone_size = 85;						//  number of tiles that make up the height and width of the zone map
-		tree_line = 15;						//	number of trees that will border the zone 
+		tree_line = 18;						//	number of trees that will border the zone 
 		scene_height = 550;					//	the display height of the Game View
 		scene_width = 800;					//	the display width of the Game View
 		map_height = 500;					//	the display height of the entire Map View

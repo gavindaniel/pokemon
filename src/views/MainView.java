@@ -22,7 +22,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.SafariZone;
 
-public class NewGameView extends Canvas implements Observer {
+public class MainView extends Canvas implements Observer {
 	
 	private Stage mainStage, inputStage;
 	private Scene main_scene, game_scene, gender_scene, name_scene;
@@ -49,7 +49,7 @@ public class NewGameView extends Canvas implements Observer {
 	/**
 	 * @param instance of the game 'PokemonGame'
 	 */
-	public NewGameView(SafariZone PokemonGame, Scene main, Scene game, Stage stage) {
+	public MainView(SafariZone PokemonGame, Scene main, Scene game, Stage stage) {
 		mainStage = stage;
 		main_scene = main;
 		game_scene = game;

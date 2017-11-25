@@ -261,24 +261,24 @@ public class Map extends Observable {
 		return result;
 	}
 	
-	/**
-	 * Proved a textual version of the Pokemon locations
-	 */
-	public String drawPokemonMap(int zoneNum) {
-		String result = "";
-
-		for (int r = 0; r < size; r++) {
-			for (int c = 0; c < size; c++)
-				if (r == trainer.getCurrentLocation().getY() && c == trainer.getCurrentLocation().getX())
-					result += " P ";
-				else
-					if (zones.get(zoneNum).getTile(r,c).getPokemonHere() == false)  result += "   ";
-					else  result += " Y ";
-		
-			if (r < size - 1)
-				result += "\n";
-		}
-		return result;
-	}
+//	/**
+//	 * Proved a textual version of the Pokemon locations
+//	 */
+//	public String drawPokemonMap(int zoneNum) {
+//		String result = "";
+//
+//		for (int r = 0; r < size; r++) {
+//			for (int c = 0; c < size; c++)
+//				if (r == trainer.getCurrentLocation().getY() && c == trainer.getCurrentLocation().getX())
+//					result += " P ";
+//				else
+//					if (zones.get(zoneNum).getTile(r,c).getPokemonHere() == false)  result += "   ";
+//					else  result += " Y ";
+//		
+//			if (r < size - 1)
+//				result += "\n";
+//		}
+//		return result;
+//	}
 	
 } // end of Class 'Map'

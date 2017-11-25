@@ -11,7 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.canvas.*;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -22,7 +21,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.SafariZone;
 
-public class NewGameView extends Canvas implements Observer {
+public class StartView extends Canvas implements Observer {
 	
 	private Stage mainStage, inputStage;
 	private Scene main_scene, game_scene, gender_scene, name_scene;
@@ -46,10 +45,17 @@ public class NewGameView extends Canvas implements Observer {
 		theGame = (SafariZone) o;
 	}
 	
+	private void setupStartScreen() {
+		Image startScreen = new Image("file:images/misc/start-screen.jpg");
+		Canvas canvas = new Canvas(settings.getWidth("scene"), settings.getHeight("scene"));
+		canvas.getGraphicsContext2D().drawImage(startScreen, 0, 0);
+		window3.setCenter(canvas);
+	}
+	
 	/**
 	 * @param instance of the game 'PokemonGame'
 	 */
-	public NewGameView(SafariZone PokemonGame, Scene main, Scene game, Stage stage) {
+	public StartView(SafariZone PokemonGame, Scene main, Scene game, Stage stage) {
 		mainStage = stage;
 		main_scene = main;
 		game_scene = game;
