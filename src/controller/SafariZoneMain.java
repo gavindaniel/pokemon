@@ -17,16 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.SafariZone;
-import views.BagView;
-import views.GraphicView;
-import views.LoadGameView;
-import views.MapView;
-import views.MenuView;
-import views.NewGameView;
-import views.PokemonView;
-import views.StartView;
-import views.TextView;
-import views.TrainerView;
+import views.*;
 import network.User;
 
 /**************************************************************/
