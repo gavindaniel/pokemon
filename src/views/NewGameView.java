@@ -162,10 +162,11 @@ public class NewGameView extends Canvas implements Observer {
 						timeline.stop();
 						mainStage.setScene(game_scene);
 					}
-					else 
+					else {
 						if (line == "What is your name?")
 							text = theGame.getMap().getTrainer().getName();
 						line = profOakLines.get(index);
+					}
 				}				
 			}
 			else {

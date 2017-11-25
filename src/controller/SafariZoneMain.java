@@ -19,9 +19,7 @@ import javafx.stage.Stage;
 import model.SafariZone;
 import views.*;
 import network.User;
-
 /**************************************************************/
-
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.*;
 import javafx.scene.text.Font;
@@ -36,9 +34,7 @@ import java.util.Optional;
 //import controller.SafariZoneMain.ServerListener;
 import persistence.FileManager;
 import persistence.GameLoader;
-
 /**************************************************************/
-
 public class SafariZoneMain extends Application {
 
 	private Stage stage;
@@ -56,9 +52,7 @@ public class SafariZoneMain extends Application {
 
 	private Settings settings;
 	char keyPressed;
-
 	/***************************************/
-
 	private int loggedIn;
 	private Button loginButton;
 	public FileManager man;
@@ -75,7 +69,6 @@ public class SafariZoneMain extends Application {
 	private ObjectInputStream inputFromServer;
 	private static final String Address = "localhost";
 	public Point altPlayer;
-
 	/***************************************/
 
 	public static void main(String[] args) {
@@ -217,38 +210,20 @@ public class SafariZoneMain extends Application {
 	public class KeyPressListener implements EventHandler<KeyEvent> {
 		@Override
 		public void handle(KeyEvent event) {
-			if (event.getCode() == KeyCode.UP) {
-				graphicView.animateTrainer('U', false);
-				gameLoader.getSafariZone().movePlayer('U');
-			} else if (event.getCode() == KeyCode.DOWN) {
-				graphicView.animateTrainer('D', false);
-				gameLoader.getSafariZone().movePlayer('D');
-			} else if (event.getCode() == KeyCode.LEFT) {
-				graphicView.animateTrainer('L', false);
-				gameLoader.getSafariZone().movePlayer('L');
-			} else if (event.getCode() == KeyCode.RIGHT) {
-				graphicView.animateTrainer('R', false);
-				gameLoader.getSafariZone().movePlayer('R');
-			}
+			if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
+				graphicView.animateTrainer(event.getCode(), false);
+				gameLoader.getSafariZone().movePlayer(event.getCode());
+			} 
 		}
 	}
 
 	public class KeyReleaseListener implements EventHandler<KeyEvent> {
 		@Override
 		public void handle(KeyEvent event) {
-			if (event.getCode() == KeyCode.UP) {
+			if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
 //				graphicView.animateMap('U', true);
-				graphicView.animateTrainer('U', true);
-			} else if (event.getCode() == KeyCode.DOWN) {
-//				graphicView.animateMap('D', true);
-				graphicView.animateTrainer('D', true);
-			} else if (event.getCode() == KeyCode.LEFT) {
-//				graphicView.animateMap('L', true);
-				graphicView.animateTrainer('L', true);
-			} else if (event.getCode() == KeyCode.RIGHT) {
-//				graphicView.animateMap('R', true);
-				graphicView.animateTrainer('R', true);
-			}
+				graphicView.animateTrainer(event.getCode(), true);
+			} 
 		}
 	}
 

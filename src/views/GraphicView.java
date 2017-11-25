@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.scene.canvas.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 import map.Tile;
 import model.SafariZone;
@@ -20,7 +21,7 @@ public class GraphicView extends Canvas implements Observer {
 	private GraphicsContext gc;
 	private Image spritesheet;
 	private Timeline timeline, timeline2;
-	private char direction;
+	private KeyCode direction;
 	private boolean done;
 	private int tic;
 
@@ -110,9 +111,9 @@ public class GraphicView extends Canvas implements Observer {
 	/**
 	 *	starts the trainer timeline for animation & stores direction the trainer is moving 
 	 */
-	public void animateTrainer(char c, boolean d) {
+	public void animateTrainer(KeyCode key, boolean d) {
 		timeline.play();
-		direction = c;
+		direction = key;
 		done = d;
 	}
 	/**
@@ -126,7 +127,7 @@ public class GraphicView extends Canvas implements Observer {
 		public void handle(ActionEvent event) {
 			tic++;
 			drawViewableArea();
-			if (direction == 'R') {
+			if (direction == KeyCode.RIGHT) {
 				if (tic == 1) {
 					sx = 89;
 					sy = 30;
@@ -135,7 +136,7 @@ public class GraphicView extends Canvas implements Observer {
 					sy -= 30;
 				}
 			}
-			if (direction == 'L') {
+			if (direction == KeyCode.LEFT) {
 				if (tic == 1) {
 					sx = 28;
 					sy = 30;
@@ -143,7 +144,7 @@ public class GraphicView extends Canvas implements Observer {
 				if (tic == 2) 
 					sy -= 30;
 			}
-			if (direction == 'U') {
+			if (direction == KeyCode.UP) {
 				if (tic == 1) {
 					sx = 58;
 					sy = 30;
@@ -151,7 +152,7 @@ public class GraphicView extends Canvas implements Observer {
 				if (tic == 2) 
 					sy -= 30;
  			}
-			if (direction == 'D') {
+			if (direction == KeyCode.DOWN) {
 				if (tic == 1) {
 					sx = -2;
 					sy = 30;
@@ -171,9 +172,9 @@ public class GraphicView extends Canvas implements Observer {
 	/**
 	 *	starts the timeline for shifting the background behind the trainer
 	 */
-	public void animateMap(char c, boolean d) {
+	public void animateMap(KeyCode key, boolean d) {
 		timeline2.play();
-		direction = c;
+		direction = key;
 		done = d;
 	}
 	/**
@@ -208,7 +209,7 @@ public class GraphicView extends Canvas implements Observer {
 				pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();
 	//		}
 			
-			if (direction == 'R') {
+			if (direction == KeyCode.RIGHT) {
 	//			xShift += 16;
 				yShift = 0;
 				if (tic == 1) {
@@ -223,7 +224,7 @@ public class GraphicView extends Canvas implements Observer {
 	//				yShift = 0;
 				}
 			}
-			if (direction == 'L') {
+			if (direction == KeyCode.LEFT) {
 	//			xShift -= 16;
 				yShift = 0;
 				if (tic == 1) {
@@ -238,7 +239,7 @@ public class GraphicView extends Canvas implements Observer {
 	//				yShift = 0;
 				}
 			}
-			if (direction == 'U') {
+			if (direction == KeyCode.UP) {
 				xShift = 0;
 	//			yShift -= 16;
 				if (tic == 1) {
@@ -253,7 +254,7 @@ public class GraphicView extends Canvas implements Observer {
 					yShift = 0;
 				}
  			}
-			if (direction == 'D') {
+			if (direction == KeyCode.DOWN) {
 				xShift = 0;
 	//			yShift += 16;
 				if (tic == 1) {
