@@ -7,24 +7,24 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuItem;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.SafariZone;
 import views.BagView;
 import views.GraphicView;
+import views.LoadGameView;
 import views.MapView;
+import views.MenuView;
 import views.NewGameView;
 import views.PokemonView;
+import views.StartView;
 import views.TextView;
 import views.TrainerView;
 import network.User;
@@ -32,14 +32,10 @@ import network.User;
 /**************************************************************/
 
 import javafx.scene.control.Alert.AlertType;
-import javafx.event.*;
 import javafx.scene.control.*;
 import javafx.scene.text.Font;
 import javafx.geometry.*;
-import java.net.*;
-import java.io.*;
 import javafx.concurrent.Task;
-import javafx.collections.ObservableList;
 import java.awt.Point;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -47,8 +43,6 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Optional;
 //import controller.SafariZoneMain.ServerListener;
-import javafx.concurrent.Task;
-import views.LoginView;
 import persistence.FileManager;
 import persistence.GameLoader;
 
@@ -57,20 +51,20 @@ import persistence.GameLoader;
 public class SafariZoneMain extends Application {
 
 	private Stage stage;
-	private Scene scene1, scene2, scene3, scene4, scene5;
-	private BorderPane window1, window2, window3, window4, window5;
+	private BorderPane start_window, menu_window, newgame_window, loadgame_window, game_window;
+	private Scene start_scene, menu_scene, newgame_scene, loadgame_scene, game_scene;
 
-	// private SafariZone gameLoader.getSafariZone();
 	private MenuBar menuBar;
 	private Observer currentView;
 	private GraphicView graphicView;
 	private TextView textView;
+	private StartView startView;
+	private MenuView menuView;
+	private NewGameView newGameView;
+	private LoadGameView loadGameView;
 
 	private Settings settings;
 	char keyPressed;
-
-	private Button newGameButton;
-	private Button loadGameButton;
 
 	/***************************************/
 
@@ -115,17 +109,19 @@ public class SafariZoneMain extends Application {
 		initializeGameForTheFirstTime();
 		// loginView = new LoginView(man,gameLoader,graphicView);
 		setupScenes();
-		setupMainMenu();
 		setupStartScreen();
+		setupMainMenu();
 		setupGameMenus();
+		setupNewGame();
+		setupLoadGame();
 
-		setupLoginGrids();
-		window2.setTop(menuBar);
+//		setupLoginGrids();
+		game_window.setTop(menuBar);
 
 		// Setup the views
 		textView = new TextView(gameLoader.getSafariZone());
 		graphicView = new GraphicView(gameLoader.getSafariZone());
-
+		
 		/***************************************/
 		// textView = new TextView(gameLoader.getSafariZone());
 		// loginView = new LoginView(man,gameLoader,textView);
@@ -141,128 +137,55 @@ public class SafariZoneMain extends Application {
 
 		setViewTo(graphicView);
 
-		primaryStage.setScene(scene3);
+		primaryStage.setScene(start_scene); //replacement scene 
 		primaryStage.show();
 
 	}
 
 	private void setViewTo(Observer newView) {
-		window2.setCenter(null);
+		game_window.setCenter(null);
 		currentView = newView;
-		window2.setCenter((Node) currentView);
-
+		game_window.setCenter((Node) currentView);
 	}
 
 	public void initializeGameForTheFirstTime() {
 		gameLoader = new GameLoader(new SafariZone());
 	}
 
-	public void setupLoginGrids() {
-
-		loginB = new Button("Login");
-		loginB.setFont(new Font("Arial", 14));
-		exitLgn = new Button("Exit");
-		exitLgn.setFont(new Font("Arial", 14));
-
-		acctT = new TextField();
-		pswdT = new PasswordField();
-		acctLabl = new Label("Account Name");
-		pswdLabl = new Label("Password");
-		loginMsg = new Label("Sign In");
-		acctLabl.setFont(new Font("Arial", 18));
-		pswdLabl.setFont(new Font("Arial", 18));
-		loginMsg.setFont(new Font("Arial", 24));
-
-		window4.setAlignment(loginMsg, Pos.CENTER);
-		window4.setMargin(loginMsg, new Insets(10, 10, 10, 10));
-		window4.setTop(loginMsg);
-
-		acctT.setMaxHeight(15.0);
-		pswdT.setMaxHeight(15.0);
-		acctT.setMaxWidth(125.0);
-		pswdT.setMaxWidth(125.0);
-
-		acctGrid.add(acctLabl, 1, 1);
-		acctGrid.add(pswdLabl, 1, 2);
-		acctGrid.add(acctT, 2, 1);
-		acctGrid.add(pswdT, 2, 2);
-		acctGrid.setHgap(5);
-		acctGrid.setVgap(5);
-
-		window4.setAlignment(acctGrid, Pos.CENTER);
-		window4.setMargin(acctGrid, new Insets(10, 10, 10, 10));
-		window4.setCenter(acctGrid);
-
-		window4.setAlignment(loginGrid, Pos.CENTER);
-		window4.setMargin(loginGrid, new Insets(10, 10, 100, 125));
-		window4.setBottom(loginGrid);
-
-		loginGrid.setHgap(5);
-		loginGrid.setVgap(5);
-
-		loginGrid.add(loginB, 1, 1);
-		loginGrid.add(exitLgn, 1, 10);
-
-		createU = new Button("Create");
-		window4.setAlignment(createU, Pos.CENTER);
-		window4.setMargin(createU, new Insets(10, 10, 100, 125));
-
-		LoginButtonListener handler1 = new LoginButtonListener();
-
-		loginB.setOnAction(handler1);
-		exitLgn.setOnAction(handler1);
-
-		createU.setOnAction(handler1);
-
-	}
-
-	
-
 	private void setupScenes() {
-		window1 = new BorderPane();	//	Main Menu
-		window2 = new BorderPane();	//	Game
-		window3 = new BorderPane();	//	Start screen
-		window4 = new BorderPane();	//	Login screen
-		window5 = new BorderPane();	//	New Game 
+		start_window = new BorderPane();	
+		menu_window = new BorderPane();	
+		newgame_window = new BorderPane();
+		loadgame_window = new BorderPane();
+		game_window = new BorderPane();
 
-		scene1 = new Scene(window1, settings.getWidth("scene"), settings.getHeight("scene"));
-		scene2 = new Scene(window2, settings.getWidth("scene"), settings.getHeight("scene"));
-		scene3 = new Scene(window3, settings.getWidth("scene"), settings.getHeight("scene"));
-		scene4 = new Scene(window4, settings.getWidth("scene"), settings.getHeight("scene"));
-		scene5 = new Scene(window5, settings.getWidth("scene"), settings.getHeight("scene"));
+		start_scene = new Scene(start_window, settings.getWidth("scene"), settings.getHeight("scene"));
+		menu_scene = new Scene(menu_window, settings.getWidth("scene"), settings.getHeight("scene"));
+		newgame_scene = new Scene(newgame_window, settings.getWidth("scene"), settings.getHeight("scene"));
+		loadgame_scene = new Scene(loadgame_window, settings.getWidth("scene"), settings.getHeight("scene"));
+		game_scene = new Scene(game_window, settings.getWidth("scene"), settings.getHeight("scene"));
 		
-		scene2.setOnKeyPressed(new KeyPressListener());
-		scene2.setOnKeyReleased(new KeyReleaseListener());
-		scene3.setOnMouseClicked(new MouseClickListener());
-		scene3.setOnKeyPressed(new KeyPressListener2());
-		scene5.setOnKeyPressed(new KeyPressListener3());
-		// scene4.setOnKeyPressed(new KeyPressListener3());
+		game_scene.setOnKeyPressed(new KeyPressListener());
+		game_scene.setOnKeyReleased(new KeyReleaseListener());
 	}
 
 	private void setupStartScreen() {
-		Image startScreen = new Image("file:images/misc/start-screen.jpg");
-		Canvas canvas = new Canvas(settings.getWidth("scene"), settings.getHeight("scene"));
-		canvas.getGraphicsContext2D().drawImage(startScreen, 0, 0);
-		window3.setCenter(canvas);
+		startView = new StartView(gameLoader.getSafariZone(), stage, start_scene, menu_scene);
+		start_window.setCenter(startView);
 	}
-
 	private void setupMainMenu() {
-		newGameButton = new Button("New Game");
-		newGameButton.setMinSize(300, 100);
-		newGameButton.setOnAction(new ButtonListener());
-		loadGameButton = new Button("Load Game...");
-		loadGameButton.setMinSize(300, 100);
-		loadGameButton.setOnAction(new ButtonListener());
-		GridPane gp = new GridPane();
-		gp.setPrefSize(settings.getWidth("scene"), settings.getHeight("scene"));
-		GridPane.setConstraints(newGameButton, 1, 1);
-		GridPane.setConstraints(loadGameButton, 1, 2);
-		gp.setHgap(10);
-		gp.setVgap(10);
-		gp.getChildren().addAll(newGameButton, loadGameButton);
-		window1.setCenter(gp);
+		menuView = new MenuView(gameLoader.getSafariZone(), stage, newgame_scene, loadgame_scene);
+		menu_window.setCenter(menuView);
 	}
-
+	private void setupNewGame() {
+		newGameView = new NewGameView(gameLoader.getSafariZone(), stage, newgame_scene, game_scene);
+		newgame_window.setCenter(newGameView);
+	}
+	private void setupLoadGame() {
+		loadGameView = new LoadGameView(gameLoader.getSafariZone(), stage, loadgame_scene, game_scene);
+		loadgame_window.setCenter(loadGameView);
+	}
+	
 	private void setupGameMenus() {
 		// game menu options
 		MenuItem pokemon = new MenuItem("Pokemon");
@@ -298,11 +221,8 @@ public class SafariZoneMain extends Application {
 		textV.setOnAction(menuListener);
 		graphicV.setOnAction(menuListener);
 	}
-
-	private void setupNewGame() {
-		gameLoader.getSafariZone().startNewGame();
-		window5.setCenter(new NewGameView(gameLoader.getSafariZone(), scene5, scene2, stage));
-	}
+	
+	
 	public class KeyPressListener implements EventHandler<KeyEvent> {
 		@Override
 		public void handle(KeyEvent event) {
@@ -341,21 +261,6 @@ public class SafariZoneMain extends Application {
 		}
 	}
 
-	// start menu listeners
-	private class MouseClickListener implements EventHandler<MouseEvent> {
-		@Override
-		public void handle(MouseEvent event) {
-			stage.setScene(scene1);
-		}
-	}
-
-	private class KeyPressListener2 implements EventHandler<KeyEvent> {
-		@Override
-		public void handle(KeyEvent event) {
-			if (event.getCode() == KeyCode.ENTER || event.getCode() == KeyCode.SPACE)
-				stage.setScene(scene1);
-		}
-	}
 
 	private class MenuItemListener implements EventHandler<ActionEvent> {
 		@Override
@@ -374,7 +279,8 @@ public class SafariZoneMain extends Application {
 			}
 			else if (text.equals("Save")) {
 				if (loggedIn == 0) {
-					stage.setScene(scene4);
+					stage.setScene(null);
+					stage.setScene(loadgame_scene);
 				}
 				// UD man.pushUserData();
 			} else if (text.equals("Map")) {
@@ -397,7 +303,7 @@ public class SafariZoneMain extends Application {
 //
 //				graphicView = new GraphicView(gameLoader.getSafariZone());
 //				gameLoader.getSafariZone().addObserver(graphicView);
-				stage.setScene(scene1);			
+				stage.setScene(menu_scene);			
 			} 
 			else if (text.equals("Text"))
 				setViewTo(textView);
@@ -406,36 +312,65 @@ public class SafariZoneMain extends Application {
 		}
 	}
 
-	private class ButtonListener implements EventHandler<ActionEvent> {
-		@Override
-		public void handle(ActionEvent event) {
-			if (event.getSource() == newGameButton) {
-//				gameLoader.getSafariZone().startNewGame();
-//				graphicView.drawViewableArea();
-//				graphicView.resetTrainer();
-//				graphicView.drawTrainer();
-//				setViewTo(graphicView);
-//				stage.setScene(scene2);
-				setupNewGame();
-				stage.setScene(scene5);
-			} 
-			else if (event.getSource() == loadGameButton) {
-				stage.setScene(scene4);
-				System.out.println("loading..");
-			}
-		}
-	}
-	
-	private class KeyPressListener3 implements EventHandler<KeyEvent> {
 
-		@Override
-		public void handle(KeyEvent event) {
-			// TODO Auto-generated method stub
-			
-		}
-		
-	}
+	public void setupLoginGrids() {
 
+		loginB = new Button("Login");
+		loginB.setFont(new Font("Arial", 14));
+		exitLgn = new Button("Exit");
+		exitLgn.setFont(new Font("Arial", 14));
+
+		acctT = new TextField();
+		pswdT = new PasswordField();
+		acctLabl = new Label("Account Name");
+		pswdLabl = new Label("Password");
+		loginMsg = new Label("Sign In");
+		acctLabl.setFont(new Font("Arial", 18));
+		pswdLabl.setFont(new Font("Arial", 18));
+		loginMsg.setFont(new Font("Arial", 24));
+
+		loadgame_window.setAlignment(loginMsg, Pos.CENTER);
+		loadgame_window.setMargin(loginMsg, new Insets(10, 10, 10, 10));
+		loadgame_window.setTop(loginMsg);
+
+		acctT.setMaxHeight(15.0);
+		pswdT.setMaxHeight(15.0);
+		acctT.setMaxWidth(125.0);
+		pswdT.setMaxWidth(125.0);
+
+		acctGrid.add(acctLabl, 1, 1);
+		acctGrid.add(pswdLabl, 1, 2);
+		acctGrid.add(acctT, 2, 1);
+		acctGrid.add(pswdT, 2, 2);
+		acctGrid.setHgap(5);
+		acctGrid.setVgap(5);
+
+		loadgame_window.setAlignment(acctGrid, Pos.CENTER);
+		loadgame_window.setMargin(acctGrid, new Insets(10, 10, 10, 10));
+		loadgame_window.setCenter(acctGrid);
+
+		loadgame_window.setAlignment(loginGrid, Pos.CENTER);
+		loadgame_window.setMargin(loginGrid, new Insets(10, 10, 100, 125));
+		loadgame_window.setBottom(loginGrid);
+
+		loginGrid.setHgap(5);
+		loginGrid.setVgap(5);
+
+		loginGrid.add(loginB, 1, 1);
+		loginGrid.add(exitLgn, 1, 10);
+
+		createU = new Button("Create");
+		loadgame_window.setAlignment(createU, Pos.CENTER);
+		loadgame_window.setMargin(createU, new Insets(10, 10, 100, 125));
+
+		LoginButtonListener handler1 = new LoginButtonListener();
+
+		loginB.setOnAction(handler1);
+		exitLgn.setOnAction(handler1);
+
+		createU.setOnAction(handler1);
+
+	}
 	//////////////// work in progress
 
 	private void openConnection() {
@@ -485,7 +420,7 @@ public class SafariZoneMain extends Application {
 		@Override
 		public void handle(ActionEvent arg0) {
 			if (exitLgn == (Button) arg0.getSource())
-				stage.setScene(scene1);
+				stage.setScene(menu_scene);
 
 			if (loginB == (Button) arg0.getSource()) {
 				// make one call to check user....
@@ -517,7 +452,7 @@ public class SafariZoneMain extends Application {
 							graphicView = new GraphicView(gameLoader.getSafariZone());
 							gameLoader.getSafariZone().addObserver(graphicView);
 							setViewTo(graphicView);
-							stage.setScene(scene2);
+							stage.setScene(game_scene);
 
 						} else {
 							System.out.println("Set SafariZone current for ret User");
@@ -531,7 +466,7 @@ public class SafariZoneMain extends Application {
 
 							setViewTo(graphicView);
 
-							stage.setScene(scene2);
+							stage.setScene(game_scene);
 
 							// UD man.pushUserData();
 						}
@@ -557,7 +492,7 @@ public class SafariZoneMain extends Application {
 						// UD man.pushUserData();
 
 						setViewTo(graphicView);
-						stage.setScene(scene2);
+						stage.setScene(game_scene);
 
 					}
 				}

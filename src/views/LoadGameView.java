@@ -22,10 +22,10 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.SafariZone;
 
-public class MainView extends Canvas implements Observer {
+public class LoadGameView extends Canvas implements Observer {
 	
 	private Stage mainStage, inputStage;
-	private Scene main_scene, game_scene, gender_scene, name_scene;
+	private Scene newgame_scene, game_scene, gender_scene, name_scene;
 	private SafariZone theGame;
 	private GraphicsContext gc;
 	private Timeline timeline;
@@ -49,11 +49,12 @@ public class MainView extends Canvas implements Observer {
 	/**
 	 * @param instance of the game 'PokemonGame'
 	 */
-	public MainView(SafariZone PokemonGame, Scene main, Scene game, Stage stage) {
+	public LoadGameView(SafariZone PokemonGame, Stage stage, Scene newgame, Scene game) {
 		mainStage = stage;
-		main_scene = main;
+		newgame_scene = newgame;
 		game_scene = game;
 		theGame = PokemonGame;
+			theGame.startNewGame();
 		profOakLines = new Vector<String>();
 		// gender window setup
 		gp_gender = new GridPane();
@@ -98,7 +99,7 @@ public class MainView extends Canvas implements Observer {
 	 *	initializes the canvas and draws the zone and trainer 
 	 */
 	private void initializePane() {
-		main_scene.setOnKeyPressed(new KeyListener());
+		newgame_scene.setOnKeyPressed(new KeyListener());
 		gc = this.getGraphicsContext2D();
 		setupProfOakLines();
 		drawOak();
