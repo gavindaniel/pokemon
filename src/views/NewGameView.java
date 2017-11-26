@@ -57,7 +57,7 @@ public class NewGameView extends Canvas implements Observer {
 		newgame_scene = newgame;
 		game_scene = game;
 		theGame = PokemonGame;
-			theGame.startNewGame();
+		theGame.startNewGame();
 		profOakLines = new Vector<String>();
 		// gender window setup
 		gp_gender = new GridPane();
@@ -208,7 +208,16 @@ public class NewGameView extends Canvas implements Observer {
 		public void handle(ActionEvent event) {
 			if (event.getSource() == submit)
 				if (text_input.getText().length() > 0) {
-					name_input = text_input.getText();
+//					name_input = text_input.getText();
+//					name_input = name_input.replace('\n', ' ');
+//					name_input = name_input.replace('\r', ' ');
+					name_input = "";
+					for (int i = 0; i < text_input.getText().length(); i++) {
+						if (text_input.getText().charAt(i) != '\n' || text_input.getText().charAt(i) != '\r' || text_input.getText().charAt(i) != ' ')
+							name_input += text_input.getText().charAt(i);
+						System.out.println(name_input);
+					}
+					
 					theGame.getMap().getTrainer().setName(name_input);
 					inputStage.setTitle("Gender Input");
 					inputStage.setScene(gender_scene);
