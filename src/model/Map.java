@@ -53,7 +53,7 @@ public class Map extends Observable {
 	}
 	
 	public void generateZones() {
-		for (int i = 1; i <= 3; i++) {
+		for (int i = 1; i <= 4; i++) {
 			Zone temp = new Zone(i);
 			zones.add(temp);
 		}
@@ -66,8 +66,7 @@ public class Map extends Observable {
 	}
 
 	public void ReadMapFromFile() {
-//		File file = new File("./files/original-map.txt");
-		for (int z = 1; z <= 3; z++) {
+		for (int z = 1; z <= 4; z++) {
 			File file = new File("./files/zone"+z+".txt");
 			Zone tempZone = zones.get(z-1);
 			Tile temp = new Tile();
@@ -127,9 +126,7 @@ public class Map extends Observable {
 				newP = changeZone(oldLoc);
 			trainer.setCurrentLocation(newP);
 			trainer.setNumSteps(trainer.getNumSteps() - 1);
-//			System.out.println("r: "+trainer.getCurrentLocation().getY()+"\tc: "+trainer.getCurrentLocation().getX());
-//			if (trainer.getNumSteps() % 100 == 0)
-//				System.out.println("Steps left: " + (trainer.getNumSteps()));
+			System.out.println("r: "+trainer.getCurrentLocation().getY()+"\tc: "+trainer.getCurrentLocation().getX());
 			checkForPokemon(trainer.getZone()-1, newLoc);
 			clearPokemon();
 			spawnPokemon();
@@ -202,44 +199,68 @@ public class Map extends Observable {
 		
 		int prevZone = trainer.getZone();
 		if (prevZone == 1) {
-			if (c == 58) {
+			if (c == 61) {
 				r += 8;
-				c = 21;
+				c = 24;
 				trainer.setZone(2); // might need to be 1 
 			}
-			else if (r == 18) {
-				r = 44;
+			else if (r == 21) {
+				r = 47;
 				c += 10;
 				trainer.setZone(3);
+			}
+			else if (c == 21) {
+				// r = 36 (top) or 37 (bottom)
+				r += 8;
+				c = 61;
+				trainer.setZone(4);
 			}
 			return new Point(c,r);
 		}
 		else if (prevZone == 2) {
-			if (r == 38 || r == 39 || r == 40) {
+			if (r == 41 || r == 42 || r == 43) {
 				r -= 8;
-				c = 58; 
+				c = 61; 
 				trainer.setZone(1); // might need to be 1 
 				return new Point(c,r);
 			}
-			else if (r == 21 || r == 22) {
+			else if (r == 24 || r == 25) {
 				r += 17;
-				c = 68;
+				c = 71;
 				trainer.setZone(3);
 			}
 			return new Point(c,r); //don't change 
 		}
 		else if (prevZone == 3) {
-			if (r == 38 || r == 39) {
+			if (r == 41 || r == 42) {
 				r -= 17;
-				c = 21;
+				c = 24;
 				trainer.setZone(2);
 			}
-			else if (c == 47 || c == 48 || c == 49) {
-				r = 18;
+			else if (c == 50 || c == 51 || c == 52) {
+				r = 21;
 				c -= 10;
 				trainer.setZone(1);
 			}
+			else if (c == 28 || c == 29) { // r = 47
+				r = 21;
+				c += 28;
+				trainer.setZone(4);
+			}
 			return new Point(c,r); //don't change 
+		}
+		else if (prevZone == 4) {
+			if (c == 61) { // r = 44 (top) or 45 (bottom)
+				r -= 8;
+				c = 21;
+				trainer.setZone(1);
+			}
+			else if (c == 56 || c == 57) { // top-right exit	: r = 21
+				r = 47;
+				c -= 28;
+				trainer.setZone(3);
+			}
+			return new Point(c,r);
 		}
 		else return new Point(c,r); //don't change 
 	}
