@@ -30,7 +30,7 @@ public class NewGameView extends Canvas implements Observer {
 	private GraphicsContext gc;
 	private Timeline timeline;
 	private Vector<String> profOakLines;
-	private boolean enter_pressed, done_printing;
+	private boolean enter_pressed, done_printing, stage_show;
 	// gender input variables
 	private GridPane gp_gender;
 	private Button male_button, female_button;
@@ -44,6 +44,9 @@ public class NewGameView extends Canvas implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		theGame = (SafariZone) o;
+		stage_show = false;
+		text_input.clear();
+		animateOak();
 	}
 	
 	/**
@@ -125,7 +128,6 @@ public class NewGameView extends Canvas implements Observer {
 		String text, line;
 		double x, y, maxWidth;
 		int i, index; // tic, 
-		boolean stage_show;
 		
 		public AnimateStarter() {
 //			tic = 0;
@@ -148,6 +150,8 @@ public class NewGameView extends Canvas implements Observer {
 				if (line == "What is your name?")
 					if (!stage_show) {
 						stage_show = true;
+						inputStage.setTitle("Name Input");
+						inputStage.setScene(name_scene);
 						inputStage.show();
 					}
 				// check if the user has pressed 'ENTER' to continue
@@ -159,6 +163,7 @@ public class NewGameView extends Canvas implements Observer {
 					index++;
 					// if we're at the last line for Prof. Oak stop animation	
 					if (index == profOakLines.size()) { 
+						index = 0; // i should already = 0
 						timeline.stop();
 						mainStage.setScene(game_scene);
 					}

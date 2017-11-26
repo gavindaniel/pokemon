@@ -65,6 +65,7 @@ public class MenuView extends GridPane implements Observer {
 		@Override
 		public void handle(ActionEvent event) {
 			if (event.getSource() == newGameButton) {
+				theGame.startNewGame();
 				mainStage.setScene(newgame_scene);
 			} 
 			else if (event.getSource() == loadGameButton) {

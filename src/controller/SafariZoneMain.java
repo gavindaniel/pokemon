@@ -161,9 +161,10 @@ public class SafariZoneMain extends Application {
 	private void addGameObservers() {
 		gameLoader.getSafariZone().addObserver(textView);
 		gameLoader.getSafariZone().addObserver(graphicView);
-		gameLoader.getSafariZone().addObserver(pokemonView); // new
-		gameLoader.getSafariZone().addObserver(bagView);		// new
-		gameLoader.getSafariZone().addObserver(trainerView); // new
+		gameLoader.getSafariZone().addObserver(pokemonView); 
+		gameLoader.getSafariZone().addObserver(bagView);		
+		gameLoader.getSafariZone().addObserver(trainerView); 
+		gameLoader.getSafariZone().addObserver(newGameView); // new
 //		gameLoader.getSafariZone().addObserver(loginView);
 	}
 	
@@ -228,19 +229,10 @@ public class SafariZoneMain extends Application {
 		@Override
 		public void handle(ActionEvent e) {
 			String text = ((MenuItem) e.getSource()).getText();
-			if (text.equals("Pokemon")) {
-//				Stage stage = new Stage();
-//				stage.setTitle("Pokemon View");
-//				stage.setScene(new Scene(new PokemonView(gameLoader.getSafariZone()), gameLoader.getSafariZone().getSettings().getWidth("info"), gameLoader.getSafariZone().getSettings().getHeight("info")));
-//				stage.show();
+			if (text.equals("Pokemon"))
 				setInfoViewTo(pokemonView);
-			} else if (text.equals("Bag")) {
-//				Stage stage = new Stage();
-//				stage.setTitle("Bag View");
-//				stage.setScene(new Scene(new BagView(gameLoader.getSafariZone()), gameLoader.getSafariZone().getSettings().getWidth("info"), gameLoader.getSafariZone().getSettings().getHeight("info")));
-//				stage.show();
+			else if (text.equals("Bag"))
 				setInfoViewTo(bagView);
-			}
 			else if (text.equals("Save")) {
 				if (loggedIn == 0) {
 					stage.setScene(null);
@@ -252,13 +244,8 @@ public class SafariZoneMain extends Application {
 				stage.setTitle("Map View");
 				stage.setScene(new Scene(new MapView(gameLoader.getSafariZone()), gameLoader.getSafariZone().getSettings().getWidth("map"), gameLoader.getSafariZone().getSettings().getHeight("map")));
 				stage.show();
-			} else if (text.equals("Trainer")) { 
-//				Stage stage = new Stage();
-//				stage.setTitle("Trainer View");
-//				stage.setScene(new Scene(new TrainerView(gameLoader.getSafariZone()), gameLoader.getSafariZone().getSettings().getWidth("info"), gameLoader.getSafariZone().getSettings().getHeight("info")));
-//				stage.show();
+			} else if (text.equals("Trainer")) 
 				setInfoViewTo(trainerView);
-			}
 			else if (text.equals("Exit")) {
 				// UD man.pushUserData();
 				loggedIn = 0;
