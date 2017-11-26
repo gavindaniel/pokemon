@@ -15,18 +15,19 @@ public class TrainerView extends BorderPane implements Observer {
 	private GridPane gp1;
 	private TextArea gameDisplay;
 
-	private static int lowerBound;	// lower bound of viewable area 
-	private static int upperBound;	// upper bound of viewable area
-
+	@Override
+	public void update(Observable o, Object arg) {
+		theGame = (SafariZone) o;
+		updateTextArea();
+	}
+	
 	// constructor
 	public TrainerView(SafariZone PokemonGame) {
 		theGame = PokemonGame;
-		lowerBound = theGame.getSettings().getLowerBound("text");
-		upperBound = theGame.getSettings().getUpperBound("text");
 		gp1 = new GridPane();
 		initializePane();
 	}
-
+	
 	private void initializePane() {
 		gameDisplay = new TextArea();
 		gameDisplay.setFont(new Font("Calibri", 16));
@@ -42,16 +43,9 @@ public class TrainerView extends BorderPane implements Observer {
 		updateTextArea();
 	}
 
-	@Override
-	public void update(Observable o, Object arg) {
-		theGame = (SafariZone) o;
-		updateTextArea();
-	}
-
 	
 	public void updateTextArea() {
 		String result = "";
-		
 		result += "*********************\n";
 		result += "****Trainer Profile****\n";
 		result += "*********************\n\n";

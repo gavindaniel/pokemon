@@ -126,7 +126,7 @@ public class Map extends Observable {
 				newP = changeZone(oldLoc);
 			trainer.setCurrentLocation(newP);
 			trainer.setNumSteps(trainer.getNumSteps() - 1);
-			System.out.println("r: "+trainer.getCurrentLocation().getY()+"\tc: "+trainer.getCurrentLocation().getX());
+//			System.out.println("r: "+trainer.getCurrentLocation().getY()+"\tc: "+trainer.getCurrentLocation().getX());
 			checkForPokemon(trainer.getZone()-1, newLoc);
 			clearPokemon();
 			spawnPokemon();

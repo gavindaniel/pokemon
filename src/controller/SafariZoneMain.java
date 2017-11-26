@@ -37,7 +37,8 @@ import persistence.GameLoader;
 /**************************************************************/
 public class SafariZoneMain extends Application {
 
-	private Stage stage;
+	private Stage stage, info_stage;
+	private Settings settings;
 	private BorderPane start_window, menu_window, newgame_window, loadgame_window, game_window;
 	private Scene start_scene, menu_scene, newgame_scene, loadgame_scene, game_scene;
 
@@ -49,9 +50,14 @@ public class SafariZoneMain extends Application {
 	private MenuView menuView;
 	private NewGameView newGameView;
 	private LoadGameView loadGameView;
-
-	private Settings settings;
-	char keyPressed;
+	
+	private PokemonView pokemonView;
+	private BagView bagView;
+	private TrainerView trainerView;
+//	private Scene pokemon_scene, bag_scene, trainer_scene;
+//	private BorderPane pokemon_window, bag_window, trainer_window;
+	private BorderPane info_window;
+	private Scene info_scene;
 	/***************************************/
 	private int loggedIn;
 	private Button loginButton;
@@ -84,35 +90,32 @@ public class SafariZoneMain extends Application {
 		loginGrid = new GridPane();
 		loggedIn = 0;
 		man = new FileManager();
-
 		primaryStage.setTitle("Pokemon: Safari Zone");
 		stage = primaryStage;
-		keyPressed = 'z';
 		settings = new Settings();
 
 		initializeGameForTheFirstTime();
-		// loginView = new LoginView(man,gameLoader,graphicView);
+		
+		textView = new TextView(gameLoader.getSafariZone());
+		graphicView = new GraphicView(gameLoader.getSafariZone());
+//		loginView = new LoginView(man,gameLoader,graphicView);
+		
 		setupScenes();
 		setupStartScreen();
 		setupMainMenu();
 		setupGameMenus();
 		setupNewGame();
 		setupLoadGame();
-
+		setupInfoViews(); // new
 //		setupLoginGrids();
-		game_window.setTop(menuBar);
-
-		// Setup the views
-		textView = new TextView(gameLoader.getSafariZone());
-		graphicView = new GraphicView(gameLoader.getSafariZone());
 		
-		/***************************************/
-		// textView = new TextView(gameLoader.getSafariZone());
-		// loginView = new LoginView(man,gameLoader,textView);
-		/***************************************/
-
+		game_window.setTop(menuBar);
+		
 		gameLoader.getSafariZone().addObserver(textView);
 		gameLoader.getSafariZone().addObserver(graphicView);
+		gameLoader.getSafariZone().addObserver(pokemonView); // new
+		gameLoader.getSafariZone().addObserver(bagView);		// new
+		gameLoader.getSafariZone().addObserver(trainerView); // new
 		// gameLoader.getSafariZone().addObserver(loginView);
 
 		/***********************/
@@ -168,6 +171,20 @@ public class SafariZoneMain extends Application {
 	private void setupLoadGame() {
 		loadGameView = new LoadGameView(gameLoader.getSafariZone(), stage, loadgame_scene, game_scene);
 		loadgame_window.setCenter(loadGameView);
+	}
+	private void setupInfoViews() {
+		info_stage = new Stage();
+		info_window = new BorderPane();
+		info_scene = new Scene(info_window, settings.getWidth("info"), settings.getHeight("info"));
+		info_stage.setScene(info_scene);
+		pokemonView = new PokemonView(gameLoader.getSafariZone());
+		bagView = new BagView(gameLoader.getSafariZone());
+		trainerView = new TrainerView(gameLoader.getSafariZone());
+	}
+	private void setInfoViewTo(Observer currentView) {
+		info_window.setCenter(null); // i think this clears it
+		info_window.setCenter((Node) currentView);
+		info_stage.show();
 	}
 	
 	private void setupGameMenus() {
@@ -233,15 +250,17 @@ public class SafariZoneMain extends Application {
 		public void handle(ActionEvent e) {
 			String text = ((MenuItem) e.getSource()).getText();
 			if (text.equals("Pokemon")) {
-				Stage stage = new Stage();
-				stage.setTitle("Pokemon View");
-				stage.setScene(new Scene(new PokemonView(gameLoader.getSafariZone()), gameLoader.getSafariZone().getSettings().getWidth("info"), gameLoader.getSafariZone().getSettings().getHeight("info")));
-				stage.show();
+//				Stage stage = new Stage();
+//				stage.setTitle("Pokemon View");
+//				stage.setScene(new Scene(new PokemonView(gameLoader.getSafariZone()), gameLoader.getSafariZone().getSettings().getWidth("info"), gameLoader.getSafariZone().getSettings().getHeight("info")));
+//				stage.show();
+				setInfoViewTo(pokemonView);
 			} else if (text.equals("Bag")) {
-				Stage stage = new Stage();
-				stage.setTitle("Bag View");
-				stage.setScene(new Scene(new BagView(gameLoader.getSafariZone()), gameLoader.getSafariZone().getSettings().getWidth("info"), gameLoader.getSafariZone().getSettings().getHeight("info")));
-				stage.show();
+//				Stage stage = new Stage();
+//				stage.setTitle("Bag View");
+//				stage.setScene(new Scene(new BagView(gameLoader.getSafariZone()), gameLoader.getSafariZone().getSettings().getWidth("info"), gameLoader.getSafariZone().getSettings().getHeight("info")));
+//				stage.show();
+				setInfoViewTo(bagView);
 			}
 			else if (text.equals("Save")) {
 				if (loggedIn == 0) {
@@ -255,10 +274,11 @@ public class SafariZoneMain extends Application {
 				stage.setScene(new Scene(new MapView(gameLoader.getSafariZone()), gameLoader.getSafariZone().getSettings().getWidth("map"), gameLoader.getSafariZone().getSettings().getHeight("map")));
 				stage.show();
 			} else if (text.equals("Trainer")) { 
-				Stage stage = new Stage();
-				stage.setTitle("Trainer View");
-				stage.setScene(new Scene(new TrainerView(gameLoader.getSafariZone()), gameLoader.getSafariZone().getSettings().getWidth("info"), gameLoader.getSafariZone().getSettings().getHeight("info")));
-				stage.show();
+//				Stage stage = new Stage();
+//				stage.setTitle("Trainer View");
+//				stage.setScene(new Scene(new TrainerView(gameLoader.getSafariZone()), gameLoader.getSafariZone().getSettings().getWidth("info"), gameLoader.getSafariZone().getSettings().getHeight("info")));
+//				stage.show();
+				setInfoViewTo(trainerView);
 			}
 			else if (text.equals("Exit")) {
 				// UD man.pushUserData();
