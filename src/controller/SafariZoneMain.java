@@ -39,8 +39,8 @@ public class SafariZoneMain extends Application {
 
 	private Stage stage, info_stage;
 	private Settings settings;
-	private BorderPane start_window, menu_window, newgame_window, loadgame_window, game_window;
-	private Scene start_scene, menu_scene, newgame_scene, loadgame_scene, game_scene;
+	private BorderPane start_window, menu_window, newgame_window, loadgame_window, game_window, info_window;
+	private Scene start_scene, menu_scene, newgame_scene, loadgame_scene, game_scene, info_scene;
 
 	private MenuBar menuBar;
 	private Observer currentView;
@@ -50,14 +50,9 @@ public class SafariZoneMain extends Application {
 	private MenuView menuView;
 	private NewGameView newGameView;
 	private LoadGameView loadGameView;
-	
 	private PokemonView pokemonView;
 	private BagView bagView;
 	private TrainerView trainerView;
-//	private Scene pokemon_scene, bag_scene, trainer_scene;
-//	private BorderPane pokemon_window, bag_window, trainer_window;
-	private BorderPane info_window;
-	private Scene info_scene;
 	/***************************************/
 	private int loggedIn;
 	private Button loginButton;
@@ -86,47 +81,23 @@ public class SafariZoneMain extends Application {
 		/***************************************/
 		// openConnection();
 		/***************************************/
-		acctGrid = new GridPane();
-		loginGrid = new GridPane();
-		loggedIn = 0;
 		man = new FileManager();
 		primaryStage.setTitle("Pokemon: Safari Zone");
 		stage = primaryStage;
 		settings = new Settings();
 
 		initializeGameForTheFirstTime();
-		
-		textView = new TextView(gameLoader.getSafariZone());
-		graphicView = new GraphicView(gameLoader.getSafariZone());
-//		loginView = new LoginView(man,gameLoader,graphicView);
-		
-		setupScenes();
-		setupStartScreen();
-		setupMainMenu();
 		setupGameMenus();
-		setupNewGame();
-		setupLoadGame();
-		setupInfoViews(); // new
+		setupScenes();
+		setupViews();
 //		setupLoginGrids();
 		
 		game_window.setTop(menuBar);
 		
-		gameLoader.getSafariZone().addObserver(textView);
-		gameLoader.getSafariZone().addObserver(graphicView);
-		gameLoader.getSafariZone().addObserver(pokemonView); // new
-		gameLoader.getSafariZone().addObserver(bagView);		// new
-		gameLoader.getSafariZone().addObserver(trainerView); // new
-		// gameLoader.getSafariZone().addObserver(loginView);
-
-		/***********************/
-		// gameLoader.getPokemon().addObserver(textView);
-		/***********************/
-
+		addGameObservers();
 		setViewTo(graphicView);
-
 		primaryStage.setScene(start_scene); //replacement scene 
 		primaryStage.show();
-
 	}
 
 	private void setViewTo(Observer newView) {
@@ -134,45 +105,50 @@ public class SafariZoneMain extends Application {
 		currentView = newView;
 		game_window.setCenter((Node) currentView);
 	}
-
+	
+	private void setInfoViewTo(Observer currentView) {
+		info_window.setCenter(null); // i think this clears it
+		info_window.setCenter((Node) currentView);
+		info_stage.show();
+	}
+	
 	public void initializeGameForTheFirstTime() {
 		gameLoader = new GameLoader(new SafariZone());
 	}
 
 	private void setupScenes() {
+		// window initialization
 		start_window = new BorderPane();	
 		menu_window = new BorderPane();	
 		newgame_window = new BorderPane();
 		loadgame_window = new BorderPane();
 		game_window = new BorderPane();
-
+		// scene initialization 
 		start_scene = new Scene(start_window, settings.getWidth("scene"), settings.getHeight("scene"));
 		menu_scene = new Scene(menu_window, settings.getWidth("scene"), settings.getHeight("scene"));
 		newgame_scene = new Scene(newgame_window, settings.getWidth("scene"), settings.getHeight("scene"));
 		loadgame_scene = new Scene(loadgame_window, settings.getWidth("scene"), settings.getHeight("scene"));
 		game_scene = new Scene(game_window, settings.getWidth("scene"), settings.getHeight("scene"));
-		
+		// adding listeners
 		game_scene.setOnKeyPressed(new KeyPressListener());
 		game_scene.setOnKeyReleased(new KeyReleaseListener());
 	}
 
-	private void setupStartScreen() {
+	private void setupViews() {
+		// in-game views
+		textView = new TextView(gameLoader.getSafariZone());
+		graphicView = new GraphicView(gameLoader.getSafariZone());
+		// other views
 		startView = new StartView(gameLoader.getSafariZone(), stage, start_scene, menu_scene);
 		start_window.setCenter(startView);
-	}
-	private void setupMainMenu() {
 		menuView = new MenuView(gameLoader.getSafariZone(), stage, newgame_scene, loadgame_scene);
 		menu_window.setCenter(menuView);
-	}
-	private void setupNewGame() {
 		newGameView = new NewGameView(gameLoader.getSafariZone(), stage, newgame_scene, game_scene);
 		newgame_window.setCenter(newGameView);
-	}
-	private void setupLoadGame() {
 		loadGameView = new LoadGameView(gameLoader.getSafariZone(), stage, loadgame_scene, game_scene);
 		loadgame_window.setCenter(loadGameView);
-	}
-	private void setupInfoViews() {
+//		loginView = new LoginView(man,gameLoader,graphicView);
+		// trainer information views
 		info_stage = new Stage();
 		info_window = new BorderPane();
 		info_scene = new Scene(info_window, settings.getWidth("info"), settings.getHeight("info"));
@@ -181,10 +157,14 @@ public class SafariZoneMain extends Application {
 		bagView = new BagView(gameLoader.getSafariZone());
 		trainerView = new TrainerView(gameLoader.getSafariZone());
 	}
-	private void setInfoViewTo(Observer currentView) {
-		info_window.setCenter(null); // i think this clears it
-		info_window.setCenter((Node) currentView);
-		info_stage.show();
+	
+	private void addGameObservers() {
+		gameLoader.getSafariZone().addObserver(textView);
+		gameLoader.getSafariZone().addObserver(graphicView);
+		gameLoader.getSafariZone().addObserver(pokemonView); // new
+		gameLoader.getSafariZone().addObserver(bagView);		// new
+		gameLoader.getSafariZone().addObserver(trainerView); // new
+//		gameLoader.getSafariZone().addObserver(loginView);
 	}
 	
 	private void setupGameMenus() {
@@ -205,10 +185,9 @@ public class SafariZoneMain extends Application {
 		// add the options
 		Menu views = new Menu("View");
 		views.getItems().addAll(textV, graphicV);
-
+		// setup menu bar
 		menuBar = new MenuBar();
 		menuBar.getMenus().addAll(menu, views);
-
 		// Add the same listener to all menu items requiring action
 		MenuItemListener menuListener = new MenuItemListener();
 		pokemon.setOnAction(menuListener);
@@ -300,7 +279,10 @@ public class SafariZoneMain extends Application {
 
 
 	public void setupLoginGrids() {
-
+		acctGrid = new GridPane();
+		loginGrid = new GridPane();
+		loggedIn = 0;
+		
 		loginB = new Button("Login");
 		loginB.setFont(new Font("Arial", 14));
 		exitLgn = new Button("Exit");
