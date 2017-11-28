@@ -28,7 +28,7 @@ public class NewGameView extends Canvas implements Observer {
 	private Scene newgame_scene, game_scene, gender_scene, name_scene;
 	private SafariZone theGame;
 	private GraphicsContext gc;
-	private Timeline timeline;
+	private Timeline timeline, timeline2;
 	private Vector<String> profOakLines;
 	private boolean enter_pressed, done_printing, stage_show;
 	// gender input variables
@@ -93,6 +93,10 @@ public class NewGameView extends Canvas implements Observer {
 		this.setHeight(theGame.getSettings().getHeight("scene"));	
 		timeline = new Timeline(new KeyFrame(Duration.millis(theGame.getSettings().getTimelineDuration(3)), new AnimateStarter()));
 		timeline.setCycleCount(Animation.INDEFINITE);
+		
+		timeline2 = new Timeline(new KeyFrame(Duration.millis(3000), new AnimateStarter2()));
+		timeline2.setCycleCount(Animation.INDEFINITE);
+		
 		enter_pressed = false; 
 		done_printing = false;
 		initializePane();
@@ -119,6 +123,12 @@ public class NewGameView extends Canvas implements Observer {
 	 */
 	public void animateOak() {
 		timeline.play();
+	}
+	/**
+	 *	starts the scene timeline to fade out the scene 
+	 */
+	public void fadeOutScene() {
+		timeline2.play();
 	}
 	/**
 	 *	Animation class relating to trainer animation
@@ -208,16 +218,7 @@ public class NewGameView extends Canvas implements Observer {
 		public void handle(ActionEvent event) {
 			if (event.getSource() == submit)
 				if (text_input.getText().length() > 0) {
-//					name_input = text_input.getText();
-//					name_input = name_input.replace('\n', ' ');
-//					name_input = name_input.replace('\r', ' ');
-					name_input = "";
-					for (int i = 0; i < text_input.getText().length(); i++) {
-						if (text_input.getText().charAt(i) != '\n' || text_input.getText().charAt(i) != '\r' || text_input.getText().charAt(i) != ' ')
-							name_input += text_input.getText().charAt(i);
-						System.out.println(name_input);
-					}
-					
+					name_input = text_input.getText();			
 					theGame.getMap().getTrainer().setName(name_input);
 					inputStage.setTitle("Gender Input");
 					inputStage.setScene(gender_scene);
@@ -228,11 +229,38 @@ public class NewGameView extends Canvas implements Observer {
 				inputStage.hide();
 			}
 			if (event.getSource() == female_button) {
-				gender_pressed = 'M';
+				gender_pressed = 'F';
 				enter_pressed = true;
 				inputStage.hide();
 			}
 		}
 		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 *	Animation class relating to trainer animation
+	 */
+	private class AnimateStarter2 implements EventHandler<ActionEvent> {
+
+		int tic; 
+		
+		public AnimateStarter2() {
+			tic = 0;
+		}
+		
+		@Override
+		public void handle(ActionEvent event) {
+			
+			tic++;
+			
+			
+		}
 	}
 }
