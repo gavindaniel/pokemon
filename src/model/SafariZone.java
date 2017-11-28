@@ -40,6 +40,7 @@ public class SafariZone extends Observable {
 	// Move Player
 	public void movePlayer(KeyCode direction) {
 		if (!gameOver()) {
+//			System.out.println("moving player...");
 			Point oldLoc = theMap.getTrainer().getCurrentLocation();
 			Point newLoc = oldLoc;
 			int newC = (int) newLoc.getX();

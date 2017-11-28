@@ -208,8 +208,9 @@ public class SafariZoneMain extends Application {
 		@Override
 		public void handle(KeyEvent event) {
 			if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
+//				gameLoader.getSafariZone().movePlayer(event.getCode());
 				graphicView.animateTrainer(event.getCode(), false);
-				gameLoader.getSafariZone().movePlayer(event.getCode());
+//				gameLoader.getSafariZone().movePlayer(event.getCode());
 			} 
 		}
 	}
