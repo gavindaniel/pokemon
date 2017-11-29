@@ -2,6 +2,7 @@ package views;
 
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Optional;
 import java.util.Vector;
 
 import javafx.animation.Animation;
@@ -9,215 +10,312 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.canvas.*;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.SafariZone;
+import network.User;
+import persistence.FileManager;
+import persistence.GameLoader;
 
-public class LoadGameView extends Canvas implements Observer {
-	
-	private Stage mainStage, inputStage;
-	private Scene newgame_scene, game_scene, gender_scene, name_scene;
+public class LoadGameView extends BorderPane implements Observer {
+
+	private Stage mainStage;
+	private Scene newgame_scene, game_scene, menu_scene;
 	private SafariZone theGame;
-	private GraphicsContext gc;
-	private Timeline timeline;
-	private Vector<String> profOakLines;
-	private boolean enter_pressed, done_printing;
-	// gender input variables
-	private GridPane gp_gender;
-	private Button male_button, female_button;
-	private char gender_pressed;
+	// --------------------------------------------------------
+	private MenuBar mainMenu;
+	private Menu userMenuBar, adminMenuBar;
+	private TextField acctT;
+	private PasswordField pswdT;
+	private Button loginB, playB, pauseB, stopB, createU;
+	private GridPane acctGrid, loginGrid, buttonGrid;
+	private Label acctLabl, pswdLabl, loginMsg, userMsg;
+	private FileManager man;
+	// private Pokemon theGame;
+	private Observer textView;
+	private GameLoader gameLoader;
+	//--------------------------------------------------------
+	private int loggedIn;
+	private Button loginButton;
+	private Button exitLgn;
+
 	// name input variables
-	private TextArea text_input;
-	private String name_input;
-	private GridPane gp_name;
-	private Button submit;
-	
+
 	@Override
 	public void update(Observable o, Object arg) {
 		theGame = (SafariZone) o;
 	}
-	
+
 	/**
-	 * @param instance of the game 'PokemonGame'
+	 * @param instance
+	 *            of the game 'PokemonGame'
 	 */
-	public LoadGameView(SafariZone PokemonGame, Stage stage, Scene newgame, Scene game) {
+	public LoadGameView(SafariZone PokemonGame, Stage stage, Scene newgame, Scene menu, Scene game, FileManager man, GameLoader gameLoader) {
 		mainStage = stage;
 		newgame_scene = newgame;
 		game_scene = game;
+		menu_scene = menu;
 		theGame = PokemonGame;
-			theGame.startNewGame();
-		profOakLines = new Vector<String>();
-		// gender window setup
-		gp_gender = new GridPane();
-		gp_gender.setPrefSize(theGame.getSettings().getWidth("input"), theGame.getSettings().getHeight("input"));
-		male_button = new Button("Male");
-		male_button.setPrefSize(theGame.getSettings().getWidth("text"), theGame.getSettings().getHeight("text"));
-		male_button.setOnAction(new ButtonListener());
-		female_button = new Button("Female");
-		female_button.setPrefSize(theGame.getSettings().getWidth("text"), theGame.getSettings().getHeight("text"));
-		female_button.setOnAction(new ButtonListener());
-		GridPane.setConstraints(male_button, 0, 0);
-		GridPane.setConstraints(female_button, 0, 1);
-		gp_gender.getChildren().addAll(male_button,female_button);
-		gender_scene = new Scene(gp_gender, theGame.getSettings().getWidth("input"), theGame.getSettings().getHeight("input"));
-		//name window setup
-		gp_name = new GridPane();
-		gp_name.setPrefSize(theGame.getSettings().getWidth("input"), theGame.getSettings().getHeight("input"));
-		text_input = new TextArea();
-		text_input.setPrefSize(theGame.getSettings().getWidth("text"), theGame.getSettings().getHeight("text")); // width, height
-		submit = new Button("Submit");
-		submit.setPrefSize(theGame.getSettings().getWidth("text"), theGame.getSettings().getHeight("text"));
-		submit.setOnAction(new ButtonListener());
-		GridPane.setConstraints(text_input, 0, 0);
-		GridPane.setConstraints(submit, 0, 1);
-		gp_name.getChildren().addAll(text_input, submit);
-		name_scene = new Scene(gp_name, theGame.getSettings().getWidth("input"), theGame.getSettings().getHeight("input"));
-		inputStage = new Stage();
-		inputStage.setTitle("Name Input");
-		inputStage.setScene(name_scene);
-		inputStage.hide();
-		
-		this.setWidth(theGame.getSettings().getWidth("scene"));
-		this.setHeight(theGame.getSettings().getHeight("scene"));	
-		timeline = new Timeline(new KeyFrame(Duration.millis(theGame.getSettings().getTimelineDuration(3)), new AnimateStarter()));
-		timeline.setCycleCount(Animation.INDEFINITE);
-		enter_pressed = false; 
-		done_printing = false;
+
+		this.man = man;
+		this.gameLoader = gameLoader;
+		acctGrid = new GridPane();
+		loginGrid = new GridPane();
+		mainMenu = new MenuBar();
+
 		initializePane();
 	}
-	
+
 	/**
-	 *	initializes the canvas and draws the zone and trainer 
+	 * initializes the canvas and draws the zone and trainer
 	 */
 	private void initializePane() {
-		newgame_scene.setOnKeyPressed(new KeyListener());
-		gc = this.getGraphicsContext2D();
-		setupProfOakLines();
-		drawOak();
-		animateOak();
-	}
-	
-	public void drawOak() {
-		Image img = new Image("file:images/newgame/prof-oak.png");
-		gc.drawImage(img, 0, 0, 188, 342, 100, 100, 188, 342);
-	}	
-	
-	/**
-	 *	starts the trainer timeline for animation & stores direction the trainer is moving 
-	 */
-	public void animateOak() {
-		timeline.play();
-	}
-	/**
-	 *	Animation class relating to trainer animation
-	 */
-	private class AnimateStarter implements EventHandler<ActionEvent> {
+		acctGrid = new GridPane();
+		loginGrid = new GridPane();
 		
-		String text, line;
-		double x, y, maxWidth;
-		int i, index; // tic, 
-		boolean stage_show;
+		loginB = new Button("Login");
+		loginB.setFont(new Font("Arial", 14));
+		exitLgn = new Button("Exit");
+		exitLgn.setFont(new Font("Arial", 14));
+
+		acctT = new TextField();
+		pswdT = new PasswordField();
+		acctLabl = new Label("Account Name");
+		pswdLabl = new Label("Password");
+		loginMsg = new Label("Sign In");
+		acctLabl.setFont(new Font("Arial", 18));
+		pswdLabl.setFont(new Font("Arial", 18));
+		loginMsg.setFont(new Font("Arial", 24));
+
+		this.setAlignment(loginMsg, Pos.CENTER);
+		this.setMargin(loginMsg, new Insets(10, 10, 10, 10));
+		this.setTop(loginMsg);
+
+		acctT.setMaxHeight(15.0);
+		pswdT.setMaxHeight(15.0);
+		acctT.setMaxWidth(125.0);
+		pswdT.setMaxWidth(125.0);
+
+		acctGrid.add(acctLabl, 1, 1);
+		acctGrid.add(pswdLabl, 1, 2);
+		acctGrid.add(acctT, 2, 1);
+		acctGrid.add(pswdT, 2, 2);
+		acctGrid.setHgap(5);
+		acctGrid.setVgap(5);
+
+		this.setAlignment(acctGrid, Pos.CENTER);
+		this.setMargin(acctGrid, new Insets(10, 10, 10, 10));
+		this.setCenter(acctGrid);
+
+		this.setAlignment(loginGrid, Pos.CENTER);
+		this.setMargin(loginGrid, new Insets(10, 10, 100, 125));
+		this.setBottom(loginGrid);
+
+		loginGrid.setHgap(5);
+		loginGrid.setVgap(5);
 		
-		public AnimateStarter() {
-//			tic = 0;
-			text = "";
-			x = 100; 
-			y = 500; 
-			maxWidth = 600;
-			index = 0;
-			i = 0;
-			stage_show = false;
+		loginGrid.add(loginB, 1, 1);
+		loginGrid.add(exitLgn, 1, 10);
+
+		createU = new Button("Create");
+		this.setAlignment(createU, Pos.CENTER);
+		this.setMargin(createU, new Insets(10, 10, 100, 125));
+
+		LoginButtonListener handler1 = new LoginButtonListener();
+
+		loginB.setOnAction(handler1);
+		exitLgn.setOnAction(handler1);
+		createU.setOnAction(handler1);
+	}
+
+	public void setUserMsg(String val) {
+		this.setCenter(null);
+		this.setTop(null);
+		this.setBottom(null);
+		userMsg = new Label(val);
+		userMsg.setFont(new Font("Arial", 24));
+		this.setCenter(userMsg);
+	}
+
+	private void setViewToAdmin(Observer newView) {
+		this.setCenter(null);
+		this.setBottom(null);
+		this.setCenter((Node) newView);
+	}
+
+	private void setViewTo(Observer newView) {
+		this.setCenter(null);
+		this.setTop(null);
+		this.setBottom(null);
+		this.setCenter((Node) newView);
+	}
+
+	// has adminOptions menu
+	public void setUpAdminMenus() {
+
+		AdminMenuItemListener adminMenuListener = new AdminMenuItemListener();
+		MenuItem createUser = new MenuItem("Create User");
+		Menu usr = new Menu("Users");
+
+		for (User usu : man.getUserVector()) {
+			MenuItem val = new MenuItem(usu.name);
+			val.setOnAction(adminMenuListener);
+			usr.getItems().addAll(val);
 		}
+
+		Menu adminOptions = new Menu("Admin");
+		adminOptions.getItems().addAll(usr, createUser);
+		createUser.setOnAction(adminMenuListener);
+		mainMenu.getMenus().addAll(adminOptions);
+
+		this.setTop(mainMenu);
+	}
+
+	// menuListener for Admin
+	private class AdminMenuItemListener implements EventHandler<ActionEvent> {
+
 		@Override
-		public void handle(ActionEvent event) {
-			if (index == 0)
-				line = profOakLines.get(index);
-			
-			if (i == line.length()) {
-				done_printing = true;
-				// check if user needs to enter their name
-				if (line == "What is your name?")
-					if (!stage_show) {
-						stage_show = true;
-						inputStage.show();
-					}
-				// check if the user has pressed 'ENTER' to continue
-				if (enter_pressed) {
-					gc.clearRect(0, 480, theGame.getSettings().getWidth("scene"), 30);
-					text = "";
-					enter_pressed = false;	// reset the flag
-					i = 0;
-					index++;
-					// if we're at the last line for Prof. Oak stop animation	
-					if (index == profOakLines.size()) { 
-						timeline.stop();
-						mainStage.setScene(game_scene);
-					}
-					else 
-						if (line == "What is your name?")
-							text = theGame.getMap().getTrainer().getName();
-						line = profOakLines.get(index);
-				}				
+		public void handle(ActionEvent e) {
+			// Find out the text of the adminOptions that was just clicked
+
+			String text = ((MenuItem) e.getSource()).getText();
+			// creates new User
+
+			if (text.equals("Create User")) {
+
 			}
-			else {
-				done_printing = false;
-				text += line.charAt(i);
-				gc.strokeText(text, x, y, maxWidth);
-				i++;
-			}
-			
+
 		}
 	}
-	
-	public void setupProfOakLines() {
-		profOakLines.add("Hello! I'm Professor Oak.");
-		profOakLines.add("Welcome to the world of Pokemon!");
-		profOakLines.add("What is your name?");
-		// user enter text
-		profOakLines.add(" you say? Great to meet you!");
-//		profOakLines.add("Would you like a few tips before you get started?");
-		profOakLines.add("Let's get started!");	
-	}
-	
-	private class KeyListener implements EventHandler<KeyEvent> {
-		@Override
-		public void handle(KeyEvent event) {
-			if (event.getCode() == KeyCode.ENTER)
-				if (done_printing)
-					enter_pressed = true;
-		}
-	}
-	
-	private class ButtonListener implements EventHandler<ActionEvent> {
-		@Override
-		public void handle(ActionEvent event) {
-			if (event.getSource() == submit)
-				if (text_input.getText().length() > 0) {
-					name_input = text_input.getText();
-					theGame.getMap().getTrainer().setName(name_input);
-					inputStage.setTitle("Gender Input");
-					inputStage.setScene(gender_scene);
+
+	private class LoginButtonListener implements EventHandler<ActionEvent> {
+		
+				@Override
+				public void handle(ActionEvent arg0) {
+					if (exitLgn == (Button) arg0.getSource())
+						mainStage.setScene(menu_scene);
+		
+					if (loginB == (Button) arg0.getSource()) {
+						// make one call to check user....
+						if (acctT.getText().equals("") || pswdT.getText().equals(""))
+							System.out.println("View:User Error1");
+						else {
+							loggedIn = 1;
+		
+							User temp = man.getUser(acctT.getText(), pswdT.getText());
+		
+							
+							if (temp != null) {
+								System.out.println("View:Returning User");
+								// have confirm to load last game
+								Alert alert = new Alert(AlertType.CONFIRMATION);
+								alert.setHeaderText("Load Previous Game?");
+								Optional<ButtonType> result = alert.showAndWait();
+		
+								if (result.get() == ButtonType.OK) {
+									System.out.println("Set SafariZone previous for ret User");
+									// check player loc in loaded game
+									// System.out.println("Player Previous:
+									// "+temp.getSafariZone().getTrainerLoc().getX()+"
+									// "+temp.getSafariZone().getTrainerLoc().getY());
+									// load User prev game
+									gameLoader.setSafariZone(null);
+									gameLoader.setSafariZone(temp.getSafariZone());
+		
+//									graphicView = null;
+//									graphicView = new GraphicView(gameLoader.getSafariZone());
+//									gameLoader.getSafariZone().addObserver(graphicView);
+//									setViewTo(graphicView);
+									mainStage.setScene(game_scene);
+		
+								} else {
+									System.out.println("Set SafariZone current for ret User");
+									// set User SafariZone to current game
+		
+									temp.setSafariZone(gameLoader.getSafariZone());
+//									graphicView = null;
+		
+//									graphicView = new GraphicView(gameLoader.getSafariZone());
+//									gameLoader.getSafariZone().addObserver(graphicView);
+		
+//									setViewTo(graphicView);
+		
+									mainStage.setScene(game_scene);
+		
+									// UD man.pushUserData();
+								}
+								// set up admin User menu and game view
+								if (temp.name.equals("Merlin") && temp.password.equals("7777777")) {
+									System.out.println("View:Admin");
+									// setUpAdminMenus();
+									// setViewToAdmin(textView);
+								} else {
+									// set up current User game view
+									// setViewTo(textView);
+								}
+								// setUserMsg("Welcome Back User");
+		
+							} else {
+								man.setUser(acctT.getText(), pswdT.getText(), gameLoader.getSafariZone());
+								System.out.println("View:New User");
+								System.out.println("Set SafariZone current for new");
+								// get user and set SafariZone to current game
+		
+								// man.getUser(acctT.getText(),pswdT.getText()).setSafariZone(gameLoader.getSafariZone());
+		
+								// UD man.pushUserData();
+		
+//								setViewTo(graphicView);
+								mainStage.setScene(game_scene);
+		
+							}
+						}
+						acctT.setText("");
+						pswdT.setText("");
+					}
+		
+					if (createU == (Button) arg0.getSource()) {
+		
+						System.out.println("Got Create");
+		
+						System.out.println("View:Admin Create New User");
+						man.setUser(acctT.getText(), pswdT.getText(), new SafariZone());
+						// set created user new SafariZone
+						man.getUser(acctT.getText(), pswdT.getText()).setSafariZone(new SafariZone());
+		
+						// UD man.pushUserData();
+						// adminHelper();
+						// setUpAdminMenus();
+						// setViewToAdmin(textView);
+						acctT.setText("");
+						pswdT.setText("");
+		
+					}
+		
 				}
-			if (event.getSource() == male_button) {
-				gender_pressed = 'M';
-				enter_pressed = true;
-				inputStage.hide();
-			}
-			if (event.getSource() == female_button) {
-				gender_pressed = 'M';
-				enter_pressed = true;
-				inputStage.hide();
-			}
-		}
 		
-	}
+			}
 }
