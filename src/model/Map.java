@@ -164,6 +164,7 @@ public class Map extends Observable {
 			if (zones.get(zoneNum).getTile(r,c).getPokemonHere() == true) {
 				//Vector<Pokemon> temp = trainer.getPokemon();
 //				Thread.sleep(500);
+				System.out.println("alert");
 				List<Pokemon> temp = trainer.getOwnedPokemonList();
 				temp.add(new Pikachu());								// FIXME
 				trainer.setOwnedPokemonList(temp);
