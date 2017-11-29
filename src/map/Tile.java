@@ -166,15 +166,15 @@ public class Tile {
 	public String getType() {
 		return type;
 	}
-	public void setType(String t) {
-		type = t;
-	}
+//	public void setType(String t) {
+//		type = t;
+//	}
 	public char getSourceChar() {
 		return sourceChar;
 	}
-	public void setSourceChar(char c) {
-		sourceChar = c;
-	}
+//	public void setSourceChar(char c) {
+//		sourceChar = c;
+//	}
 	public boolean getPokemonHere() {
 		return pokemonHere;
 	}
@@ -184,12 +184,12 @@ public class Tile {
 	public boolean getTrainerHere() {
 		return trainerHere;
 	}
-	public void setTrainerHere(boolean flag) {
-		trainerHere = flag;
-	}
-	public Image getImage() {
-		return (new Image(imgPath));
-	}
+//	public void setTrainerHere(boolean flag) {
+//		trainerHere = flag;
+//	}
+//	public Image getImage() {
+//		return (new Image(imgPath));
+//	}
 	public String getImagePath() {
 		return imgPath;
 	}

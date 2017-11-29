@@ -241,7 +241,6 @@ public class SafariZoneMain extends Application {
 //				gameLoader.setSafariZone(null);
 //				gameLoader.setSafariZone(new SafariZone());
 //				graphicView = null;
-//
 //				graphicView = new GraphicView(gameLoader.getSafariZone());
 //				gameLoader.getSafariZone().addObserver(graphicView);
 				stage.setScene(menu_scene);			
@@ -252,8 +251,6 @@ public class SafariZoneMain extends Application {
 				setViewTo(graphicView);		
 		}
 	}
-
-
 
 	//////////////// work in progress
 

@@ -74,6 +74,7 @@ public class GraphicView extends Canvas implements Observer {
 	public void drawViewableArea() {
 		print_count++;
 		System.out.println("printing map..." + print_count);
+		System.gc();
 		
 		int pc = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();	//	trainer location (column)
 		int pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();	//	trainer location (row)
@@ -94,6 +95,12 @@ public class GraphicView extends Canvas implements Observer {
 			}
 			cc = 0; rc++;
 		}
+	}
+	/**
+	 *	clears the canvas 
+	 */
+	public void clearCanvas() {
+		gc.clearRect(0, 0, theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene"));
 	}
 	/**
 	 *	resets the variables for drawing trainer location
@@ -178,6 +185,7 @@ public class GraphicView extends Canvas implements Observer {
 					yshift = 0;
 				}
 			}
+			clearCanvas();
 			drawViewableArea();
 			drawTrainer();		
 			if (tic > 1) {

@@ -16,7 +16,7 @@ public class Settings {
 	private static int text_display_lowerbound, text_display_upperbound;
 	private static double trainer_x, trainer_y;
 	private static double sprite_x, sprite_y;
-	private static double timeline_1_duration, timeline_2_duration, timeline_3_duration;
+	private static double timeline_1_duration, timeline_2_duration;
 	
 	public Settings() {
 		starting_zone = 1;					//  zone # that the trainer starts in (this will be changed once the safari zone building is done)
@@ -46,9 +46,8 @@ public class Settings {
 		trainer_y = 368;						//	trainer y location to be displayed in the game
 		sprite_x = -2;						//	trainer x location on the sprite sheet
 		sprite_y = 0;						//	trainer y location on the sprite sheet
-		timeline_1_duration = 200;			//	duration of timeline 1 to animate Trainer movement (in miliseconds)
-		timeline_2_duration = 500;			//	***this may not be needed*** trying to animate the background independently 
-		timeline_3_duration = 10;			//	duration of timeline 3 to animate the speech of professor Oak
+		timeline_1_duration = 175;			//	duration of timeline 1 to animate Trainer movement (in miliseconds)
+		timeline_2_duration = 10;			//	duration of timeline 2 to animate the speech of professor Oak
 	}
 	public int getStartingZone() {
 		return starting_zone;
@@ -124,9 +123,7 @@ public class Settings {
 	public double getTimelineDuration(int key) {
 		if (key == 1)
 			return timeline_1_duration;
-		else if (key == 2)
+		else //if (key == 2)
 			return timeline_2_duration;
-		else // if (key == 3)
-			return timeline_3_duration;
 	}
 }

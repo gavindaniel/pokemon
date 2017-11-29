@@ -91,7 +91,7 @@ public class NewGameView extends Canvas implements Observer {
 		
 		this.setWidth(theGame.getSettings().getWidth("scene"));
 		this.setHeight(theGame.getSettings().getHeight("scene"));	
-		timeline = new Timeline(new KeyFrame(Duration.millis(theGame.getSettings().getTimelineDuration(3)), new AnimateStarter()));
+		timeline = new Timeline(new KeyFrame(Duration.millis(theGame.getSettings().getTimelineDuration(2)), new AnimateStarter()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		
 		timeline2 = new Timeline(new KeyFrame(Duration.millis(3000), new AnimateStarter2()));
