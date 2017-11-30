@@ -193,8 +193,8 @@ public class NewGameView extends Canvas implements Observer {
 					gc.drawImage(arrow_keys, 350, 100);
 				}
 				if (line == "You can check things like your pokemon from the Menu in-game...") {
-					Image arrow_keys = new Image("file:images/misc/menu.png");
-					gc.drawImage(arrow_keys, 0, 0);
+					Image menu = new Image("file:images/misc/menu.png");
+					gc.drawImage(menu, 0, 0, 130, 56, 0, 0, 65, 28);
 				}
 				// check if the user has pressed 'ENTER' to continue
 				if (enter_pressed) {
