@@ -46,7 +46,7 @@ public class Settings {
 		trainer_y = 368;						//	trainer y location to be displayed in the game
 		sprite_x = -2;						//	trainer x location on the sprite sheet
 		sprite_y = 0;						//	trainer y location on the sprite sheet
-		timeline_1_duration = 175;			//	duration of timeline 1 to animate Trainer movement (in miliseconds)
+		timeline_1_duration = 150;			//	duration of timeline 1 to animate Trainer movement (in miliseconds)
 		timeline_2_duration = 10;			//	duration of timeline 2 to animate the speech of professor Oak
 	}
 	public int getStartingZone() {
