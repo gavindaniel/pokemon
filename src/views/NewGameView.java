@@ -18,6 +18,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.SafariZone;
@@ -31,6 +32,7 @@ public class NewGameView extends Canvas implements Observer {
 	private Timeline timeline, timeline2;
 	private Vector<String> profOakLines;
 	private boolean enter_pressed, done_printing, stage_show;
+	private Image textbox;
 	// gender input variables
 	private GridPane gp_gender;
 	private Button male_button, female_button;
@@ -62,6 +64,7 @@ public class NewGameView extends Canvas implements Observer {
 		theGame = PokemonGame;
 		theGame.startNewGame();
 		profOakLines = new Vector<String>();
+		textbox = new Image("file:images/newgame/textbox2.png");
 		// walkthrough window setup
 		gp_tips = new GridPane();
 		gp_tips.setPrefSize(theGame.getSettings().getWidth("input"), theGame.getSettings().getHeight("input"));
@@ -125,6 +128,7 @@ public class NewGameView extends Canvas implements Observer {
 	private void initializePane() {
 		newgame_scene.setOnKeyPressed(new KeyListener());
 		gc = this.getGraphicsContext2D();
+		gc.setFont(new Font("Calibri", 18));
 		setupProfOakLines();
 		drawOak();
 		animateOak();
@@ -132,7 +136,7 @@ public class NewGameView extends Canvas implements Observer {
 	
 	public void drawOak() {
 		Image img = new Image("file:images/newgame/prof-oak.png");
-		gc.drawImage(img, 0, 0, 188, 342, 100, 100, 188, 342);
+		gc.drawImage(img, 0, 0, 188, 342, 100, 90, 188, 342);
 	}	
 	
 	/**
@@ -160,7 +164,7 @@ public class NewGameView extends Canvas implements Observer {
 //			tic = 0;
 			text = "";
 			x = 100; 
-			y = 500; 
+			y = 495; 
 			maxWidth = 600;
 			index = 0;
 			i = 0;
@@ -188,12 +192,14 @@ public class NewGameView extends Canvas implements Observer {
 						inputStage.setScene(tips_scene);
 						inputStage.show();
 					}
+				if (line == "Great!")
+					gc.clearRect(500, 100, 150, 330);
 				if (line == "Use the arrow keys to move around...") {
-					Image arrow_keys = new Image("file:images/misc/arrowKeys.png");
+					Image arrow_keys = new Image("file:images/newgame/arrowKeys.png");
 					gc.drawImage(arrow_keys, 350, 100);
 				}
 				if (line == "You can check things like your pokemon from the Menu in-game...") {
-					Image menu = new Image("file:images/misc/menu.png");
+					Image menu = new Image("file:images/newgame/menu.png");
 					gc.drawImage(menu, 0, 0, 130, 56, 0, 0, 65, 28);
 				}
 				// check if the user has pressed 'ENTER' to continue
@@ -225,7 +231,8 @@ public class NewGameView extends Canvas implements Observer {
 			else {
 				done_printing = false;
 				text += line.charAt(i);
-				gc.strokeText(text, x, y, maxWidth);
+				gc.drawImage(textbox, 0, 0, 920, 168, 10, 440, 780, 100);
+				gc.fillText(text, x, y, maxWidth);		// used tobe strokeText
 				i++;
 			}
 			
@@ -264,12 +271,16 @@ public class NewGameView extends Canvas implements Observer {
 				enter_pressed = true;
 				stage_show = false;
 				inputStage.hide();
+				Image boy = new Image("file:images/newgame/boy.png");
+				gc.drawImage(boy, 0, 0, 200, 513, 500, 100, 150, 330);
 			}
 			if (event.getSource() == female_button) {
 				gender_pressed = 'F';
 				enter_pressed = true;
 				stage_show = false;
 				inputStage.hide();
+				Image girl = new Image("file:images/newgame/girl.png");
+				gc.drawImage(girl, 0, 0, 183, 381, 500, 100, 150, 330);
 			}
 			if (event.getSource() == yes_button || event.getSource() == no_button) {
 				if (event.getSource() == yes_button) {

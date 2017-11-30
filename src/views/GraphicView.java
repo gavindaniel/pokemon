@@ -31,6 +31,7 @@ public class GraphicView extends Canvas implements Observer {
 	private double sx, sy, sw, sh, dx, dy, dw, dh;
 	
 	private double xshift, yshift;
+	private char lastStep;
 	
 	private static Image ground;
 	private static Image grass;
@@ -61,7 +62,6 @@ public class GraphicView extends Canvas implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		theGame = (SafariZone) o;
-//		drawViewableArea();
 	}
 	
 	/**
@@ -115,7 +115,6 @@ public class GraphicView extends Canvas implements Observer {
 				try {
 					temp = theGame.getMap().getZone(zoneNum).getTile(pr + r, pc + c);
 					img = getImage(temp.getSourceChar());
-//					img = new Image("file:" + temp.getImagePath());
 					gc.drawImage(img, 0, 0, imageSize, imageSize, (cc * displaySize)+xshift, (rc * displaySize)+yshift, displaySize, displaySize);
 					cc++;
 				} catch (NullPointerException npe) {
@@ -167,22 +166,22 @@ public class GraphicView extends Canvas implements Observer {
 	 *	Animation class relating to trainer animation
 	 */
 	private class AnimateStarter implements EventHandler<ActionEvent> {
-//		public AnimateStarter() {
-//			
-//		}
+		public AnimateStarter() {
+			lastStep = 'L';
+		}
 		@Override
 		public void handle(ActionEvent event) {
 			tic++;
-//			drawViewableArea();
 			if (direction == KeyCode.RIGHT) {
 				if (tic == 1) {
 					sx = 89;
-					sy = 30;
+					sy = lastStep == 'L' ? 30 : 150;
+					lastStep = lastStep == 'L' ? 'R' : 'L';
 					xshift = -16;
 					col_upperBound += 1;
 				}
 				if (tic == 2) {
-					sy -= 30;
+					sy = 0;
 					xshift = 0;
 					col_upperBound -= 1;
 				}
@@ -190,12 +189,13 @@ public class GraphicView extends Canvas implements Observer {
 			if (direction == KeyCode.LEFT) {
 				if (tic == 1) {
 					sx = 28;
-					sy = 30;
+					sy = lastStep == 'L' ? 30 : 150;
+					lastStep = lastStep == 'L' ? 'R' : 'L';
 					xshift = -16;
 					col_lowerBound -= 1;
 				}
 				if (tic == 2) { 
-					sy -= 30;
+					sy = 0;
 					xshift = 0;
 					col_lowerBound += 1;
 				}
@@ -203,12 +203,13 @@ public class GraphicView extends Canvas implements Observer {
 			if (direction == KeyCode.UP) {
 				if (tic == 1) {
 					sx = 58;
-					sy = 30;
+					sy = lastStep == 'L' ? 30 : 150;
+					lastStep = lastStep == 'L' ? 'R' : 'L';
 					yshift = -16;
 					row_lowerBound -= 1;
 				}
 				if (tic == 2) {
-					sy -= 30;
+					sy = 0;
 					yshift = 0;
 					row_lowerBound += 1;
 				}
@@ -216,11 +217,12 @@ public class GraphicView extends Canvas implements Observer {
 			if (direction == KeyCode.DOWN) {
 				if (tic == 1) {
 					sx = -2;
-					sy = 30;
+					sy = lastStep == 'L' ? 30 : 150;
+					lastStep = lastStep == 'L' ? 'R' : 'L';
 					yshift = -16;
 				}
 				if (tic == 2) {
-					sy -= 30;
+					sy = 0;
 					yshift = 0;
 				}
 			}
