@@ -234,12 +234,10 @@ public class NewGameView extends Canvas implements Observer {
 	
 	public void setupProfOakLines() {
 		profOakLines.add("Hello! I'm Professor Oak.");
-//		profOakLines.add("Welcome to the world of Pokemon!");
 		profOakLines.add("Welcome to the Safari Zone!");
 		profOakLines.add("What is your name?");
 		profOakLines.add(" you say? Great to meet you!");
-		profOakLines.add("Would you like a quick walkthrough before you get started?");
-//		profOakLines.add("Let's get started!");	
+		profOakLines.add("Would you like a quick walkthrough before you get started?");	
 	}
 	
 	private class KeyListener implements EventHandler<KeyEvent> {
@@ -286,7 +284,7 @@ public class NewGameView extends Canvas implements Observer {
 					profOakLines.add("Let's get started!");
 				}
 				else if (event.getSource() == no_button) {
-					profOakLines.add("Let's get started!");
+					profOakLines.add("Great! Let's get started!");
 				}
 				enter_pressed = true;
 				inputStage.hide();
