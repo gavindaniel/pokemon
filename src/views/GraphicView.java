@@ -26,7 +26,7 @@ public class GraphicView extends Canvas implements Observer {
 	private int tic;
 
 	private static double imageSize, displaySize;	//  16px by 16px	 ,  32px by 32px 
-	private static int lowerBound, upperBound;		//	bounds for display
+	private static int row_lowerBound, col_lowerBound, col_upperBound, row_upperBound;		//	bounds for display
 	
 	private double sx, sy, sw, sh, dx, dy, dw, dh;
 	
@@ -71,10 +71,13 @@ public class GraphicView extends Canvas implements Observer {
 		xshift = 0; 
 		yshift = 0;
 		tic = 0;
+		direction = KeyCode.ENTER;
 		//-----------------------
 		theGame = PokemonGame;
-		lowerBound = theGame.getSettings().getLowerBound("graphic");
-		upperBound = theGame.getSettings().getUpperBound("graphic");
+		row_lowerBound = theGame.getSettings().getLowerBound("graphic");
+		col_lowerBound = theGame.getSettings().getLowerBound("graphic");
+		row_upperBound = theGame.getSettings().getUpperBound("graphic");
+		col_upperBound = theGame.getSettings().getUpperBound("graphic");
 		imageSize = theGame.getSettings().getImageSize("original");
 		displaySize = theGame.getSettings().getImageSize("display");
 		this.setWidth(theGame.getSettings().getWidth("scene"));
@@ -107,8 +110,8 @@ public class GraphicView extends Canvas implements Observer {
 		double rc = 0, cc = 0; //row_index, col_index;
 		Tile temp;
 		Image img;
-		for (int r = lowerBound; r <= upperBound; r++) {
-			for (int c = lowerBound; c <= upperBound; c++) {
+		for (int r = row_lowerBound; r <= row_upperBound; r++) {
+			for (int c = col_lowerBound; c <= col_upperBound; c++) {
 				try {
 					temp = theGame.getMap().getZone(zoneNum).getTile(pr + r, pc + c);
 					img = getImage(temp.getSourceChar());
@@ -153,7 +156,11 @@ public class GraphicView extends Canvas implements Observer {
 	 */
 	public void animateTrainer(KeyCode key, boolean d) {
 		timeline.play();
-		direction = key;
+		if (direction == KeyCode.ENTER) // first
+			direction = key;
+		else if (direction != key)
+			if (tic == 0)
+				direction = key;
 		done = d;
 	}
 	/**
@@ -172,32 +179,38 @@ public class GraphicView extends Canvas implements Observer {
 					sx = 89;
 					sy = 30;
 					xshift = -16;
+					col_upperBound += 1;
 				}
 				if (tic == 2) {
 					sy -= 30;
 					xshift = 0;
+					col_upperBound -= 1;
 				}
 			}
 			if (direction == KeyCode.LEFT) {
 				if (tic == 1) {
 					sx = 28;
 					sy = 30;
-					xshift = 16;
+					xshift = -16;
+					col_lowerBound -= 1;
 				}
 				if (tic == 2) { 
 					sy -= 30;
 					xshift = 0;
+					col_lowerBound += 1;
 				}
 			}
 			if (direction == KeyCode.UP) {
 				if (tic == 1) {
 					sx = 58;
 					sy = 30;
-					yshift = +16;
+					yshift = -16;
+					row_lowerBound -= 1;
 				}
 				if (tic == 2) {
 					sy -= 30;
 					yshift = 0;
+					row_lowerBound += 1;
 				}
  			}
 			if (direction == KeyCode.DOWN) {
@@ -218,9 +231,12 @@ public class GraphicView extends Canvas implements Observer {
 				tic = 0;
 				if (done)
 					timeline.stop();
+//				if (direction == KeyCode.LEFT)
+//					theGame.movePlayer(direction);
 			}
 			if (tic == 1)
-				theGame.movePlayer(direction);
+//				if (direction != KeyCode.LEFT)
+					theGame.movePlayer(direction);
 		}
 	}
 	
