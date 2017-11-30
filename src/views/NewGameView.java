@@ -25,7 +25,7 @@ import model.SafariZone;
 public class NewGameView extends Canvas implements Observer {
 	
 	private Stage mainStage, inputStage;
-	private Scene newgame_scene, game_scene, gender_scene, name_scene;
+	private Scene newgame_scene, game_scene, gender_scene, name_scene, tips_scene;
 	private SafariZone theGame;
 	private GraphicsContext gc;
 	private Timeline timeline, timeline2;
@@ -40,6 +40,9 @@ public class NewGameView extends Canvas implements Observer {
 	private String name_input;
 	private GridPane gp_name;
 	private Button submit;
+	// walkthrough input variables
+	private GridPane gp_tips;
+	private Button yes_button, no_button;
 	
 	@Override
 	public void update(Observable o, Object arg) {
@@ -59,6 +62,19 @@ public class NewGameView extends Canvas implements Observer {
 		theGame = PokemonGame;
 		theGame.startNewGame();
 		profOakLines = new Vector<String>();
+		// walkthrough window setup
+		gp_tips = new GridPane();
+		gp_tips.setPrefSize(theGame.getSettings().getWidth("input"), theGame.getSettings().getHeight("input"));
+		yes_button = new Button("Yes");
+		yes_button.setPrefSize(theGame.getSettings().getWidth("text"), theGame.getSettings().getHeight("text"));
+		yes_button.setOnAction(new ButtonListener());
+		no_button = new Button("No");
+		no_button.setPrefSize(theGame.getSettings().getWidth("text"), theGame.getSettings().getHeight("text"));
+		no_button.setOnAction(new ButtonListener());
+		GridPane.setConstraints(yes_button, 0, 0);
+		GridPane.setConstraints(no_button, 0, 1);
+		gp_tips.getChildren().addAll(yes_button, no_button);
+		tips_scene = new Scene(gp_tips, theGame.getSettings().getWidth("input"), theGame.getSettings().getHeight("input"));
 		// gender window setup
 		gp_gender = new GridPane();
 		gp_gender.setPrefSize(theGame.getSettings().getWidth("input"), theGame.getSettings().getHeight("input"));
@@ -73,6 +89,7 @@ public class NewGameView extends Canvas implements Observer {
 		gp_gender.getChildren().addAll(male_button,female_button);
 		gender_scene = new Scene(gp_gender, theGame.getSettings().getWidth("input"), theGame.getSettings().getHeight("input"));
 		//name window setup
+		name_input = "";
 		gp_name = new GridPane();
 		gp_name.setPrefSize(theGame.getSettings().getWidth("input"), theGame.getSettings().getHeight("input"));
 		text_input = new TextArea();
@@ -158,14 +175,35 @@ public class NewGameView extends Canvas implements Observer {
 				done_printing = true;
 				// check if user needs to enter their name
 				if (line == "What is your name?")
-					if (!stage_show) {
+					if (!stage_show && name_input == "") {
 						stage_show = true;
 						inputStage.setTitle("Name Input");
 						inputStage.setScene(name_scene);
 						inputStage.show();
 					}
+				if (line == "Would you like a quick walkthrough before you get started?")
+					if (!stage_show) {
+						stage_show = true;
+						inputStage.setTitle("Walkthrough");
+						inputStage.setScene(tips_scene);
+						inputStage.show();
+					}
+				if (line == "Use the arrow keys to move around...") {
+					Image arrow_keys = new Image("file:images/misc/arrowKeys.png");
+					gc.drawImage(arrow_keys, 350, 100);
+				}
+				if (line == "You can check things like your pokemon from the Menu in-game...") {
+					Image arrow_keys = new Image("file:images/misc/menu.png");
+					gc.drawImage(arrow_keys, 0, 0);
+				}
 				// check if the user has pressed 'ENTER' to continue
 				if (enter_pressed) {
+					if (line == "Use the arrow keys to move around...") {
+						gc.clearRect(350, 100, 332, 227);
+					}
+					if (line == "You can check things like your pokemon from the Menu in-game...") {
+						gc.clearRect(0, 0, 130, 56);
+					}
 					gc.clearRect(0, 480, theGame.getSettings().getWidth("scene"), 30);
 					text = "";
 					enter_pressed = false;	// reset the flag
@@ -196,12 +234,12 @@ public class NewGameView extends Canvas implements Observer {
 	
 	public void setupProfOakLines() {
 		profOakLines.add("Hello! I'm Professor Oak.");
-		profOakLines.add("Welcome to the world of Pokemon!");
+//		profOakLines.add("Welcome to the world of Pokemon!");
+		profOakLines.add("Welcome to the Safari Zone!");
 		profOakLines.add("What is your name?");
-		// user enter text
 		profOakLines.add(" you say? Great to meet you!");
-//		profOakLines.add("Would you like a few tips before you get started?");
-		profOakLines.add("Let's get started!");	
+		profOakLines.add("Would you like a quick walkthrough before you get started?");
+//		profOakLines.add("Let's get started!");	
 	}
 	
 	private class KeyListener implements EventHandler<KeyEvent> {
@@ -226,10 +264,30 @@ public class NewGameView extends Canvas implements Observer {
 			if (event.getSource() == male_button) {
 				gender_pressed = 'M';
 				enter_pressed = true;
+				stage_show = false;
 				inputStage.hide();
 			}
 			if (event.getSource() == female_button) {
 				gender_pressed = 'F';
+				enter_pressed = true;
+				stage_show = false;
+				inputStage.hide();
+			}
+			if (event.getSource() == yes_button || event.getSource() == no_button) {
+				if (event.getSource() == yes_button) {
+					profOakLines.add("Great!");
+					profOakLines.add("This is the Safari Zone!");
+					profOakLines.add("Here, some of the rarest Pokemon in the Hoenn region roam...");
+					profOakLines.add("Use the arrow keys to move around...");
+					profOakLines.add("You can check things like your pokemon from the Menu in-game...");
+					profOakLines.add("You only get 500 steps so make them count...");
+					profOakLines.add("You also only get 30 safari balls...");
+					profOakLines.add("And that's it!");
+					profOakLines.add("Let's get started!");
+				}
+				else if (event.getSource() == no_button) {
+					profOakLines.add("Let's get started!");
+				}
 				enter_pressed = true;
 				inputStage.hide();
 			}

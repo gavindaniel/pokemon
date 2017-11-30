@@ -70,7 +70,6 @@ public class MenuView extends GridPane implements Observer {
 			} 
 			else if (event.getSource() == loadGameButton) {
 				mainStage.setScene(loadgame_scene);
-				System.out.println("loading..");
 			}
 		}
 	}
