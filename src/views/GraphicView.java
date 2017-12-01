@@ -25,8 +25,8 @@ public class GraphicView extends Canvas implements Observer {
 	private boolean done;
 	private int tic;
 
-	private static double imageSize, displaySize;	//  16px by 16px	 ,  32px by 32px 
-	private static int row_lowerBound, col_lowerBound, col_upperBound, row_upperBound;		//	bounds for display
+	private static double imageSize, displaySize;
+	private static int row_lowerBound, col_lowerBound, col_upperBound, row_upperBound;
 	
 	private double sx, sy, sw, sh, dx, dy, dw, dh;
 	
@@ -58,10 +58,17 @@ public class GraphicView extends Canvas implements Observer {
 	private static Image water_bottomleft;
 	private static Image water_bottomright;
 	
+	private double duration;
 	
 	@Override
 	public void update(Observable o, Object arg) {
 		theGame = (SafariZone) o;
+		if (theGame.getSettings().getTimelineDuration(1) != duration) {
+			timeline.stop();
+			duration = theGame.getSettings().getTimelineDuration(1);
+			timeline = new Timeline(new KeyFrame(Duration.millis(duration), new AnimateStarter()));
+			timeline.setCycleCount(Animation.INDEFINITE);
+		}
 	}
 	
 	/**
@@ -72,6 +79,7 @@ public class GraphicView extends Canvas implements Observer {
 		yshift = 0;
 		tic = 0;
 		direction = KeyCode.ENTER;
+		lastStep = 'L';
 		//-----------------------
 		theGame = PokemonGame;
 		row_lowerBound = theGame.getSettings().getLowerBound("graphic");
@@ -82,7 +90,8 @@ public class GraphicView extends Canvas implements Observer {
 		displaySize = theGame.getSettings().getImageSize("display");
 		this.setWidth(theGame.getSettings().getWidth("scene"));
 		this.setHeight(theGame.getSettings().getHeight("scene"));	
-		timeline = new Timeline(new KeyFrame(Duration.millis(theGame.getSettings().getTimelineDuration(1)), new AnimateStarter()));
+		duration = theGame.getSettings().getTimelineDuration(1);
+		timeline = new Timeline(new KeyFrame(Duration.millis(duration), new AnimateStarter()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		spritesheet = new Image("file:images/sheets/trainer.png", false);
 		resetTrainer();
@@ -102,8 +111,6 @@ public class GraphicView extends Canvas implements Observer {
 	 *	draws the viewable area around the trainer based on his/her location
 	 */
 	public void drawViewableArea() {
-//		System.gc();
-		//--------------------------------
 		int pc = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();	//	trainer location (column)
 		int pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();	//	trainer location (row)
 		int zoneNum = theGame.getMap().getTrainer().getZone();	//	trainer location (zone number)
@@ -166,9 +173,8 @@ public class GraphicView extends Canvas implements Observer {
 	 *	Animation class relating to trainer animation
 	 */
 	private class AnimateStarter implements EventHandler<ActionEvent> {
-		public AnimateStarter() {
-			lastStep = 'L';
-		}
+//		public AnimateStarter() {
+//		}
 		@Override
 		public void handle(ActionEvent event) {
 			tic++;
@@ -233,11 +239,8 @@ public class GraphicView extends Canvas implements Observer {
 				tic = 0;
 				if (done)
 					timeline.stop();
-//				if (direction == KeyCode.LEFT)
-//					theGame.movePlayer(direction);
 			}
 			if (tic == 1)
-//				if (direction != KeyCode.LEFT)
 					theGame.movePlayer(direction);
 		}
 	}

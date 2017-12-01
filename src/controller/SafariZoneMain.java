@@ -53,6 +53,11 @@ public class SafariZoneMain extends Application {
 	private PokemonView pokemonView;
 	private BagView bagView;
 	private TrainerView trainerView;
+	
+	//------ NEW ---------------
+	private BorderPane option_window;
+	private Scene option_scene;
+	private OptionView optionView;
 	/***************************************/
 	private int loggedIn;
 	public FileManager man;
@@ -147,6 +152,10 @@ public class SafariZoneMain extends Application {
 		pokemonView = new PokemonView(gameLoader.getSafariZone());
 		bagView = new BagView(gameLoader.getSafariZone());
 		trainerView = new TrainerView(gameLoader.getSafariZone());
+		// options view
+		option_window = new BorderPane();
+		option_scene = new Scene(option_window, settings.getWidth("scene"), settings.getHeight("scene"));
+		optionView = new OptionView(gameLoader.getSafariZone(), stage, game_scene, option_scene);
 	}
 	
 	private void addGameObservers() {
@@ -156,6 +165,7 @@ public class SafariZoneMain extends Application {
 		gameLoader.getSafariZone().addObserver(bagView);		
 		gameLoader.getSafariZone().addObserver(trainerView); 
 		gameLoader.getSafariZone().addObserver(newGameView); // new
+		gameLoader.getSafariZone().addObserver(optionView);
 	}
 	
 	private void setupGameMenus() {
@@ -165,11 +175,11 @@ public class SafariZoneMain extends Application {
 		MenuItem map = new MenuItem("Map");
 		MenuItem trainer = new MenuItem("Trainer");
 		MenuItem save = new MenuItem("Save");
-//		MenuItem option = new MenuItem("Option");
+		MenuItem option = new MenuItem("Options");
 		MenuItem exit = new MenuItem("Exit");
 		// add the options
 		Menu menu = new Menu("Menu");
-		menu.getItems().addAll(pokemon, bag, map, trainer, save, exit); //, option
+		menu.getItems().addAll(pokemon, bag, map, trainer, save, option, exit); //, option
 		// view menu options
 		MenuItem textV = new MenuItem("Text");
 		MenuItem graphicV = new MenuItem("Graphics");
@@ -186,7 +196,7 @@ public class SafariZoneMain extends Application {
 		map.setOnAction(menuListener);
 		trainer.setOnAction(menuListener);
 		save.setOnAction(menuListener);
-//		option.setOnAction(menuListener);
+		option.setOnAction(menuListener);
 		exit.setOnAction(menuListener);
 		// view menu listeners
 		textV.setOnAction(menuListener);
@@ -222,19 +232,23 @@ public class SafariZoneMain extends Application {
 				setInfoViewTo(pokemonView);
 			else if (text.equals("Bag"))
 				setInfoViewTo(bagView);
+			else if (text.equals("Map")) {
+				Stage stage = new Stage();
+				stage.setTitle("Map View");
+				stage.setScene(new Scene(new MapView(gameLoader.getSafariZone()), gameLoader.getSafariZone().getSettings().getWidth("map"), gameLoader.getSafariZone().getSettings().getHeight("map")));
+				stage.show();
+			}
+			else if (text.equals("Trainer")) 
+					setInfoViewTo(trainerView);
 			else if (text.equals("Save")) {
 				if (loggedIn == 0) {
 					stage.setScene(null);
 					stage.setScene(loadgame_scene);
 				}
 				// UD man.pushUserData();
-			} else if (text.equals("Map")) {
-				Stage stage = new Stage();
-				stage.setTitle("Map View");
-				stage.setScene(new Scene(new MapView(gameLoader.getSafariZone()), gameLoader.getSafariZone().getSettings().getWidth("map"), gameLoader.getSafariZone().getSettings().getHeight("map")));
-				stage.show();
-			} else if (text.equals("Trainer")) 
-				setInfoViewTo(trainerView);
+			} else if (text.equals("Options")) {
+				setViewTo(optionView);
+			}
 			else if (text.equals("Exit")) {
 				// UD man.pushUserData();
 				loggedIn = 0;
