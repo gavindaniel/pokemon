@@ -13,16 +13,18 @@ import pokemon.PassiveStatBuff;
 import pokemon.PokeType;
 import pokemon.Pokemon;
 
-public class BattleLogic extends Observable {
+public class BattleLogicForView extends Observable {
 
 	private Trainer trainer1;
 	private Trainer trainer2;
+	private Trainer activeTrainer;
 	private double[][] effectLookupTable; // Lookup table with values determining elemental attack effectiveness
 
-	public BattleLogic(Trainer trainer1, Trainer trainer2) {
+	public BattleLogicForView(Trainer trainer1, Trainer trainer2) {
 
 		this.trainer1 = trainer1;
 		this.trainer2 = trainer2;
+		this.activeTrainer = null;
 
 		generateEffectLookupTable();
 	}
@@ -58,128 +60,83 @@ public class BattleLogic extends Observable {
 	}
 
 	/**
+	 * @return the activeTrainer
+	 */
+	public Trainer getActiveTrainer() {
+		return activeTrainer;
+	}
+
+	/**
+	 * @param activeTrainer the activeTrainer to set
+	 */
+	public void setActiveTrainer(Trainer activeTrainer) {
+		this.activeTrainer = activeTrainer;
+	}
+
+	/**
 	 * Top level function to handle battle sequence.
 	 */
-	public void runBattle() {
+//	public void runBattle() {
+//		
+//		initializeActiveBattlePokemon();
+//
+//		activeTrainer = determineWhoStarts();
+//
+//		boolean isPokemonDrained = false;
+//
+//		while (!isBattleOver()) {
+//
+//			if (isPokemonDrained) {
+//				activeTrainer = determineWhoStarts();
+//			}
+//
+//			if (activeTrainer == trainer1)
+//				isPokemonDrained = playRound(trainer1, trainer2);
+//			else
+//				isPokemonDrained = playRound(trainer2, trainer1);
+//		}
+//
+//		System.out.println("\nBattle is over.");
+//
+//		if (areAllPokemonDrained(trainer1.getBattlePokemonList())) {
+//			System.out.println(trainer2.getName() + " has defeated " + trainer1.getName());
+//		} else {
+//			System.out.println(trainer1.getName() + " has defeated " + trainer2.getName());
+//		}
+//	}
+	
+	/**
+	 * First pokemon selected automatically starts in battle.
+	 */
+	public void initializeActiveBattlePokemon() {
 
-		// Each trainer selects pokemon.
-		trainerSelectsPokemonForBattle(trainer1);
-		trainerSelectsPokemonForBattle(trainer2);
-
-		// Head of list is automatically selected at start.
 		trainer1.setActiveBattlePokemon(trainer1.getBattlePokemonList().get(0));
 		trainer2.setActiveBattlePokemon(trainer2.getBattlePokemonList().get(0));
-
-		int order = determineWhoStarts();
-
-		boolean isPokemonDrained = false;
-
-		while (!isBattleOver()) {
-
-			if (isPokemonDrained) {
-				order = determineWhoStarts();
-			}
-
-			if (order == 1)
-				isPokemonDrained = playRound(trainer1, trainer2);
-			else
-				isPokemonDrained = playRound(trainer2, trainer1);
-		}
-
-		System.out.println("\nBattle is over.");
-
-		if (areAllPokemonDrained(trainer1.getBattlePokemonList())) {
-			System.out.println(trainer2.getName() + " has defeated " + trainer1.getName());
-		} else {
-			System.out.println(trainer1.getName() + " has defeated " + trainer2.getName());
-		}
-	}
-
-	/**
-	 * 3 pokemon are selected for use in battle.
-	 */
-	private void trainerSelectsPokemonForBattle(Trainer trainer) {
-
-		List<Pokemon> pokeList = trainer.getBattlePokemonList();
-
-		Pokemon chosenPoke;
-
-		while (pokeList.size() < 3) {
-
-			printPokeListChooser(trainer);
-
-			chosenPoke = getPokeChoiceFromUser(trainer);
-
-			if (!pokeList.contains(chosenPoke)) {
-				pokeList.add(chosenPoke);
-				System.out.println("\n" + chosenPoke.getName() + " Successfully added.\n");
-			} else
-				System.out.println("\n" + chosenPoke.getName() + " is already chosen. Pick another one.\n");
-		}
-	}
-
-	/**
-	 * Prints list of available pokemon to console for trainer to choose from.
-	 */
-	private void printPokeListChooser(Trainer trainer) {
-
-		List<Pokemon> pokeList = trainer.getOwnedPokemonList();
-
-		System.out.println();
-		System.out.println(trainer.getName() + ", Choose from the following pokemon: ");
-
-		for (int i = 0; i < pokeList.size(); i++) {
-			System.out.println((i) + ": " + pokeList.get(i).getName());
-		}
-	}
-
-	/**
-	 * Obtains choice for pokemon from user.
-	 * 
-	 * @return Chosen pokemon
-	 */
-	private Pokemon getPokeChoiceFromUser(Trainer trainer) {
-
-		Scanner in = new Scanner(System.in);
-		int choice;
-
-		while (true) {
-
-			if (in.hasNextInt()) {
-
-				choice = in.nextInt();
-
-				if (choice >= 0 && choice < trainer.getOwnedPokemonList().size())
-					break;
-				else
-					System.out.println("Invalid Choice. Try Again");
-			} else
-				in.next();
-		}
-		return trainer.getOwnedPokemonList().get(choice);
+		setChanged();
+		notifyObservers();
 	}
 
 	/**
 	 * Determines which trainer starts based on chosen pokemon's speed. If speed for
 	 * both pokemon is tied, order is determined by 'coin toss'.
 	 * 
-	 * @return 1 if trainer 1 goes first, 2 if trainer 2 goes first.
+	 * @return trainer1 if trainer 1 goes first, trainer2 if trainer 2 goes first.
 	 */
-	public int determineWhoStarts() {
+	public Trainer determineWhoStarts() {
 
 		Pokemon p1 = trainer1.getActiveBattlePokemon();
 		Pokemon p2 = trainer2.getActiveBattlePokemon();
 
 		if (p1.getSpeed() > p2.getSpeed())
-			return 1;
+			return trainer1;
 		else if (p1.getSpeed() < p2.getSpeed())
-			return 2;
+			return trainer2;
 		else {// Perform 'coin toss'
 			int num = (new Random()).nextInt(10);
 			if (num <= 4)
-				return 1;
+				return trainer1;
 			else
-				return 2;
+				return trainer2;
 		}
 	}
 
@@ -194,56 +151,33 @@ public class BattleLogic extends Observable {
 	 * 
 	 * @return true if a pokemon has been depleted during the round, false otherwise
 	 */
-	private boolean playRound(Trainer starter, Trainer finisher) {
-		// First Turn
-		playTurn(starter, finisher);
-		if (isPokemonDrained(finisher.getActiveBattlePokemon())) {
-			System.out.println();
-			System.out.println(finisher.getActiveBattlePokemon().getName() + " has fainted.");
-			if (isBattleOver())
-				return true;
-			switchPokemon(finisher);
-			return true;
-		}
+//	private boolean playRound(Trainer starter, Trainer finisher) {
+//		// First Turn
+//		playTurn(starter, finisher);
+//		if (isPokemonDrained(finisher.getActiveBattlePokemon())) {
+//			System.out.println();
+//			System.out.println(finisher.getActiveBattlePokemon().getName() + " has fainted.");
+//			if (isBattleOver())
+//				return true;
+//			switchPokemon(finisher);
+//			return true;
+//		}
+//
+//		// Second Turn
+//		playTurn(finisher, starter);
+//		if (isPokemonDrained(starter.getActiveBattlePokemon())) {
+//			System.out.println();
+//			System.out.println(starter.getActiveBattlePokemon().getName() + " has fainted.");
+//			if (isBattleOver())
+//				return true;
+//			switchPokemon(starter);
+//			return true;
+//		}
+//
+//		return false;
+//	}
 
-		// Second Turn
-		playTurn(finisher, starter);
-		if (isPokemonDrained(starter.getActiveBattlePokemon())) {
-			System.out.println();
-			System.out.println(starter.getActiveBattlePokemon().getName() + " has fainted.");
-			if (isBattleOver())
-				return true;
-			switchPokemon(starter);
-			return true;
-		}
-
-		return false;
-	}
-
-	/**
-	 * Play a single turn where one pokemon is attacking the other.
-	 * 
-	 * @param attacker
-	 * @param defender
-	 */
-	private void playTurn(Trainer attacker, Trainer defender) {
-
-		Pokemon attackPokemon = attacker.getActiveBattlePokemon();
-		Pokemon defendPokemon = defender.getActiveBattlePokemon();
-
-		printCurrentBattleStatus();
-
-		int choice = selectAttackOrSwitch(attacker);
-
-		if (choice == 1) {
-			Attack attackChoice = getAttackChoice(attackPokemon, defendPokemon);
-			applyAttack(attackChoice, attackPokemon, defendPokemon);
-		}
-		if (choice == 2)
-			switchPokemon(attacker);
-	}
-
-	private void printCurrentBattleStatus() {
+	public void printCurrentBattleStatus() {
 
 		System.out.println();
 		System.out.println(trainer1.getName() + ": " + trainer1.getActiveBattlePokemon().getName() + " "
@@ -251,65 +185,6 @@ public class BattleLogic extends Observable {
 		System.out.println(trainer2.getName() + ": " + trainer2.getActiveBattlePokemon().getName() + " "
 				+ trainer2.getActiveBattlePokemon().getCurrHP());
 		System.out.println();
-	}
-
-	/**
-	 * Choose to attack opponent or switch pokemon.
-	 * 
-	 * @param trainer
-	 *            trainer making choice
-	 * @return 1 for Attack, 2 For switch
-	 */
-	private int selectAttackOrSwitch(Trainer trainer) {
-
-		System.out.println(trainer.getName() + ". What would you like to do?");
-		System.out.print("1- Attack\n2- Switch Pokemon\n");
-
-		Scanner in = new Scanner(System.in);
-		int choice;
-
-		while (true) {
-
-			if (in.hasNextInt()) {
-
-				choice = in.nextInt();
-
-				if (choice == 1 || choice == 2)
-					break;
-				else
-					System.out.println("Invalid Choice. Try Again");
-			} else
-				in.next();
-		}
-		return choice;
-	}
-
-	private Attack getAttackChoice(Pokemon attackPokemon, Pokemon defendPokemon) {
-
-		List<Attack> attackSet = attackPokemon.getAttackList();
-
-		System.out.println("Choose an attack: ");
-		for (int i = 0; i < attackSet.size(); i++) {
-			System.out.println((i) + ": " + attackSet.get(i).getName());
-		}
-
-		Scanner in = new Scanner(System.in);
-		int choice;
-
-		while (true) {
-
-			if (in.hasNextInt()) {
-
-				choice = in.nextInt();
-
-				if (choice >= 0 && choice <= 3)
-					break;
-				else
-					System.out.println("Invalid Choice. Try Again");
-			} else
-				in.next();
-		}
-		return attackPokemon.getAttackList().get(choice);
 	}
 
 	/**
@@ -330,17 +205,23 @@ public class BattleLogic extends Observable {
 			System.out
 					.println(attackPokemon.getName() + " used " + attack.getName() + " on " + defendPokemon.getName());
 			System.out.println(defendPokemon.getName() + " lost " + damage + " HP.");
+			setChanged();
+			notifyObservers(attack);
 		}
 
 		else if (attack instanceof PassiveAttackBuff) {
 			((PassiveAttackBuff) attack).activate(attackPokemon.getAttackList());
 			System.out.println(attackPokemon.getName() + " increased effectiveness of " + attackPokemon.getPrimaryType()
 					+ " attacks.");
+			setChanged();
+			notifyObservers(attack);
 		}
 
 		else {
 			((PassiveStatBuff) attack).activate(attackPokemon);
 			System.out.println(attackPokemon.getName() + " increased base stats.");
+			setChanged();
+			notifyObservers(attack);
 		}
 	}
 
@@ -417,8 +298,9 @@ public class BattleLogic extends Observable {
 	 *         otherwise.
 	 */
 	public boolean isBattleOver() {
-		return areAllPokemonDrained(trainer1.getBattlePokemonList())
-				|| areAllPokemonDrained(trainer2.getBattlePokemonList());
+//		return areAllPokemonDrained(trainer1.getBattlePokemonList())
+//				|| areAllPokemonDrained(trainer2.getBattlePokemonList());
+		return isPokemonDrained(trainer1.getActiveBattlePokemon()) || isPokemonDrained(trainer2.getActiveBattlePokemon());
 	}
 
 	/**
