@@ -1,10 +1,10 @@
 package items;
 
-public class Rock extends Item{
+public class HyperPotion extends Item{
 	String imagePath;
-	public Rock() {
+	public HyperPotion() {
 		super();
-		this.imagePath="file:images/items/rock.png";
+		this.imagePath="file:images/items/hyperpotion.png";
 	}
 	
 	@Override
@@ -12,4 +12,5 @@ public class Rock extends Item{
 		// TODO Auto-generated method stub
 		return imagePath;
 	}
+
 }

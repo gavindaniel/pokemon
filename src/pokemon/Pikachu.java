@@ -34,7 +34,6 @@ public class Pikachu extends Pokemon {
 
 		return listOfAttacks;
 	}
-//1
 	@Override
 	public void initializeBattleAnimations() {
 		List<String> spritePaths = new ArrayList<>(5);

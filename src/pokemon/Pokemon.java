@@ -332,6 +332,7 @@ public abstract class Pokemon {
 	 */
 	public abstract ArrayList<Attack> initializeAttacks();
 
+
 	
 	/**
 	 * Provide paths to sprite sheets for animation.

@@ -334,5 +334,4 @@ public class CaptureAnimations {
 			sx %= (60*33);
 		}
 	}
-	
-	}
+}

@@ -58,13 +58,4 @@ public class CaptureRunner extends Application {
 		
 		
 	}
-	
-	
-	
-	
-		   
-		   
-		   
-
-	   
-	 }
+}
