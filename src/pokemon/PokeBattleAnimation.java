@@ -197,7 +197,7 @@ public class PokeBattleAnimation {
 		
 		//Back Attack Timeline
 		backAttack = new Timeline(new KeyFrame(Duration.millis(50), new AnimateBackAttack(paths.get(5))));
-		backAttack.setCycleCount(20);
+		backAttack.setCycleCount(10);	//Must change if "midpoint" from event handler is changed
 	}
 	
 	public void animateStandby() {
@@ -493,6 +493,12 @@ public class PokeBattleAnimation {
 		private Image spritesheet;
 		private int upCounter;
 		private int downCounter;
+		
+		//Determines length of animation by setting threshold for forward movement
+		private static final int midpoint = 5;
+		
+		//Determines how far pokemon moves forward.
+		private static final double multiplier = 3;
 
 		public AnimateBackAttack(String spritePath) {
 			
@@ -507,7 +513,7 @@ public class PokeBattleAnimation {
 			dh = coordinates[5][7];
 			
 			upCounter = 0;
-			downCounter = 10;
+			downCounter = midpoint;
 		}
 
 		@Override
@@ -525,28 +531,26 @@ public class PokeBattleAnimation {
 			 * dw the destination rectangle's width. 
 			 * dh the destination rectangle's height.
 			 */
-
-			if (upCounter < 10) {
+			
+			//Move forward
+			if (upCounter < midpoint) {
 				upCounter++;
-				gc.drawImage(spritesheet, sx, sy, sw, sh, dx + 2*upCounter, dy - 2*upCounter, dw, dh);
+				gc.drawImage(spritesheet, sx, sy, sw, sh, dx + multiplier*upCounter, dy - multiplier*upCounter, dw, dh);
 			}
 			
+			//Move backward
 			else {
 				downCounter--;
-				gc.drawImage(spritesheet, sx, sy, sw, sh, dx + 2*downCounter, dy - 2*downCounter, dw, dh);
+				gc.drawImage(spritesheet, sx, sy, sw, sh, dx + multiplier*downCounter, dy - multiplier*downCounter, dw, dh);
 			}
 			
-			if (upCounter == 10 && downCounter == 0) {
+			//Resets animation
+			if (upCounter == midpoint && downCounter == 0) {
 				upCounter = 0;
-				downCounter = 10;
+				downCounter = midpoint;
 			}
-			
 		}
 	}
-	
-	
-	
-	
-	
+
 	
 }

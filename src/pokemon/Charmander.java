@@ -49,7 +49,7 @@ public class Charmander extends Pokemon {
 				{0,10,60,70,545,250,100,100, 59, 59},				 //First Attack
 				{5,0,70,70,545,245,100,100, 70, 56},				 //Second Attack
 				{5,0,70,70,545,245,100,100, 70, 56},				 //Third Attack
-				{0,0,50,60,545,240,100,100, 48, 60},				 //Fourth Attack
+				{0,0,50,60,555,250,90,90, 48, 60},				 //Fourth Attack
 				{0,0,63,60,50,400,150,150, 64, 38},				 //Back Standby
 		};
 		
