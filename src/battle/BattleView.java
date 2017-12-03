@@ -10,6 +10,8 @@ import javafx.animation.Timeline;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import model.Trainer;
 import pokemon.Attack;
 import pokemon.Pokemon;
@@ -20,6 +22,7 @@ public class BattleView extends Canvas implements Observer {
 	private GraphicsContext gc;
 	private ParallelTransition idleTimeline;
 	private ParallelTransition attackTimeline;
+	private ParallelTransition defendTimeline;
 	
 	private static Image battleGround;
 	private static Image battleMenus;
@@ -36,8 +39,11 @@ public class BattleView extends Canvas implements Observer {
 		battleGround = new Image("file:images/battle/battle-background.png", false);
 		battleMenus = new Image ("file:images/battle/battle-menus.png", false);
 		
-		gc.drawImage(battleGround, 0, 0, this.getWidth(), this.getHeight());
+		idleTimeline = new ParallelTransition();
+		attackTimeline = new ParallelTransition();
+		defendTimeline = new ParallelTransition();
 		
+		gc.drawImage(battleGround, 0, 0, this.getWidth(), this.getHeight());
 	}
 	
 	
@@ -57,7 +63,9 @@ public class BattleView extends Canvas implements Observer {
 	private void printBattleStage(Object message) {
 		
 		if (message instanceof Attack) {
-			startAttack((Attack) message);
+			if (battle.getAttackTrainer() == battle.getActiveTrainer()) startAttack((Attack) message);
+			
+			else startDefend((Attack) message);
 		}
 		
 		else {
@@ -71,59 +79,89 @@ public class BattleView extends Canvas implements Observer {
 		gc.drawImage(battleMenus, 128, 55, 92, 33, 0, 250, 92*3, 33*3); //Player Bar
 		gc.drawImage(battleMenus, 16, 110, 240, 48, 0, this.getHeight() - 48*3, this.getWidth(), 48*3); //Text Bar
 		gc.drawImage(battleMenus, 269, 10, 120, 48, this.getWidth() - 120*3, this.getHeight()-48*3, 120*3, 48*3); //Choice Menu
+		
+//		fillBattleMenus();
+	}
+	
+	private void fillBattleMenus() {
+		
+		//Setting fonts and colors of text
+		gc.setFont(Font.font ("Verdana", 20));
+		gc.setFill(Color.RED);
+		
+		String playerPokeName = battle.getAttackTrainer().getActiveBattlePokemon().getName().toUpperCase();
+		String oppPokeName = (battle.getAttackTrainer() == battle.getActiveTrainer()) ? (battle.getOppTrainer().getActiveBattlePokemon().getName().toUpperCase()) : (battle.getActiveTrainer().getActiveBattlePokemon().getName().toUpperCase());	
+		
+		gc.fillText(playerPokeName, 5, 255, 99-10);
+		
+				
 	}
 	
 	private void startIdle() {
-		idleTimeline = new ParallelTransition();
-		idleTimeline.getChildren().add(battle.getTrainer1().getActiveBattlePokemon().getBattleAnimation().getStandby());
-		idleTimeline.getChildren().add(battle.getTrainer2().getActiveBattlePokemon().getBattleAnimation().getBackStandby());
-		idleTimeline.setCycleCount(Timeline.INDEFINITE);
-		idleTimeline.play();
-	}
-	
-	private void stopIdle() {
-		idleTimeline.stop();
+		
+		stopAllActiveTimelines();
+		
+		if (idleTimeline.getChildren().isEmpty()) {
+			idleTimeline.getChildren().add(battle.getOppTrainer().getActiveBattlePokemon().getBattleAnimation().getStandby());		//Opposing Pokemon
+			idleTimeline.getChildren().add(battle.getActiveTrainer().getActiveBattlePokemon().getBattleAnimation().getBackStandby()); 	//User controlled Pokemon
+			idleTimeline.setCycleCount(Timeline.INDEFINITE);
+		}
+			idleTimeline.playFromStart();
 	}
 	
 	private void startAttack(Attack attack) {
 		
 		Pokemon activePoke = battle.getActiveTrainer().getActiveBattlePokemon();
+		Pokemon defendPoke = battle.getOppTrainer().getActiveBattlePokemon();
 		
 		//Stop any active timelines.
-		stopIdle();
+		stopAllActiveTimelines();
 		
-		int attackNumber = findAttackNumber(activePoke, attack);
+		// Initialize attackTimeline only once since animations from back view are the same for all attacks.
+		if (attackTimeline.getChildren().isEmpty()) {
+			attackTimeline.getChildren().add(defendPoke.getBattleAnimation().getStandby());
+			attackTimeline.getChildren().add(activePoke.getBattleAnimation().getBackAttack());
+			attackTimeline.setCycleCount(attackTimeline.getChildren().get(1).getCycleCount());
+		}
 		
-		attackTimeline = new ParallelTransition();
-		
-//		if (attackNumber == 1) activePoke.getBattleAnimation().animateFirstAttack();		
-//		else if (attackNumber == 2) activePoke.getBattleAnimation().animateSecondAttack();		
-//		else if (attackNumber == 3) activePoke.getBattleAnimation().animateThirdAttack();		
-//		else if (attackNumber == 4) activePoke.getBattleAnimation().animateFourthAttack();
-		
-		if (attackNumber == 1) attackTimeline.getChildren().add(activePoke.getBattleAnimation().getFirstAttack());	
-		else if (attackNumber == 2) attackTimeline.getChildren().add(activePoke.getBattleAnimation().getSecondAttack());		
-		else if (attackNumber == 3) attackTimeline.getChildren().add(activePoke.getBattleAnimation().getThirdAttack());		
-		else if (attackNumber == 4) attackTimeline.getChildren().add(activePoke.getBattleAnimation().getFourthAttack());
-		
-		
-		Trainer defendTrainer = (battle.getActiveTrainer() == battle.getTrainer1()) 
-				? battle.getTrainer2() : battle.getTrainer1();
-		
-		attackTimeline.getChildren().add(defendTrainer.getActiveBattlePokemon().getBattleAnimation().getBackStandby());
-		attackTimeline.getChildren().get(1).setCycleCount(attackTimeline.getChildren().get(0).getCycleCount());
-		
-		attackTimeline.play();
-		attackTimeline.getChildren().clear();
-		
+		attackTimeline.playFromStart();
+		attackTimeline.getChildren().get(1).setOnFinished((event) -> {
+			startIdle();
+		});
 	}
 	
-	private void stopAttack() {
+	private void startDefend(Attack attack) {
+		
+		Pokemon attackPoke = battle.getOppTrainer().getActiveBattlePokemon();
+		Pokemon defendPoke = battle.getActiveTrainer().getActiveBattlePokemon();
+		
+		//Stop any active timelines.
+		stopAllActiveTimelines();
+
+		int attackNumber = findAttackNumber(attackPoke, attack);
+		
+		if (attackNumber == 1) defendTimeline.getChildren().add(attackPoke.getBattleAnimation().getFirstAttack());	
+		else if (attackNumber == 2) defendTimeline.getChildren().add(attackPoke.getBattleAnimation().getSecondAttack());		
+		else if (attackNumber == 3) defendTimeline.getChildren().add(attackPoke.getBattleAnimation().getThirdAttack());		
+		else if (attackNumber == 4) defendTimeline.getChildren().add(attackPoke.getBattleAnimation().getFourthAttack());
+		
+		defendTimeline.getChildren().add(defendPoke.getBattleAnimation().getBackStandby());
+		defendTimeline.setCycleCount(defendTimeline.getChildren().get(0).getCycleCount());
+		
+		defendTimeline.playFromStart();
+		defendTimeline.getChildren().get(0).setOnFinished((event) -> {
+			startIdle();
+		});
+		defendTimeline.getChildren().clear();
+	}
+	
+	private void stopAllActiveTimelines() {
+		idleTimeline.stop();
 		attackTimeline.stop();
-		attackTimeline.getChildren().clear();
+		defendTimeline.stop();
 	}
 	
-	private int findAttackNumber(Pokemon poke, Attack attack ) {
+	private int findAttackNumber(Pokemon poke, Attack attack) {
 		
 		List<Attack> attackList = poke.getAttackList();
 		

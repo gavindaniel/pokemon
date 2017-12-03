@@ -15,62 +15,78 @@ import pokemon.Pokemon;
 
 public class BattleLogicForView extends Observable {
 
-	private Trainer trainer1;
-	private Trainer trainer2;
 	private Trainer activeTrainer;
+	private Trainer oppTrainer;
+	private Trainer attackTrainer;
+	private Trainer defendTrainer;
 	private double[][] effectLookupTable; // Lookup table with values determining elemental attack effectiveness
 
-	public BattleLogicForView(Trainer trainer1, Trainer trainer2) {
+	public BattleLogicForView(Trainer actTrainer, Trainer oppTrainer) {
 
-		this.trainer1 = trainer1;
-		this.trainer2 = trainer2;
-		this.activeTrainer = null;
+		this.activeTrainer = actTrainer;
+		this.oppTrainer = oppTrainer;
+		this.attackTrainer = null;
+		this.defendTrainer = null;
 
 		generateEffectLookupTable();
 	}
 
 	/**
-	 * @return the trainer1
-	 */
-	public Trainer getTrainer1() {
-		return trainer1;
-	}
-
-	/**
-	 * @param trainer1
-	 *            the trainer1 to set
-	 */
-	public void setTrainer1(Trainer trainer1) {
-		this.trainer1 = trainer1;
-	}
-
-	/**
-	 * @return the trainer2
-	 */
-	public Trainer getTrainer2() {
-		return trainer2;
-	}
-
-	/**
-	 * @param trainer2
-	 *            the trainer2 to set
-	 */
-	public void setTrainer2(Trainer trainer2) {
-		this.trainer2 = trainer2;
-	}
-
-	/**
-	 * @return the activeTrainer
+	 * @return the active trainer
 	 */
 	public Trainer getActiveTrainer() {
 		return activeTrainer;
 	}
 
 	/**
-	 * @param activeTrainer the activeTrainer to set
+	 * @param activeTrainer
+	 *            the activeTrainer to set
 	 */
-	public void setActiveTrainer(Trainer activeTrainer) {
-		this.activeTrainer = activeTrainer;
+	public void setActiveTrainer(Trainer actTrainer) {
+		this.activeTrainer = actTrainer;
+	}
+
+	/**
+	 * @return the opposing trainer
+	 */
+	public Trainer getOppTrainer() {
+		return oppTrainer;
+	}
+
+	/**
+	 * @param oppTrainer
+	 *            the opposing trainer to set
+	 */
+	public void setOppTrainer(Trainer oppTrainer) {
+		this.oppTrainer = oppTrainer;
+	}
+
+	/**
+	 * @return the attacking Trainer
+	 */
+	public Trainer getAttackTrainer() {
+		return attackTrainer;
+	}
+
+	/**
+	 * @param attackTrainer the attacking Trainer to set
+	 */
+	public void setAttackTrainer(Trainer attackTrainer) {
+		this.attackTrainer = attackTrainer;
+	}
+	
+	/**
+	 * @return the defending Trainer
+	 */
+	public Trainer getDefendTrainer() {
+		return defendTrainer;
+	}
+
+	/**
+	 * @param defendTrainer the defending trainer to set
+	 */
+	public void setDefendTrainer(Trainer defendTrainer) {
+		this.defendTrainer = defendTrainer;
 	}
 
 	/**
@@ -106,12 +122,17 @@ public class BattleLogicForView extends Observable {
 //	}
 	
 	/**
-	 * First pokemon selected automatically starts in battle.
+	 * First pokemon selected by each trainer automatically starts in battle.
 	 */
 	public void initializeActiveBattlePokemon() {
 
-		trainer1.setActiveBattlePokemon(trainer1.getBattlePokemonList().get(0));
-		trainer2.setActiveBattlePokemon(trainer2.getBattlePokemonList().get(0));
+		activeTrainer.setActiveBattlePokemon(activeTrainer.getBattlePokemonList().get(0));
+		oppTrainer.setActiveBattlePokemon(oppTrainer.getBattlePokemonList().get(0));
+		
+		attackTrainer = determineWhoStarts();
+		
+		defendTrainer = (attackTrainer == activeTrainer) ? oppTrainer : activeTrainer;
+		
 		setChanged();
 		notifyObservers();
 	}
@@ -124,19 +145,19 @@ public class BattleLogicForView extends Observable {
 	 */
 	public Trainer determineWhoStarts() {
 
-		Pokemon p1 = trainer1.getActiveBattlePokemon();
-		Pokemon p2 = trainer2.getActiveBattlePokemon();
+		Pokemon p1 = activeTrainer.getActiveBattlePokemon();
+		Pokemon p2 = oppTrainer.getActiveBattlePokemon();
 
 		if (p1.getSpeed() > p2.getSpeed())
-			return trainer1;
+			return activeTrainer;
 		else if (p1.getSpeed() < p2.getSpeed())
-			return trainer2;
+			return oppTrainer;
 		else {// Perform 'coin toss'
 			int num = (new Random()).nextInt(10);
 			if (num <= 4)
-				return trainer1;
+				return activeTrainer;
 			else
-				return trainer2;
+				return oppTrainer;
 		}
 	}
 
@@ -180,10 +201,10 @@ public class BattleLogicForView extends Observable {
 	public void printCurrentBattleStatus() {
 
 		System.out.println();
-		System.out.println(trainer1.getName() + ": " + trainer1.getActiveBattlePokemon().getName() + " "
-				+ trainer1.getActiveBattlePokemon().getCurrHP());
-		System.out.println(trainer2.getName() + ": " + trainer2.getActiveBattlePokemon().getName() + " "
-				+ trainer2.getActiveBattlePokemon().getCurrHP());
+		System.out.println(activeTrainer.getName() + ": " + activeTrainer.getActiveBattlePokemon().getName() + " "
+				+ activeTrainer.getActiveBattlePokemon().getCurrHP());
+		System.out.println(oppTrainer.getName() + ": " + oppTrainer.getActiveBattlePokemon().getName() + " "
+				+ oppTrainer.getActiveBattlePokemon().getCurrHP());
 		System.out.println();
 	}
 
@@ -300,7 +321,7 @@ public class BattleLogicForView extends Observable {
 	public boolean isBattleOver() {
 //		return areAllPokemonDrained(trainer1.getBattlePokemonList())
 //				|| areAllPokemonDrained(trainer2.getBattlePokemonList());
-		return isPokemonDrained(trainer1.getActiveBattlePokemon()) || isPokemonDrained(trainer2.getActiveBattlePokemon());
+		return isPokemonDrained(activeTrainer.getActiveBattlePokemon()) || isPokemonDrained(oppTrainer.getActiveBattlePokemon());
 	}
 
 	/**

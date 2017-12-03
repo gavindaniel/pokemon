@@ -26,7 +26,7 @@ public class PokeBattleAnimation {
 	private Timeline thirdAttack;
 	private Timeline fourthAttack;
 	private Timeline backStandby;
-	private Image bgImg;
+	private Timeline backAttack;
 	private BattleView battleView;
 	private GraphicsContext gc;
 	private int[][] coordinates;
@@ -34,7 +34,6 @@ public class PokeBattleAnimation {
 	
 	public PokeBattleAnimation(String bgPath, List<String> paths, int[][] coordinates) {
 		
-		bgImg = new Image(bgPath, false);
 		this.coordinates = coordinates;
 		constructTimelines(paths);
 	}
@@ -146,6 +145,22 @@ public class PokeBattleAnimation {
 	public void setBackStandby(Timeline backStandby) {
 		this.backStandby = backStandby;
 	}
+	
+	
+	/**
+	 * @return the backAttack
+	 */
+	public Timeline getBackAttack() {
+		return backAttack;
+	}
+
+
+	/**
+	 * @param backAttack the backAttack to set
+	 */
+	public void setBackAttack(Timeline backAttack) {
+		this.backAttack = backAttack;
+	}
 
 
 
@@ -179,7 +194,10 @@ public class PokeBattleAnimation {
 		//Back Standby Timeline
 		backStandby = new Timeline(new KeyFrame(Duration.millis(50), new AnimateBackStandby(paths.get(5))));
 		backStandby.setCycleCount(Animation.INDEFINITE);
-
+		
+		//Back Attack Timeline
+		backAttack = new Timeline(new KeyFrame(Duration.millis(50), new AnimateBackAttack(paths.get(5))));
+		backAttack.setCycleCount(20);
 	}
 	
 	public void animateStandby() {
@@ -205,6 +223,11 @@ public class PokeBattleAnimation {
 	public void animateBackStandby() {
 		backStandby.play();
 	}
+	
+	public void animateBackAttack() {
+		backAttack.play();
+	}
+	
 	
 	private class AnimateStandby implements EventHandler<ActionEvent> {
 		double sx, sy, sw, sh, dx, dy, dw, dh;
@@ -445,7 +468,6 @@ public class PokeBattleAnimation {
 		@Override
 		public void handle(ActionEvent e) {
 			
-//			gc.drawImage(bgImg, dx, dy, dw, dh, dx, dy, dw, dh);
 			/*
 			 * sx the source rectangle's X coordinate position. 
 			 * sy the source rectangle's Y
@@ -463,6 +485,62 @@ public class PokeBattleAnimation {
 
 			sx += coordinates[5][8];
 			sx %= (coordinates[5][8]*coordinates[5][9]);
+		}
+	}
+	
+	private class AnimateBackAttack implements EventHandler<ActionEvent> {
+		double sx, sy, sw, sh, dx, dy, dw, dh;
+		private Image spritesheet;
+		private int upCounter;
+		private int downCounter;
+
+		public AnimateBackAttack(String spritePath) {
+			
+			spritesheet = new Image(spritePath, false);
+			sx = coordinates[5][0];
+			sy = coordinates[5][1];
+			sw = coordinates[5][2];
+			sh = coordinates[5][3];
+			dx = coordinates[5][4];
+			dy = coordinates[5][5];
+			dw = coordinates[5][6];
+			dh = coordinates[5][7];
+			
+			upCounter = 0;
+			downCounter = 10;
+		}
+
+		@Override
+		public void handle(ActionEvent e) {
+			
+			/*
+			 * sx the source rectangle's X coordinate position. 
+			 * sy the source rectangle's Y
+			 * coordinate position. 
+			 * sw the source rectangle's width. 
+			 * sh the source
+			 * rectangle's height. 
+			 * dx the destination rectangle's X coordinate position. 
+			 * dy the destination rectangle's Y coordinate position. 
+			 * dw the destination rectangle's width. 
+			 * dh the destination rectangle's height.
+			 */
+
+			if (upCounter < 10) {
+				upCounter++;
+				gc.drawImage(spritesheet, sx, sy, sw, sh, dx + 2*upCounter, dy - 2*upCounter, dw, dh);
+			}
+			
+			else {
+				downCounter--;
+				gc.drawImage(spritesheet, sx, sy, sw, sh, dx + 2*downCounter, dy - 2*downCounter, dw, dh);
+			}
+			
+			if (upCounter == 10 && downCounter == 0) {
+				upCounter = 0;
+				downCounter = 10;
+			}
+			
 		}
 	}
 	

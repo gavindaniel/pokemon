@@ -76,7 +76,7 @@ public class BattleGUI extends Application {
 		
 		//Trainers select pokemon
 		initializeGUINodes();
-//		setupPokeSelectionMenu(battle.getTrainer1());
+//		setupPokeSelectionMenu(battle.getActiveTrainer());
 		
 		//Add battle view observer
 		battleView = new BattleView(battle, SCENE_WIDTH, SCENE_HEIGHT);
@@ -101,8 +101,8 @@ public class BattleGUI extends Application {
 			p.getBattleAnimation().setBattleView((BattleView) battleView);
 		}
 
-		battle.getTrainer1().setBattlePokemonList(pokeList1);
-		battle.getTrainer2().setBattlePokemonList(pokeList2);
+		battle.getActiveTrainer().setBattlePokemonList(pokeList1);
+		battle.getOppTrainer().setBattlePokemonList(pokeList2);
 		 
 		/**********************************************************************************/
 
@@ -155,13 +155,13 @@ public class BattleGUI extends Application {
 	    
 	    window.setCenter((Node) battleView);
 	    
-//	    setupAttackPane();
+	    setupAttackPane();
 	  }
 	
 	private void setupAttackPane() {
 		
 		//Initializing Attack Label
-		Label attackLabel = new Label(battle.getActiveTrainer() + ". Your Turn.");
+		Label attackLabel = new Label(battle.getAttackTrainer() + ". Your Turn.");
 		attackLabel.setStyle("-fx-font-size: 14pt");
 		
 		//Initializing attack buttons
@@ -306,15 +306,15 @@ public class BattleGUI extends Application {
 				
 				else if (battleList.size() == 3) {
 					removePokeSelectionMenu();
-					setupPokeSelectionMenu(battle.getTrainer2()); //Setup menu for next trainer
+					setupPokeSelectionMenu(battle.getOppTrainer()); //Setup menu for next trainer
 				}
 		}
 	}
 	
 	private boolean checkReadyForBattle() {
 		
-		List<Pokemon> battleList1 = battle.getTrainer1().getBattlePokemonList();
-		List<Pokemon> battleList2 = battle.getTrainer2().getBattlePokemonList();
+		List<Pokemon> battleList1 = battle.getActiveTrainer().getBattlePokemonList();
+		List<Pokemon> battleList2 = battle.getOppTrainer().getBattlePokemonList();
 		
 		if (battleList1.size() == 3 && battleList2.size() == 3) {
 			return true;
@@ -329,8 +329,8 @@ public class BattleGUI extends Application {
 		window.setTop(null);
 		attackPane.getChildren().clear();
 		
-		Trainer winner = (battle.isPokemonDrained(battle.getTrainer1().getActiveBattlePokemon())) 
-				? battle.getTrainer2() : battle.getTrainer1();
+		Trainer winner = (battle.isPokemonDrained(battle.getActiveTrainer().getActiveBattlePokemon())) 
+				? battle.getOppTrainer() : battle.getActiveTrainer();
 		
 		Label gameOver = new Label(winner.getName() + " is the winner !!");
 		window.setCenter(gameOver);
@@ -357,12 +357,10 @@ public class BattleGUI extends Application {
 	 */
 	public void runBattle() {
 		
-		battle.initializeActiveBattlePokemon();
-
-		battle.setActiveTrainer(battle.determineWhoStarts());
+		battle.initializeActiveBattlePokemon();		
 		
-//		updateAttackPane(battle.getActiveTrainer());
-//		registerAttackButtonHandlers();
+		updateAttackPane(battle.getAttackTrainer());
+		registerAttackButtonHandlers();
 
 //		boolean isPokemonDrained = false;
 //		while (!battle.isBattleOver()) {
@@ -398,7 +396,7 @@ public class BattleGUI extends Application {
 		private Trainer defendTrainer;
 		
 		public AttackButtonListener() {
-			label = (Label) attackPane.getChildren().get(0);			
+			label = (Label) attackPane.getChildren().get(0);
 		}
 
 		@Override
@@ -408,9 +406,8 @@ public class BattleGUI extends Application {
 			String buttonText = ((Button) event.getSource()).getText();
 			
 			//Identify current active trainer
-			attackTrainer = battle.getActiveTrainer();
-			defendTrainer = (attackTrainer == battle.getTrainer1()) 
-					? battle.getTrainer2() : battle.getTrainer1();
+			attackTrainer = battle.getAttackTrainer();
+			defendTrainer = battle.getDefendTrainer(); 
 			
 			Attack chosenAttack = null;
 			
@@ -422,13 +419,13 @@ public class BattleGUI extends Application {
 			}
 			
 			battle.applyAttack(chosenAttack, attackTrainer.getActiveBattlePokemon(), defendTrainer.getActiveBattlePokemon());
-			label.setText(attackTrainer.getActiveBattlePokemon() + " used " + chosenAttack.getName());
+			label.setText(attackTrainer.getActiveBattlePokemon().getName() + " used " + chosenAttack.getName());
 			if (battle.isBattleOver()) switchToGameOverMenu();
 			else {
-				Trainer active = (battle.getActiveTrainer() == battle.getTrainer1())
-						? battle.getTrainer2() : battle.getTrainer1();
-				battle.setActiveTrainer(active);
-				updateAttackPane(battle.getActiveTrainer());
+				Trainer temp = battle.getAttackTrainer();
+				battle.setAttackTrainer(battle.getDefendTrainer());
+				battle.setDefendTrainer(temp);
+				updateAttackPane(battle.getAttackTrainer());
 			}
 		}
 	}
