@@ -70,6 +70,10 @@ public class BattleView extends Canvas implements Observer {
 		}		
 	}
 	
+	/**
+	 * Draws HUD for user containing information about each pokemon, 
+	 * and providing a selection menu for battle actions.
+	 */
 	public void drawBackgroundAndMenus() {
 		gc.drawImage(battleGround, 0, 0, this.getWidth(), this.getHeight()-144);
 		gc.drawImage(battleMenus, 119, 14, 92, 26, 470, 100, 92*3, 26*3); //Opponent Bar
@@ -77,21 +81,65 @@ public class BattleView extends Canvas implements Observer {
 		gc.drawImage(battleMenus, 16, 110, 240, 48, 0, this.getHeight() - 48*3, this.getWidth(), 48*3); //Text Bar
 		gc.drawImage(battleMenus, 269, 10, 120, 48, this.getWidth() - 120*3, this.getHeight()-48*3, 120*3, 48*3); //Choice Menu
 		
-//		fillBattleMenus();
+		fillBattleMenus();
 	}
 	
+	/**
+	 * Fills in pokemon names, battle lines, and health bars for battle menus.
+	 */
 	private void fillBattleMenus() {
 		
 		//Setting fonts and colors of text
-		gc.setFont(Font.font ("Verdana", 20));
-		gc.setFill(Color.RED);
+		gc.setFont(Font.font ("Verdana", 22));
+		gc.setFill(Color.BLACK);
 		
-		String playerPokeName = battle.getAttackTrainer().getActiveBattlePokemon().getName().toUpperCase();
-		String oppPokeName = (battle.getAttackTrainer() == battle.getActiveTrainer()) ? (battle.getOppTrainer().getActiveBattlePokemon().getName().toUpperCase()) : (battle.getActiveTrainer().getActiveBattlePokemon().getName().toUpperCase());	
+		Pokemon userPoke = battle.getActiveTrainer().getActiveBattlePokemon();
+		Pokemon oppPoke = battle.getOppTrainer().getActiveBattlePokemon();	
 		
-		gc.fillText(playerPokeName, 5, 255, 99-10);
+		gc.fillText(userPoke.getName().toUpperCase(), 15, 283, 220);
+		gc.fillText(oppPoke.getName().toUpperCase(), 490, 130, 220);
 		
+		drawHealthBar(userPoke, oppPoke);
+	}
+	
+	/**
+	 * Draws health bar for both pokemon depending on current HP.
+	 * @param userPoke the user's pokemon.
+	 * @param pooPoke the opponent's pokemon.
+	 */
+	private void drawHealthBar(Pokemon userPoke, Pokemon oppPoke) {
 				
+		final double fullBar = 142;
+		
+		double userHealthPerc = ((double) userPoke.getCurrHP())/userPoke.getMaxHP();
+		double oppHealthPerc = ((double) userPoke.getCurrHP())/userPoke.getMaxHP();
+		
+		//User coordinates for health bar rectangle
+		final double ux = 118, uy = 301, uh = 10, ua = 5;
+		
+		//Opponent coordinates for health bar rectangle
+		final double ox = 588, oy = 151, oh = 10, oa = 5;
+		
+		
+		gc.setFill(determineHealthColor(userHealthPerc));
+		gc.fillRoundRect(ux, uy, fullBar, uh, ua, ua);	//User's health bar
+		
+		gc.setFill(determineHealthColor(oppHealthPerc));
+		gc.fillRoundRect(ox, oy, fullBar, oh, oa, oa);	//Opponent's health bar
+	}
+	
+	/**
+	 * Determines color of health bar based on pokemon health level.
+	 * green: above 50%
+	 * yellow: between 15 and 50%
+	 * red: below 15%
+	 * @param healthPercent percentage of remaining HP.
+	 */
+	private Color determineHealthColor(double healthPercent) {
+		
+		if (healthPercent > .5) return Color.rgb(71, 198, 111);
+		else if ((healthPercent > .15) && (healthPercent < .5)) return Color.rgb(229, 208, 68);
+		else return Color.rgb(224, 76, 76);
 	}
 	
 	private void startIdle() {

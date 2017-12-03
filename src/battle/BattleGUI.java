@@ -155,7 +155,7 @@ public class BattleGUI extends Application {
 	    
 	    window.setCenter((Node) battleView);
 	    
-	    setupAttackPane();
+//	    setupAttackPane();
 	  }
 	
 	private void setupAttackPane() {
@@ -359,8 +359,8 @@ public class BattleGUI extends Application {
 		
 		battle.initializeActiveBattlePokemon();		
 		
-		updateAttackPane(battle.getAttackTrainer());
-		registerAttackButtonHandlers();
+//		updateAttackPane(battle.getAttackTrainer());
+//		registerAttackButtonHandlers();
 
 //		boolean isPokemonDrained = false;
 //		while (!battle.isBattleOver()) {
