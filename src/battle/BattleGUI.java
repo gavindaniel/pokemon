@@ -60,7 +60,7 @@ public class BattleGUI extends Application {
 
 	//Window Size
 	public static final double SCENE_WIDTH = 800;
-	public static final double SCENE_HEIGHT = 550 + 25;
+	public static final double SCENE_HEIGHT = 550 + 144;
 
 
 	@Override
@@ -79,7 +79,7 @@ public class BattleGUI extends Application {
 //		setupPokeSelectionMenu(battle.getTrainer1());
 		
 		//Add battle view observer
-		battleView = new BattleView(battle, SCENE_WIDTH, SCENE_HEIGHT-25);
+		battleView = new BattleView(battle, SCENE_WIDTH, SCENE_HEIGHT);
 		battle.addObserver(battleView);
 		
 		/******************************For Quick Testing************************************/
@@ -155,7 +155,7 @@ public class BattleGUI extends Application {
 	    
 	    window.setCenter((Node) battleView);
 	    
-	    setupAttackPane();
+//	    setupAttackPane();
 	  }
 	
 	private void setupAttackPane() {
@@ -301,6 +301,7 @@ public class BattleGUI extends Application {
 				
 				if (checkReadyForBattle()) {
 					setViewToBattle();
+					runBattle();
 				}
 				
 				else if (battleList.size() == 3) {
@@ -360,8 +361,8 @@ public class BattleGUI extends Application {
 
 		battle.setActiveTrainer(battle.determineWhoStarts());
 		
-		updateAttackPane(battle.getActiveTrainer());
-		registerButtonHandlers();
+//		updateAttackPane(battle.getActiveTrainer());
+//		registerAttackButtonHandlers();
 
 //		boolean isPokemonDrained = false;
 //		while (!battle.isBattleOver()) {
@@ -381,7 +382,7 @@ public class BattleGUI extends Application {
 //		}
 //	}
 	
-	private void registerButtonHandlers() {
+	private void registerAttackButtonHandlers() {
 		
 		for (Node node : attackPane.getChildren()) {	
 			if (node instanceof Button) {

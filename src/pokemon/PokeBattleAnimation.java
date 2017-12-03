@@ -176,7 +176,7 @@ public class PokeBattleAnimation {
 		fourthAttack = new Timeline(new KeyFrame(Duration.millis(50), new AnimateFourthAttack(paths.get(4))));
 		fourthAttack.setCycleCount(coordinates[4][9]);
 		
-		//Back Timeline
+		//Back Standby Timeline
 		backStandby = new Timeline(new KeyFrame(Duration.millis(50), new AnimateBackStandby(paths.get(5))));
 		backStandby.setCycleCount(Animation.INDEFINITE);
 
@@ -226,7 +226,7 @@ public class PokeBattleAnimation {
 		@Override
 		public void handle(ActionEvent e) {
 			
-			gc.drawImage(bgImg, 0, 0, battleView.getWidth(), battleView.getHeight());
+			battleView.drawBackgroundAndMenus();
 			/*
 			 * sx the source rectangle's X coordinate position. 
 			 * sy the source rectangle's Y
@@ -267,7 +267,7 @@ public class PokeBattleAnimation {
 		@Override
 		public void handle(ActionEvent e) {
 			
-			gc.drawImage(bgImg, 0, 0, battleView.getWidth(), battleView.getHeight());
+			battleView.drawBackgroundAndMenus();
 			/*
 			 * sx the source rectangle's X coordinate position. 
 			 * sy the source rectangle's Y
@@ -311,7 +311,7 @@ public class PokeBattleAnimation {
 		@Override
 		public void handle(ActionEvent e) {
 
-			gc.drawImage(bgImg, 0, 0, battleView.getWidth(), battleView.getHeight());
+			battleView.drawBackgroundAndMenus();
 			/*
 			 * sx the source rectangle's X coordinate position. 
 			 * sy the source rectangle's Y
@@ -355,7 +355,7 @@ public class PokeBattleAnimation {
 		@Override
 		public void handle(ActionEvent e) {
 
-			gc.drawImage(bgImg, 0, 0, battleView.getWidth(), battleView.getHeight());
+			battleView.drawBackgroundAndMenus();
 			/*
 			 * sx the source rectangle's X coordinate position. 
 			 * sy the source rectangle's Y
@@ -400,7 +400,7 @@ public class PokeBattleAnimation {
 		@Override
 		public void handle(ActionEvent e) {
 
-			gc.drawImage(bgImg, 0, 0, battleView.getWidth(), battleView.getHeight());
+			battleView.drawBackgroundAndMenus();
 			/*
 			 * sx the source rectangle's X coordinate position. 
 			 * sy the source rectangle's Y

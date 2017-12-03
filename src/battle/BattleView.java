@@ -18,9 +18,11 @@ public class BattleView extends Canvas implements Observer {
 	
 	private BattleLogicForView battle;
 	private GraphicsContext gc;
-	private Image battleGround;
 	private ParallelTransition idleTimeline;
 	private ParallelTransition attackTimeline;
+	
+	private static Image battleGround;
+	private static Image battleMenus;
 	
 	public BattleView(BattleLogicForView battle, double width, double height) {
 		
@@ -32,6 +34,7 @@ public class BattleView extends Canvas implements Observer {
 		gc = this.getGraphicsContext2D();
 		
 		battleGround = new Image("file:images/battle/battle-background.png", false);
+		battleMenus = new Image ("file:images/battle/battle-menus.png", false);
 		
 		gc.drawImage(battleGround, 0, 0, this.getWidth(), this.getHeight());
 		
@@ -47,7 +50,7 @@ public class BattleView extends Canvas implements Observer {
 		this.battle = (BattleLogicForView) battle;
 		
 		//Draw Background
-		gc.drawImage(battleGround, 0, 0, this.getWidth(), this.getHeight());
+		drawBackgroundAndMenus();
 		printBattleStage(message);
 	}
 	
@@ -60,6 +63,14 @@ public class BattleView extends Canvas implements Observer {
 		else {
 			startIdle();
 		}		
+	}
+	
+	public void drawBackgroundAndMenus() {
+		gc.drawImage(battleGround, 0, 0, this.getWidth(), this.getHeight()-144);
+		gc.drawImage(battleMenus, 119, 14, 92, 26, 470, 100, 92*3, 26*3); //Opponent Bar
+		gc.drawImage(battleMenus, 128, 55, 92, 33, 0, 250, 92*3, 33*3); //Player Bar
+		gc.drawImage(battleMenus, 16, 110, 240, 48, 0, this.getHeight() - 48*3, this.getWidth(), 48*3); //Text Bar
+		gc.drawImage(battleMenus, 269, 10, 120, 48, this.getWidth() - 120*3, this.getHeight()-48*3, 120*3, 48*3); //Choice Menu
 	}
 	
 	private void startIdle() {
