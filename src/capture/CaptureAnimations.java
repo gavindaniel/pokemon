@@ -50,7 +50,6 @@ public class CaptureAnimations {
 	
 	//Animate the pokemon running away
 		public void animateRunAway() {
-			
 			runAway = new Timeline(new KeyFrame(Duration.millis(50), new AnimatePokemonRun(runAwayPath)));
 			runAway.setCycleCount(Animation.INDEFINITE);
 			standby.stop();
@@ -147,7 +146,7 @@ public class CaptureAnimations {
 	
 	
 	/*
-	 * This handler will take care of animating a Pokemon getting capture
+	 * This handler will take care of animating a Pokemon getting captured
 	 */
 	private class AnimatePokemonCapture implements EventHandler<ActionEvent> {
 		double sx, sy, sw, sh, dx, dy, dw, dh;
@@ -205,13 +204,13 @@ public class CaptureAnimations {
 		public AnimatePokemonRun(String runAwayPath) {
 			spritesheet = new Image(runAwayPath, false);
 			sx = 0;
-			sy = 80;
-			sw = 200;
-			sh = 190;
-			dx = 460;
+			sy = 0;
+			sw = 98;
+			sh = 100;
+			dx = 500;
 			dy = 200;
-			dw = 300;
-			dh = 300;
+			dw = 150;
+			dh = 150;
 		}
 
 		/*
@@ -219,8 +218,7 @@ public class CaptureAnimations {
 		 * sy the source rectangle's Y
 		 * coordinate position. 
 		 * sw the source rectangle's width. 
-		 * sh the source
-		 * rectangle's height. 
+		 * sh the source rectangle's height. 
 		 * dx the destination rectangle's X coordinate position. 
 		 * dy the destination rectangle's Y coordinate position. 
 		 * dw the destination rectangle's width. 
@@ -231,7 +229,7 @@ public class CaptureAnimations {
 		public void handle(ActionEvent e) {
 			gc.drawImage(bgImg, 0, 0, captureView.getWidth(), captureView.getHeight());
 			gc.drawImage(spritesheet, sx, sy, sw, sh, dx, dy, dw, dh);
-			sx += 192;
+			sx += 96;
 	}
 	}
 	
