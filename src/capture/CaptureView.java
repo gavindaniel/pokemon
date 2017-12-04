@@ -140,12 +140,14 @@ public class CaptureView extends Canvas implements Observer {
 		 captureButtons.add(throwBallButton, 0, 0);
 		 captureButtons.add(throwBaitButton, 1, 0);
 		 captureButtons.add(throwRockButton, 2, 0);
+		 captureButtons.add(runButton, 3, 0);
 		 captureButtons.setAlignment(Pos.CENTER);
 		 window.setTop(captureButtons);
 		 BorderPane.setAlignment(captureButtons, Pos.BOTTOM_CENTER);
 		 throwBallButton.setOnAction(new CaptureButtonListener());
 		 throwBaitButton.setOnAction(new CaptureButtonListener());
 		 throwRockButton.setOnAction(new CaptureButtonListener());
+		 runButton.setOnAction(new CaptureButtonListener());
 	 }
 	
 	
