@@ -50,10 +50,12 @@ public class CaptureAnimations {
 	
 	//Animate the pokemon running away
 		public void animateRunAway() {
+			if(capture==null) {
 			runAway = new Timeline(new KeyFrame(Duration.millis(50), new AnimatePokemonRun(runAwayPath)));
 			runAway.setCycleCount(Animation.INDEFINITE);
 			standby.stop();
 			runAway.play();
+			}
 		}
 	
 	
@@ -86,10 +88,13 @@ public class CaptureAnimations {
 			
 	//Check if the timer is done to use another item
 	public boolean canUseItem() {
-		if(itemThrow==null) {
+		if(itemThrow==null && emotion==null && runAway==null && capture==null) {
 			return true;
 		}
-		if(itemThrow.getStatus()==Animation.Status.STOPPED) {
+		if(capture!=null || runAway!=null) {
+			return false;
+		}
+		if(itemThrow.getStatus()==Animation.Status.STOPPED && emotion.getStatus()==Animation.Status.STOPPED) {
 			return true;
 		}
 		return false;

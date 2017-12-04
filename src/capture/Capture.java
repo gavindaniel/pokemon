@@ -39,6 +39,7 @@ public class Capture {
 				chanceToRun=chanceToRun*2;
 			}
 			if(chanceToRun>retreatChance) {
+				System.out.println(currentPoke.getName()+" ran away.");
 				return true;
 			}
 			return false;
@@ -68,7 +69,7 @@ public class Capture {
 				if(currentMood.equals("Eating")) {
 					if(captureRate*1.2<catchChance) {
 						currentTrain.addPokemonToOwned(currentPoke);
-						System.out.println("Pokemon caught");
+						System.out.println(currentPoke.getName()+" Caught");
 						return true;
 					}
 					else {
