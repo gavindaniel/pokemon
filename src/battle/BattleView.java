@@ -89,8 +89,29 @@ public class BattleView extends Canvas implements Observer {
 	 */
 	public void drawBattleMenus() {
 		gc.drawImage(battleMenus, 16, 110, 240, 48, 0, this.getHeight() - 48*3, this.getWidth(), 48*3); //Text Bar
-		gc.drawImage(battleMenus, 269, 10, 120, 48, this.getWidth() - 120*3, this.getHeight()-48*3, 120*3, 48*3); //Choice Menu
-//		animateBattleText("GO! PIKACHU!", "GET EM");
+		
+		if (battle.getCurrState() == 'c') {
+			drawMainSelectMenu(0);
+		}
+		
+		else if (battle.getCurrState() == 'a') {
+			drawAttackMenu();
+		}
+	}
+	
+	/**
+	 * Draws the main selection menu with following choices:
+	 * Fight, Bag, Pokemon, and Run.
+	 * 
+	 * @param arrowPos current arrow position
+	 * 					0: fight, 1: Bag, 2: Pokemon, 3: Run.
+	 */
+	public void drawMainSelectMenu(int arrowPos) {
+		
+		if (arrowPos < 0 || arrowPos > 3) return;
+		
+		int offset = 50 * arrowPos;
+		gc.drawImage(battleMenus, 269, 10 + offset, 120, 48, this.getWidth() - 120*3, this.getHeight()-48*3, 120*3, 48*3); //Choice Menu
 	}
 	
 	/**
@@ -161,6 +182,10 @@ public class BattleView extends Canvas implements Observer {
 		infoTextTimeline = new Timeline(new KeyFrame(Duration.millis(50), new AnimateBattleText(this.getWidth(), line1, line2)));
 		infoTextTimeline.setCycleCount(Animation.INDEFINITE);
 		infoTextTimeline.playFromStart();
+	}
+	
+	public void drawAttackMenu() {
+		gc.drawImage(battleMenus, 16, 160, 240, 48, 0, this.getHeight() - 48*3, this.getWidth(), 48*3); //Attack Bar
 	}
 	
 	private void startIdle() {

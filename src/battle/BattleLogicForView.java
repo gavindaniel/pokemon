@@ -20,6 +20,8 @@ public class BattleLogicForView extends Observable {
 	private Trainer attackTrainer;
 	private Trainer defendTrainer;
 	private double[][] effectLookupTable; // Lookup table with values determining elemental attack effectiveness
+	
+	private char currState;
 
 	public BattleLogicForView(Trainer actTrainer, Trainer oppTrainer) {
 
@@ -27,6 +29,8 @@ public class BattleLogicForView extends Observable {
 		this.oppTrainer = oppTrainer;
 		this.attackTrainer = null;
 		this.defendTrainer = null;
+		
+		this.setCurrState('c');
 
 		generateEffectLookupTable();
 	}
@@ -88,6 +92,22 @@ public class BattleLogicForView extends Observable {
 	public void setDefendTrainer(Trainer defendTrainer) {
 		this.defendTrainer = defendTrainer;
 	}
+	
+	/**
+	 * @return the currState
+	 */
+	public char getCurrState() {
+		return currState;
+	}
+
+	/**
+	 * @param currState the currState to set
+	 */
+	public void setCurrState(char currState) {
+		this.currState = currState;
+		setChanged();
+		notifyObservers();
+	}
 
 	/**
 	 * Top level function to handle battle sequence.
@@ -120,7 +140,7 @@ public class BattleLogicForView extends Observable {
 //			System.out.println(trainer1.getName() + " has defeated " + trainer2.getName());
 //		}
 //	}
-	
+
 	/**
 	 * First pokemon selected by each trainer automatically starts in battle.
 	 */

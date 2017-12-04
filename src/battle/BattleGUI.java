@@ -61,7 +61,7 @@ public class BattleGUI extends Application {
 	//Window Size
 	public static final double SCENE_WIDTH = 800;
 	public static final double SCENE_HEIGHT = 550 + 144;
-
+	
 
 	@Override
 	public void start(Stage stage) throws Exception {
@@ -357,7 +357,9 @@ public class BattleGUI extends Application {
 	 */
 	public void runBattle() {
 		
-		battle.initializeActiveBattlePokemon();		
+		battle.initializeActiveBattlePokemon();
+		
+		registerMainSelectHandler();
 		
 //		updateAttackPane(battle.getAttackTrainer());
 //		registerAttackButtonHandlers();
@@ -387,6 +389,47 @@ public class BattleGUI extends Application {
 				((Button) node).setOnAction(new AttackButtonListener());
 			}
 		}
+	}
+	
+	private void registerMainSelectHandler() {
+		window.setOnMouseClicked((event) -> {
+			double x = event.getSceneX();
+			double y = event.getSceneY();
+			
+			//Fight is chosen
+			if (x >= 484 && x<= 581 && y>= 585 && y<= 620) {
+				((BattleView) battleView).drawAttackMenu();
+				battle.setCurrState('a');
+			}
+
+			
+		});
+		
+		window.setOnMouseMoved((event) -> {
+			
+			double x = event.getSceneX();
+			double y = event.getSceneY();
+			
+			if (battle.getCurrState() == 'c') {	//User chooses action.
+			
+				//Fight is highlighted
+				if (x >= 484 && x<= 581 && y>= 585 && y<= 620) {
+					((BattleView) battleView).drawMainSelectMenu(0);
+				}
+				//Bag is highlighted
+				else if (x >= 653 && x<= 713 && y>= 585 && y<= 620) {
+					((BattleView) battleView).drawMainSelectMenu(1);
+				}
+				//Pokemon is highlighted
+				else if (x >= 484 && x<= 619 && y>= 634 && y<= 668) {
+					((BattleView) battleView).drawMainSelectMenu(2);
+				}
+				//Run is highlighted
+				else if (x >= 653 && x<= 713 && y>= 634 && y<= 668) {
+					((BattleView) battleView).drawMainSelectMenu(3);
+				}
+			}
+		});
 	}
 	
 	private class AttackButtonListener implements EventHandler<ActionEvent> {
