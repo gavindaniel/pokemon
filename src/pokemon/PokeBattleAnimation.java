@@ -249,7 +249,7 @@ public class PokeBattleAnimation {
 		@Override
 		public void handle(ActionEvent e) {
 			
-			battleView.drawBackgroundAndMenus();
+			battleView.drawBackgroundAndHUD();
 			/*
 			 * sx the source rectangle's X coordinate position. 
 			 * sy the source rectangle's Y
@@ -290,7 +290,7 @@ public class PokeBattleAnimation {
 		@Override
 		public void handle(ActionEvent e) {
 			
-			battleView.drawBackgroundAndMenus();
+			battleView.drawBackgroundAndHUD();
 			/*
 			 * sx the source rectangle's X coordinate position. 
 			 * sy the source rectangle's Y
@@ -334,7 +334,7 @@ public class PokeBattleAnimation {
 		@Override
 		public void handle(ActionEvent e) {
 
-			battleView.drawBackgroundAndMenus();
+			battleView.drawBackgroundAndHUD();
 			/*
 			 * sx the source rectangle's X coordinate position. 
 			 * sy the source rectangle's Y
@@ -378,7 +378,7 @@ public class PokeBattleAnimation {
 		@Override
 		public void handle(ActionEvent e) {
 
-			battleView.drawBackgroundAndMenus();
+			battleView.drawBackgroundAndHUD();
 			/*
 			 * sx the source rectangle's X coordinate position. 
 			 * sy the source rectangle's Y
@@ -423,7 +423,7 @@ public class PokeBattleAnimation {
 		@Override
 		public void handle(ActionEvent e) {
 
-			battleView.drawBackgroundAndMenus();
+			battleView.drawBackgroundAndHUD();
 			/*
 			 * sx the source rectangle's X coordinate position. 
 			 * sy the source rectangle's Y

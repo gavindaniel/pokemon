@@ -5,14 +5,16 @@ import java.util.Observable;
 import java.util.Observer;
 
 import javafx.animation.Animation;
-import javafx.animation.ParallelTransition;
+import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import model.Trainer;
+import javafx.util.Duration;
 import pokemon.Attack;
 import pokemon.Pokemon;
 
@@ -21,6 +23,7 @@ public class BattleView extends Canvas implements Observer {
 	private BattleLogicForView battle;
 	private GraphicsContext gc;
 	private Timeline currentOppAttack;	//Keeps track of animation for opponent's chosen attack to start/stop animation.
+	private Timeline infoTextTimeline;
 	
 	private static Image battleGround;
 	private static Image battleMenus;
@@ -52,8 +55,9 @@ public class BattleView extends Canvas implements Observer {
 		
 		this.battle = (BattleLogicForView) battle;
 		
-		//Draw Background
-		drawBackgroundAndMenus();
+		//Draw Background and menus
+		drawBackgroundAndHUD();
+		drawBattleMenus();
 		printBattleStage(message);
 	}
 	
@@ -71,23 +75,28 @@ public class BattleView extends Canvas implements Observer {
 	}
 	
 	/**
-	 * Draws HUD for user containing information about each pokemon, 
-	 * and providing a selection menu for battle actions.
+	 * Draws HUD for user containing information about each pokemon.
 	 */
-	public void drawBackgroundAndMenus() {
+	public void drawBackgroundAndHUD() {
 		gc.drawImage(battleGround, 0, 0, this.getWidth(), this.getHeight()-144);
 		gc.drawImage(battleMenus, 119, 14, 92, 26, 470, 100, 92*3, 26*3); //Opponent Bar
 		gc.drawImage(battleMenus, 128, 55, 92, 33, 0, 250, 92*3, 33*3); //Player Bar
-		gc.drawImage(battleMenus, 16, 110, 240, 48, 0, this.getHeight() - 48*3, this.getWidth(), 48*3); //Text Bar
-		gc.drawImage(battleMenus, 269, 10, 120, 48, this.getWidth() - 120*3, this.getHeight()-48*3, 120*3, 48*3); //Choice Menu
-		
-		fillBattleMenus();
+		fillHUD();
 	}
 	
 	/**
-	 * Fills in pokemon names, battle lines, and health bars for battle menus.
+	 * Draws bottom bars containing selection menu and textual battle updates.
 	 */
-	private void fillBattleMenus() {
+	public void drawBattleMenus() {
+		gc.drawImage(battleMenus, 16, 110, 240, 48, 0, this.getHeight() - 48*3, this.getWidth(), 48*3); //Text Bar
+		gc.drawImage(battleMenus, 269, 10, 120, 48, this.getWidth() - 120*3, this.getHeight()-48*3, 120*3, 48*3); //Choice Menu
+//		animateBattleText("GO! PIKACHU!", "GET EM");
+	}
+	
+	/**
+	 * Fills in pokemon names and health bars.
+	 */
+	private void fillHUD() {
 		
 		//Setting fonts and colors of text
 		gc.setFont(Font.font ("Verdana", 22));
@@ -140,6 +149,18 @@ public class BattleView extends Canvas implements Observer {
 		if (healthPercent > .5) return Color.rgb(71, 198, 111);
 		else if ((healthPercent > .15) && (healthPercent < .5)) return Color.rgb(229, 208, 68);
 		else return Color.rgb(224, 76, 76);
+	}
+	
+	/**
+	 * Animates the text displayed informing the user of battle events
+	 * @param line1 Top line of text.
+	 * @param line2 Bottom line of text.
+	 */
+	private void animateBattleText(String line1, String line2) {
+		
+		infoTextTimeline = new Timeline(new KeyFrame(Duration.millis(50), new AnimateBattleText(this.getWidth(), line1, line2)));
+		infoTextTimeline.setCycleCount(Animation.INDEFINITE);
+		infoTextTimeline.playFromStart();
 	}
 	
 	private void startIdle() {
@@ -219,5 +240,58 @@ public class BattleView extends Canvas implements Observer {
 		}
 		return -1;
 	}
+	
+	private class AnimateBattleText implements EventHandler<ActionEvent> {
+
+		private String line1;
+		private String line2;
+		private String output1;
+		private String output2;
+		
+		static final double tx = 32;	// text x-coordinate
+		static final double ty1 = 610; // line1 y-coordinate
+		static final double ty2 = ty1 + 45;	// line2 y-coordinate
+		static final double maxWidth = 800;
+		
+		private int firstIndex, secondIndex;
+		
+		public AnimateBattleText(double maxWidth, String line1, String line2) {
+		
+		this.line1 = line1;
+		this.line2 = line2;
+		
+		output1 = "";
+		output2 = "";
+		
+		int firstIndex = 0;
+		int secondIndex = 0;
+		}
+		
+		@Override
+		public void handle(ActionEvent event) {
+			
+			//Setting fonts and colors of text
+			gc.setFont(Font.font ("Verdana", 30));
+			gc.setFill(Color.WHITE);
+						
+			if (firstIndex < line1.length()) {
+				output1 += line1.charAt(firstIndex);
+				firstIndex++;
+				gc.fillText(output1, tx, ty1, maxWidth - 20);
+			}
+			
+			else {
+				
+				if (line2 == null) infoTextTimeline.stop();
+				
+				else if (secondIndex >= line2.length()) infoTextTimeline.stop();
+				
+				else {
+					output2 += line2.charAt(secondIndex);
+					secondIndex++;
+					gc.fillText(output2, tx, ty2, maxWidth - 20);
+				}
+			}
+		}}
 
 }
