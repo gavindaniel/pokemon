@@ -232,6 +232,7 @@ public class PokeBattleAnimation {
 	private class AnimateStandby implements EventHandler<ActionEvent> {
 		double sx, sy, sw, sh, dx, dy, dw, dh;
 		private Image spritesheet;
+//		private Image bgImg;
 
 		public AnimateStandby(String spritePath) {
 			
@@ -244,12 +245,15 @@ public class PokeBattleAnimation {
 			dy = coordinates[0][5];
 			dw = coordinates[0][6];
 			dh = coordinates[0][7];
+			
+//			bgImg = new Image("file:images/battle/background-scaled.png", false);
 		}
 
 		@Override
 		public void handle(ActionEvent e) {
 			
 			battleView.drawBackgroundAndHUD();
+//			gc.drawImage(bgImg, 451, 200, 310, 181, 451, 200, 310, 181);
 			/*
 			 * sx the source rectangle's X coordinate position. 
 			 * sy the source rectangle's Y

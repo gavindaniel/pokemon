@@ -24,6 +24,7 @@ public class BattleView extends Canvas implements Observer {
 	private GraphicsContext gc;
 	private Timeline currentOppAttack;	//Keeps track of animation for opponent's chosen attack to start/stop animation.
 	private Timeline infoTextTimeline;	//Timeline for printing battle updates
+	private Timeline healthBarTimeline;	//Timeline for printing health bar
 	
 	private static Image battleGround;
 	private static Image battleMenus;
@@ -148,7 +149,7 @@ public class BattleView extends Canvas implements Observer {
 		gc.fillText(userPoke.getName().toUpperCase(), 15, 283, 220);
 		gc.fillText(oppPoke.getName().toUpperCase(), 490, 130, 220);
 		
-		drawHealthBar(userPoke, oppPoke);
+		drawHealthBar();
 	}
 	
 	/**
@@ -156,25 +157,42 @@ public class BattleView extends Canvas implements Observer {
 	 * @param userPoke the user's pokemon.
 	 * @param pooPoke the opponent's pokemon.
 	 */
-	private void drawHealthBar(Pokemon userPoke, Pokemon oppPoke) {
+	private void drawHealthBar() {
 				
+		Pokemon userPoke = battle.getActiveTrainer().getActiveBattlePokemon();
+		Pokemon oppPoke = battle.getOppTrainer().getActiveBattlePokemon();
+		
 		final double fullBar = 142;
 		
 		double userHealthPerc = ((double) userPoke.getCurrHP())/userPoke.getMaxHP();
-		double oppHealthPerc = ((double) userPoke.getCurrHP())/userPoke.getMaxHP();
+		double oppHealthPerc = ((double) oppPoke.getCurrHP())/oppPoke.getMaxHP();
 		
 		//User coordinates for health bar rectangle
 		final double ux = 118, uy = 301, uh = 10, ua = 5;
 		
 		//Opponent coordinates for health bar rectangle
-		final double ox = 588, oy = 151, oh = 10, oa = 5;
-		
+		final double ox = 588, oy = 151, oh = 10, oa = 5;		
 		
 		gc.setFill(determineHealthColor(userHealthPerc));
-		gc.fillRoundRect(ux, uy, fullBar, uh, ua, ua);	//User's health bar
+		gc.fillRoundRect(ux, uy, userHealthPerc*fullBar, uh, ua, ua);	//User's health bar
 		
 		gc.setFill(determineHealthColor(oppHealthPerc));
-		gc.fillRoundRect(ox, oy, fullBar, oh, oa, oa);	//Opponent's health bar
+		gc.fillRoundRect(ox, oy, oppHealthPerc*fullBar, oh, oa, oa);	//Opponent's health bar
+	}
+	
+	private void animateUserHealthBar() {
+		
+		Pokemon userPoke = battle.getActiveTrainer().getActiveBattlePokemon();
+		
+		final double fullBar = 142;
+		
+		double userHealthPerc = ((double) userPoke.getCurrHP())/userPoke.getMaxHP();
+
+		//User coordinates for health bar rectangle
+		final double ux = 118, uy = 301, uh = 10, ua = 5;
+		
+		healthBarTimeline = new Timeline(new KeyFrame(Duration.millis(50), new AnimateHealthBar(ux,uy,uh,ua,fullBar,userHealthPerc)));
+		healthBarTimeline.setCycleCount((int) (fullBar*(1-userHealthPerc)));
 	}
 	
 	/**
@@ -367,5 +385,34 @@ public class BattleView extends Canvas implements Observer {
 					gc.fillText(output2, tx, ty2, maxWidth - 20);
 			}
 		}}
+	
+	
+	private class AnimateHealthBar implements EventHandler<ActionEvent> {
 
+		private double x, y, h, a, fullBar, healthPerc;
+		private int counter;
+		
+		public AnimateHealthBar(double x, double y, double h, double a, double fullBar, double healthPerc) {
+			
+			this.x = x;
+			this.y = y;
+			this.h = h;
+			this.a = a;
+			this.fullBar = fullBar;
+			this.healthPerc = healthPerc;
+			
+			int counter = 0;
+		}
+
+		@Override
+		public void handle(ActionEvent event) {
+
+			gc.setFill(determineHealthColor(healthPerc));
+			gc.fillRoundRect(x, y, fullBar - (++counter), h, a, a);	//User's health bar
+		}
+
+	}
+	
+	
+	
 }
