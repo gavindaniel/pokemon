@@ -7,6 +7,8 @@ public class Settings {
 	private static double scene_height, scene_width;
 	private static double map_height, map_width;
 	private static double info_height, info_width;
+	private static double input_height, input_width;
+	private static double input_display_height, input_display_width;
 	private static double tile_source_size, tile_display_size;
 	private static double trainer_source_width, trainer_source_height;
 	private static double trainer_display_width, trainer_display_height;
@@ -15,17 +17,23 @@ public class Settings {
 	private static double trainer_x, trainer_y;
 	private static double sprite_x, sprite_y;
 	private static double timeline_1_duration, timeline_2_duration;
+	//--- Options related settings
+	private static double option_button_width, option_button_height, option_button_font_size, option_label_font_size;
 	
 	public Settings() {
 		starting_zone = 1;					//  zone # that the trainer starts in (this will be changed once the safari zone building is done)
 		zone_size = 85;						//  number of tiles that make up the height and width of the zone map
-		tree_line = 15;						//	number of trees that will border the zone 
+		tree_line = 18;						//	number of trees that will border the zone 
 		scene_height = 550;					//	the display height of the Game View
 		scene_width = 800;					//	the display width of the Game View
 		map_height = 500;					//	the display height of the entire Map View
 		map_width = 800;						//	the display width of the entire Map View
 		info_height = 400;					//	the display height of the trainer / bag / pokemon view
 		info_width = 200;					//	the display height of the trainer / bag / pokemon view
+		input_height = 50;					//	the display height of the info text input 
+		input_width = 200;					//	the display width of the info text input 
+		input_display_height = 100;			//	the display height of the info input stage
+		input_display_width = 200;			//	the display width of the info input stage
 		tile_source_size = 16;				//	original background image size:	16px by 16px
 		tile_display_size = 32;				//	desired display background image size:	32px by 32px
 		trainer_source_width = 19;			//	width of the source image of the trainer on the spritesheet
@@ -37,11 +45,18 @@ public class Settings {
 		text_display_lowerbound = -7;		//	prints 4 chars to the left of the trainer in the viewable area
 		text_display_upperbound = 7;			//	prints 4 chars to the right of the trainer in the viewable area 
 		trainer_x = 385;						//	trainer x location to be displayed in the game
-		trainer_y = 368;//368						//	trainer y location to be displayed in the game
+		trainer_y = 368;						//	trainer y location to be displayed in the game
 		sprite_x = -2;						//	trainer x location on the sprite sheet
 		sprite_y = 0;						//	trainer y location on the sprite sheet
-		timeline_1_duration = 250;			//	duration of timeline 1 to animate Trainer movement (in miliseconds)
-		timeline_2_duration = 500;			//	***this may not be needed*** trying to animate the background independently 
+		timeline_1_duration = 150;			//	duration of timeline 1 to animate Trainer movement (in miliseconds)
+		timeline_2_duration = 10;			//	duration of timeline 2 to animate the speech of professor Oak
+		//---------options related settings-----------------
+		option_button_width = 150;
+		option_button_height = 50;
+		option_button_font_size = 18;
+		option_label_font_size = 14;
+		
+		
 	}
 	public int getStartingZone() {
 		return starting_zone;
@@ -73,8 +88,14 @@ public class Settings {
 			return trainer_source_height;
 		else if (key == "info")
 			return info_height;
-		else //if(key == "display")
+		else if (key == "text")
+			return input_height;
+		else if (key == "input")
+			return input_display_height;
+		else if(key == "display")
 			return trainer_display_height;
+		else //if(key == "option button")
+			return option_button_height;
 	}
 	public double getWidth(String key) {
 		if (key == "scene")
@@ -85,8 +106,14 @@ public class Settings {
 			return trainer_source_width;
 		else if (key == "info")
 			return info_width;
-		else //if(key == "display")
+		else if (key == "text")
+			return input_width;
+		else if (key == "input")
+			return input_display_width;
+		else if(key == "display")
 			return trainer_display_width;
+		else //if(key == "option button")
+			return option_button_width;
 	}
 	public double getImageSize(String key) {
 		if (key == "original")
@@ -109,7 +136,19 @@ public class Settings {
 	public double getTimelineDuration(int key) {
 		if (key == 1)
 			return timeline_1_duration;
-		else // key == 2
+		else //if (key == 2)
 			return timeline_2_duration;
+	}
+	public void setTimelineDuration(int key, double duration) {
+		if (key == 1)
+			timeline_1_duration = duration;
+		else //if (key == 2)
+			timeline_2_duration = duration;
+	}
+	public double getFontSize(String key) {
+		if (key == "option button")
+			return option_button_font_size;
+		else //if (key == "option label")
+			return option_label_font_size;
 	}
 }

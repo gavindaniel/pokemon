@@ -431,10 +431,4 @@ public class BattleGUI extends Application {
 			}
 		}
 	}
-	
-	
-	
-	
-
-	
 }

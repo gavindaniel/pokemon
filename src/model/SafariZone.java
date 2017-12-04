@@ -6,6 +6,7 @@ import java.util.Observable;
 import controller.Settings;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.KeyCode;
 
 public class SafariZone extends Observable {
 
@@ -37,20 +38,21 @@ public class SafariZone extends Observable {
 	}
 	
 	// Move Player
-	public void movePlayer(char direction) {
+	public void movePlayer(KeyCode direction) {
 		if (!gameOver()) {
+//			System.out.println("moving player...");
 			Point oldLoc = theMap.getTrainer().getCurrentLocation();
 			Point newLoc = oldLoc;
 			int newC = (int) newLoc.getX();
 			int newR = (int) newLoc.getY();
 
-			if (direction == 'U')
+			if (direction == KeyCode.UP)
 				newR -= 1;
-			else if (direction == 'L')
+			else if (direction == KeyCode.LEFT)
 				newC -= 1;
-			else if (direction == 'R')
+			else if (direction == KeyCode.RIGHT)
 				newC += 1;
-			else if (direction == 'D')
+			else if (direction == KeyCode.DOWN)
 				newR += 1;
 
 			newLoc = new Point(newC, newR);

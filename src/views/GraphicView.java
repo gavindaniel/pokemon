@@ -10,6 +10,7 @@ import javafx.event.EventHandler;
 import javafx.scene.canvas.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 import map.Tile;
 import model.SafariZone;
@@ -19,37 +20,79 @@ public class GraphicView extends Canvas implements Observer {
 	private SafariZone theGame;
 	private GraphicsContext gc;
 	private Image spritesheet;
-	private Timeline timeline, timeline2;
-	private char direction;
+	private Timeline timeline;
+	private KeyCode direction;
 	private boolean done;
 	private int tic;
 
-	private static double imageSize, displaySize;	//  16px by 16px	 ,  32px by 32px 
-	private static int lowerBound, upperBound;		//	bounds for display
+	private static double imageSize, displaySize;
+	private static int row_lowerBound, col_lowerBound, col_upperBound, row_upperBound;
 	
 	private double sx, sy, sw, sh, dx, dy, dw, dh;
 	
+	private double xshift, yshift;
+	private char lastStep;
+	
+	private static Image ground;
+	private static Image grass;
+	private static Image bush;
+	private static Image tree;
+	private static Image fence;
+	private static Image stairs;
+	private static Image hill_bottom;
+	private static Image hill_top;
+	private static Image hill_middle;
+	private static Image hill_left;
+	private static Image hill_right;
+	private static Image hill_topleft;
+	private static Image hill_topright;
+	private static Image hill_bottomleft;
+	private static Image hill_bottomright;
+	private static Image water_bottom;
+	private static Image water_top;
+	private static Image water_middle;
+	private static Image water_left;
+	private static Image water_right;
+	private static Image water_topleft;
+	private static Image water_topright;
+	private static Image water_bottomleft;
+	private static Image water_bottomright;
+	
+	private double duration;
 	
 	@Override
 	public void update(Observable o, Object arg) {
 		theGame = (SafariZone) o;
+		if (theGame.getSettings().getTimelineDuration(1) != duration) {
+			timeline.stop();
+			duration = theGame.getSettings().getTimelineDuration(1);
+			timeline = new Timeline(new KeyFrame(Duration.millis(duration), new AnimateStarter()));
+			timeline.setCycleCount(Animation.INDEFINITE);
+		}
 	}
 	
 	/**
 	 * @param instance of the game 'PokemonGame'
 	 */
 	public GraphicView(SafariZone PokemonGame) {
+		xshift = 0; 
+		yshift = 0;
+		tic = 0;
+		direction = KeyCode.ENTER;
+		lastStep = 'L';
+		//-----------------------
 		theGame = PokemonGame;
-		lowerBound = theGame.getSettings().getLowerBound("graphic");
-		upperBound = theGame.getSettings().getUpperBound("graphic");
+		row_lowerBound = theGame.getSettings().getLowerBound("graphic");
+		col_lowerBound = theGame.getSettings().getLowerBound("graphic");
+		row_upperBound = theGame.getSettings().getUpperBound("graphic");
+		col_upperBound = theGame.getSettings().getUpperBound("graphic");
 		imageSize = theGame.getSettings().getImageSize("original");
 		displaySize = theGame.getSettings().getImageSize("display");
 		this.setWidth(theGame.getSettings().getWidth("scene"));
 		this.setHeight(theGame.getSettings().getHeight("scene"));	
-		timeline = new Timeline(new KeyFrame(Duration.millis(theGame.getSettings().getTimelineDuration(1)), new AnimateStarter()));
-		timeline2 = new Timeline(new KeyFrame(Duration.millis(theGame.getSettings().getTimelineDuration(2)), new AnimateStarter2()));
+		duration = theGame.getSettings().getTimelineDuration(1);
+		timeline = new Timeline(new KeyFrame(Duration.millis(duration), new AnimateStarter()));
 		timeline.setCycleCount(Animation.INDEFINITE);
-		timeline2.setCycleCount(Animation.INDEFINITE);
 		spritesheet = new Image("file:images/sheets/trainer.png", false);
 		resetTrainer();
 		initializePane();
@@ -60,6 +103,7 @@ public class GraphicView extends Canvas implements Observer {
 	 */
 	private void initializePane() {
 		gc = this.getGraphicsContext2D();
+		createImages();
 		drawViewableArea();
 		drawTrainer();
 	}
@@ -73,12 +117,12 @@ public class GraphicView extends Canvas implements Observer {
 		double rc = 0, cc = 0; //row_index, col_index;
 		Tile temp;
 		Image img;
-		for (int r = lowerBound; r <= upperBound; r++) {
-			for (int c = lowerBound; c <= upperBound; c++) {
+		for (int r = row_lowerBound; r <= row_upperBound; r++) {
+			for (int c = col_lowerBound; c <= col_upperBound; c++) {
 				try {
 					temp = theGame.getMap().getZone(zoneNum).getTile(pr + r, pc + c);
-					img = new Image("file:" + temp.getImagePath());
-					gc.drawImage(img, 0, 0, imageSize, imageSize, (cc * displaySize), (rc * displaySize), displaySize, displaySize);
+					img = getImage(temp.getSourceChar());
+					gc.drawImage(img, 0, 0, imageSize, imageSize, (cc * displaySize)+xshift, (rc * displaySize)+yshift, displaySize, displaySize);
 					cc++;
 				} catch (NullPointerException npe) {
 					// needed just in case some weird shit happens
@@ -86,6 +130,12 @@ public class GraphicView extends Canvas implements Observer {
 			}
 			cc = 0; rc++;
 		}
+	}
+	/**
+	 *	clears the canvas 
+	 */
+	public void clearCanvas() {
+		gc.clearRect(0, 0, theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene"));
 	}
 	/**
 	 *	resets the variables for drawing trainer location
@@ -110,227 +160,170 @@ public class GraphicView extends Canvas implements Observer {
 	/**
 	 *	starts the trainer timeline for animation & stores direction the trainer is moving 
 	 */
-	public void animateTrainer(char c, boolean d) {
+	public void animateTrainer(KeyCode key, boolean d) {
 		timeline.play();
-		direction = c;
+		if (direction == KeyCode.ENTER) // first
+			direction = key;
+		else if (direction != key)
+			if (tic == 0)
+				direction = key;
 		done = d;
 	}
 	/**
 	 *	Animation class relating to trainer animation
 	 */
 	private class AnimateStarter implements EventHandler<ActionEvent> {
-		public AnimateStarter() {
-			tic = 0;
-		}
+//		public AnimateStarter() {
+//		}
 		@Override
 		public void handle(ActionEvent event) {
 			tic++;
-			drawViewableArea();
-			if (direction == 'R') {
+			if (direction == KeyCode.RIGHT) {
 				if (tic == 1) {
 					sx = 89;
-					sy = 30;
+					sy = lastStep == 'L' ? 30 : 150;
+					lastStep = lastStep == 'L' ? 'R' : 'L';
+					xshift = -16;
+					col_upperBound += 1;
 				}
 				if (tic == 2) {
-					sy -= 30;
+					sy = 0;
+					xshift = 0;
+					col_upperBound -= 1;
 				}
 			}
-			if (direction == 'L') {
+			if (direction == KeyCode.LEFT) {
 				if (tic == 1) {
 					sx = 28;
-					sy = 30;
+					sy = lastStep == 'L' ? 30 : 150;
+					lastStep = lastStep == 'L' ? 'R' : 'L';
+					xshift = -16;
+					col_lowerBound -= 1;
 				}
-				if (tic == 2) 
-					sy -= 30;
+				if (tic == 2) { 
+					sy = 0;
+					xshift = 0;
+					col_lowerBound += 1;
+				}
 			}
-			if (direction == 'U') {
+			if (direction == KeyCode.UP) {
 				if (tic == 1) {
 					sx = 58;
-					sy = 30;
+					sy = lastStep == 'L' ? 30 : 150;
+					lastStep = lastStep == 'L' ? 'R' : 'L';
+					yshift = -16;
+					row_lowerBound -= 1;
 				}
-				if (tic == 2) 
-					sy -= 30;
+				if (tic == 2) {
+					sy = 0;
+					yshift = 0;
+					row_lowerBound += 1;
+				}
  			}
-			if (direction == 'D') {
+			if (direction == KeyCode.DOWN) {
 				if (tic == 1) {
 					sx = -2;
-					sy = 30;
+					sy = lastStep == 'L' ? 30 : 150;
+					lastStep = lastStep == 'L' ? 'R' : 'L';
+					yshift = -16;
 				}
-				if (tic == 2) 
-					sy -= 30;
+				if (tic == 2) {
+					sy = 0;
+					yshift = 0;
+				}
 			}
+			clearCanvas();
+			drawViewableArea();
 			drawTrainer();		
 			if (tic > 1) {
 				tic = 0;
 				if (done)
 					timeline.stop();
 			}
-		}
-	}
-	
-	/**
-	 *	starts the timeline for shifting the background behind the trainer
-	 */
-	public void animateMap(char c, boolean d) {
-		timeline2.play();
-		direction = c;
-		done = d;
-	}
-	/**
-	 *	animation class relating to animation of the background
-	 */
-	private class AnimateStarter2 implements EventHandler<ActionEvent> {
-		double sx, sy, sw, sh, dx, dy, dw, dh;
-		Tile temp = new Tile();
-		Image img;
-		String path = "";
-		int pc = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();
-		int pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();
-		double rc = 0;
-		double cc = 0;
-		int xShift, yShift;
-		
-		public AnimateStarter2() {
-			tic = 0;
-			sx = -2;
-			sy = 0;
-			sw = 19;
-			sh = 25;
-			dx = 385;//304
-			dy = 368;//297
-			dw = 32; //38
-			dh = 44; //50
-			
-			xShift = 0;
-			yShift = 0;
-		}
-
-		@Override
-		// This handle method gets called every 100 ms to draw the ship on a new
-		// location
-		public void handle(ActionEvent event) {
-			tic++;
-	//		drawViewableArea();
-			
-	//		if (tic == 1) {
-				pc = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();
-				pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();
-	//		}
-			
-			if (direction == 'R') {
-	//			xShift += 16;
-				yShift = 0;
-				if (tic == 1) {
-					sx = 89;
-					sy = 30;
-					xShift = -16;
-	//				yShift = 0;
-				}
-				if (tic == 2) {
-					sy = 0;
-					xShift = -32;
-	//				yShift = 0;
-				}
-			}
-			if (direction == 'L') {
-	//			xShift -= 16;
-				yShift = 0;
-				if (tic == 1) {
-					sx = 28;
-					sy = 30;
-					xShift = -16;
-	//				yShift = 0;
-				}
-				if (tic == 2) {
-					sy = 0;
-					xShift = 0;
-	//				yShift = 0;
-				}
-			}
-			if (direction == 'U') {
-				xShift = 0;
-	//			yShift -= 16;
-				if (tic == 1) {
-					sx = 58;
-					sy = 30;
-	//				xShift = 0;
-					yShift = -16;
-				}
-				if (tic == 2) {
-					sy -= 30;
-	//				xShift = 0;
-					yShift = 0;
-				}
- 			}
-			if (direction == 'D') {
-				xShift = 0;
-	//			yShift += 16;
-				if (tic == 1) {
-					sx = -2;
-					sy = 30;
-	//				xShift = 0;
-					yShift = 16;
-				}
-				if (tic == 2) { 
-					sy -= 30;
-	//				xShift = 0;
-					yShift = 0;
-				}
-			}
-			
-	
-			System.out.println("x-shift: " + xShift + "\ty-shift: " + yShift);
-			
-
-			
-//			for (int r = lowerBound; r <= upperBound; r++) {
-//				for (int c = lowerBound; c <= upperBound; c++) {
-//					try {
-//						int zoneNum = theGame.getMap().getTrainer().getZone();
-//						temp = theGame.getMap().getZone(zoneNum).getTile(pr + r, pc + c);
-//						path = temp.getImagePath();
-//						img = new Image("file:" + path);
-//						gc.drawImage(img, 0, 0, imageSize, imageSize, (cc * displaySize) + xShift, (rc * displaySize) + yShift, displaySize, displaySize);
-//						cc++;
-//					} catch (NullPointerException npe) {
-//						// needed just in case some weird shit happens
-//					}
-//				}
-//				cc = 0;
-//				rc++;
-//			}
-			for (int r = lowerBound; r <= upperBound; r++) {
-				for (int c = lowerBound; c <= upperBound; c++) {
-					try {
-						int zoneNum = theGame.getMap().getTrainer().getZone();
-						temp = theGame.getMap().getZone(zoneNum).getTile(pr + r, pc + c);
-						path = temp.getImagePath();
-						img = new Image("file:" + path);
-						System.out.println("x: " + ((cc*displaySize) + xShift) + "\t\ty: " + ((rc*displaySize) + yShift));
-						gc.drawImage(img, 0, 0, imageSize, imageSize, (cc * displaySize) + xShift, (rc * displaySize) + yShift, displaySize, displaySize);
-						cc++;
-					} catch (NullPointerException npe) {
-						// needed just in case some weird shit happens
-					}
-				}
-				cc = 0;
-				rc++;
-			}
-			
-			drawTrainer();
-//			gc.drawImage(spritesheet, sx, sy, sw, sh, dx, dy, dw, dh);
-				
-			if (tic > 1) {
-				tic = 0;
-				System.out.println("done -> "+ done);
-				if (done)
-					System.out.println("stopping timeline...");
-					timeline2.stop();
-			}
-			
-
+			if (tic == 1)
+					theGame.movePlayer(direction);
 		}
 	}
 	
 	
+	
+	
+	public void createImages() {
+		 ground = new Image("file:images/shrubs/ground-g.bmp");
+		 grass = new Image("file:images/shrubs/grass.bmp");
+		 bush = new Image("file:images/shrubs/bush.bmp");
+		 tree = new Image("file:images/shrubs/tree.bmp");
+		 fence = new Image("file:images/misc/fence.bmp");
+		 stairs = new Image("file:images/misc/stairs.bmp");
+		 hill_bottom = new Image("file:images/hills/hill-bottom.bmp");
+		 hill_top = new Image("file:images/hills/hill-top.bmp");
+		 hill_middle = new Image("file:images/hills/hill-middle.bmp");
+		 hill_left = new Image("file:images/hills/hill-left.bmp");
+		 hill_right = new Image("file:images/hills/hill-right.bmp");
+		 hill_topleft = new Image("file:images/hills/hill-topleft.bmp");
+		 hill_topright = new Image("file:images/hills/hill-topright.bmp");
+		 hill_bottomleft = new Image("file:images/hills/hill-bottomleft.bmp");
+		 hill_bottomright = new Image("file:images/hills/hill-bottomright.bmp");
+		 water_bottom = new Image("file:images/water/water-bc.bmp");
+		 water_top = new Image("file:images/water/water-tc.bmp");
+		 water_middle = new Image("file:images/water/water-c.bmp");
+		 water_left = new Image("file:images/water/water-lc.bmp");
+		 water_right = new Image("file:images/water/water-rc.bmp");
+		 water_topleft = new Image("file:images/water/water-tl.bmp");
+		 water_topright = new Image("file:images/water/water-tr.bmp");
+		 water_bottomleft = new Image("file:images/water/water-bl.bmp");
+		 water_bottomright = new Image("file:images/water/water-br.bmp");
+	}
+	public Image getImage(char c) {
+		if (c == '_' || c == 'P')
+			return ground;
+		else if (c == 'G')
+			return grass;
+		else if (c == 'B') 
+			return bush;
+		else if (c == 'T') 
+			return tree;
+		else if (c == 'F') 
+			return fence;
+		else if (c == 'E') 
+			return tree;
+		else if (c == 's') 
+			return stairs;
+		else if (c == 'b') 
+			return hill_bottom;
+		else if (c == 't') 
+			return hill_top;
+		else if (c == 'm') 
+			return hill_middle;
+		else if (c == 'l') 
+			return hill_left;
+		else if (c == 'r') 
+			return hill_right;
+		else if (c == 'q') 
+			return hill_topleft;
+		else if (c == 'o') 
+			return hill_topright;
+		else if (c == 'z') 
+			return hill_bottomleft;
+		else if (c == 'n') 
+			return hill_bottomright;
+		else if (c == '~') 
+			return water_bottomleft;
+		else if (c == '!') 
+			return water_left;
+		else if (c == '@') 
+			return water_topleft;
+		else if (c == '#') 
+			return water_top;
+		else if (c == 'W')
+			return water_middle;
+		else if (c == '$') 
+			return water_topright;
+		else if (c == '%') 
+			return water_right;
+		else if (c == '^') 
+			return water_bottomright;
+		else //if (c == '&') 
+			return water_bottom;
+	}
 }
