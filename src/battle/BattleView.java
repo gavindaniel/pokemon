@@ -41,13 +41,10 @@ public class BattleView extends Canvas implements Observer {
 		
 		gc = this.getGraphicsContext2D();
 		
-		battleGround = new Image("file:images/battle/battle-background.png", false);
+		battleGround = new Image("file:images/battle/background-scaled.png", false);
 		battleMenus = new Image ("file:images/battle/battle-menus.png", false);
 		
-		currentOppAttack = null;
-		
-		
-		gc.drawImage(battleGround, 0, 0, this.getWidth(), this.getHeight());
+		currentOppAttack = null;		
 	}
 	
 	

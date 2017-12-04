@@ -31,9 +31,12 @@ public class PokeBattleAnimation {
 	private GraphicsContext gc;
 	private int[][] coordinates;
 	
+	private static String bgPath;
+	
 	
 	public PokeBattleAnimation(String bgPath, List<String> paths, int[][] coordinates) {
 		
+		this.bgPath = bgPath;
 		this.coordinates = coordinates;
 		constructTimelines(paths);
 	}
@@ -232,7 +235,7 @@ public class PokeBattleAnimation {
 	private class AnimateStandby implements EventHandler<ActionEvent> {
 		double sx, sy, sw, sh, dx, dy, dw, dh;
 		private Image spritesheet;
-//		private Image bgImg;
+		private Image bgImg;
 
 		public AnimateStandby(String spritePath) {
 			
@@ -246,14 +249,16 @@ public class PokeBattleAnimation {
 			dw = coordinates[0][6];
 			dh = coordinates[0][7];
 			
-//			bgImg = new Image("file:images/battle/background-scaled.png", false);
+			bgImg = new Image(bgPath, false);
 		}
 
 		@Override
 		public void handle(ActionEvent e) {
 			
-			battleView.drawBackgroundAndHUD();
-//			gc.drawImage(bgImg, 451, 200, 310, 181, 451, 200, 310, 181);
+			//Redraw only relevant part of battle background.
+			//Avoid affecting other animations.
+			gc.drawImage(bgImg, 451, 200, 310, 181, 451, 200, 310, 181);
+			
 			/*
 			 * sx the source rectangle's X coordinate position. 
 			 * sy the source rectangle's Y
@@ -277,6 +282,7 @@ public class PokeBattleAnimation {
 	private class AnimateFirstAttack implements EventHandler<ActionEvent> {
 		double sx, sy, sw, sh, dx, dy, dw, dh;
 		private Image spritesheet;
+		private Image bgImg;
 
 		public AnimateFirstAttack(String spritePath) {
 			
@@ -289,12 +295,17 @@ public class PokeBattleAnimation {
 			dy = coordinates[1][5];
 			dw = coordinates[1][6];
 			dh = coordinates[1][7];
+			
+			bgImg = new Image(bgPath, false);
 		}
 
 		@Override
 		public void handle(ActionEvent e) {
 			
-			battleView.drawBackgroundAndHUD();
+			//Redraw only relevant part of battle background.
+			//Avoid affecting other animations.
+			gc.drawImage(bgImg, 451, 200, 310, 181, 451, 200, 310, 181);
+			
 			/*
 			 * sx the source rectangle's X coordinate position. 
 			 * sy the source rectangle's Y
@@ -321,6 +332,7 @@ public class PokeBattleAnimation {
 	private class AnimateSecondAttack implements EventHandler<ActionEvent> {
 		double sx, sy, sw, sh, dx, dy, dw, dh;
 		private Image spritesheet;
+		private Image bgImg;
 
 		public AnimateSecondAttack(String spritePath) {
 			
@@ -333,12 +345,17 @@ public class PokeBattleAnimation {
 			dy = coordinates[2][5];
 			dw = coordinates[2][6];
 			dh = coordinates[2][7];
+			
+			bgImg = new Image(bgPath, false);
 		}
 
 		@Override
 		public void handle(ActionEvent e) {
 
-			battleView.drawBackgroundAndHUD();
+			//Redraw only relevant part of battle background.
+			//Avoid affecting other animations.
+			gc.drawImage(bgImg, 451, 200, 310, 181, 451, 200, 310, 181);
+			
 			/*
 			 * sx the source rectangle's X coordinate position. 
 			 * sy the source rectangle's Y
@@ -365,6 +382,7 @@ public class PokeBattleAnimation {
 	private class AnimateThirdAttack implements EventHandler<ActionEvent> {
 		double sx, sy, sw, sh, dx, dy, dw, dh;
 		private Image spritesheet;
+		private Image bgImg;
 
 		public AnimateThirdAttack(String spritePath) {
 			
@@ -377,12 +395,17 @@ public class PokeBattleAnimation {
 			dy = coordinates[3][5];
 			dw = coordinates[3][6];
 			dh = coordinates[3][7];
+			
+			bgImg = new Image(bgPath, false);
 		}
 
 		@Override
 		public void handle(ActionEvent e) {
 
-			battleView.drawBackgroundAndHUD();
+			//Redraw only relevant part of battle background.
+			//Avoid affecting other animations.
+			gc.drawImage(bgImg, 451, 200, 310, 181, 451, 200, 310, 181);
+			
 			/*
 			 * sx the source rectangle's X coordinate position. 
 			 * sy the source rectangle's Y
@@ -410,6 +433,7 @@ public class PokeBattleAnimation {
 	private class AnimateFourthAttack implements EventHandler<ActionEvent> {
 		double sx, sy, sw, sh, dx, dy, dw, dh;
 		private Image spritesheet;
+		private Image bgImg;
 
 		public AnimateFourthAttack(String spritePath) {
 			
@@ -422,12 +446,17 @@ public class PokeBattleAnimation {
 			dy = coordinates[4][5];
 			dw = coordinates[4][6];
 			dh = coordinates[4][7];
+			
+			bgImg = new Image(bgPath, false);
 		}
 
 		@Override
 		public void handle(ActionEvent e) {
 
-			battleView.drawBackgroundAndHUD();
+			//Redraw only relevant part of battle background.
+			//Avoid affecting other animations.
+			gc.drawImage(bgImg, 451, 200, 310, 181, 451, 200, 310, 181);
+			
 			/*
 			 * sx the source rectangle's X coordinate position. 
 			 * sy the source rectangle's Y
@@ -455,6 +484,7 @@ public class PokeBattleAnimation {
 	private class AnimateBackStandby implements EventHandler<ActionEvent> {
 		double sx, sy, sw, sh, dx, dy, dw, dh;
 		private Image spritesheet;
+		private Image bgImg;
 
 		public AnimateBackStandby(String spritePath) {
 			
@@ -467,10 +497,16 @@ public class PokeBattleAnimation {
 			dy = coordinates[5][5];
 			dw = coordinates[5][6];
 			dh = coordinates[5][7];
+			
+			bgImg = new Image(bgPath, false);
 		}
 
 		@Override
 		public void handle(ActionEvent e) {
+			
+			//Redraw only relevant part of battle background.
+			//Avoid affecting other animations.
+			gc.drawImage(bgImg, 0, 357, 473, 190, 0, 357, 473, 190);
 			
 			/*
 			 * sx the source rectangle's X coordinate position. 
@@ -495,6 +531,8 @@ public class PokeBattleAnimation {
 	private class AnimateBackAttack implements EventHandler<ActionEvent> {
 		double sx, sy, sw, sh, dx, dy, dw, dh;
 		private Image spritesheet;
+		private Image bgImg;
+		
 		private int upCounter;
 		private int downCounter;
 		
@@ -516,12 +554,18 @@ public class PokeBattleAnimation {
 			dw = coordinates[5][6];
 			dh = coordinates[5][7];
 			
+			bgImg = new Image(bgPath, false);
+			
 			upCounter = 0;
 			downCounter = midpoint;
 		}
 
 		@Override
 		public void handle(ActionEvent e) {
+			
+			//Redraw only relevant part of battle background.
+			//Avoid affecting other animations.
+			gc.drawImage(bgImg, 0, 357, 473, 190, 0, 357, 473, 190);
 			
 			/*
 			 * sx the source rectangle's X coordinate position. 

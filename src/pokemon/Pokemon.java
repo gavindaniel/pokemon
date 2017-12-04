@@ -26,8 +26,9 @@ public abstract class Pokemon {
 	private String mood;		//State of pokemon during capture.
 	private PokeBattleAnimation battleAnimation;
 	private String standByPath,runAwayPath,capturePath;
-
-		
+	
+	protected static String battleBgPath = "file:images/battle/background-scaled.png";
+	
 	
 	/**
 	 * Contructor initializing name, elemental type, and commonness of pokemon.

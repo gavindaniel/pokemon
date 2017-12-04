@@ -44,8 +44,6 @@ public class Pikachu extends Pokemon {
 		spritePaths.add("file:images/battle/Pikachu/pikachu-charge.png");
 		spritePaths.add("file:images/battle/Pikachu/pikachu-back.png");
 		
-		String bgPath = "file:images/battle/battle-background.png";
-		
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 															 //Rows
 		int[][] coordinates = {{0,0,60,60,570,240,100,100, 60, 33}, //standBy
@@ -56,7 +54,7 @@ public class Pikachu extends Pokemon {
 				{0,0,65,60,50,390,150,150, 65, 33},				 //Back Standby
 		};
 		
-		PokeBattleAnimation pba = new PokeBattleAnimation(bgPath, spritePaths, coordinates);
+		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
 		this.setBattleAnimation(pba);
 	}
 

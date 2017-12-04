@@ -36,8 +36,6 @@ public class Squirtle extends Pokemon {
 		spritePaths.add("file:images/battle/Squirtle/squirtle-standby.png");
 		spritePaths.add("file:images/battle/Squirtle/squirtle-back.png");
 		
-		String bgPath = "file:images/battle/battle-background.png";
-		
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 															 //Rows
 		int[][] coordinates = {{0,0,60,60,575,230,100,100, 60, 33}, //standBy
@@ -48,7 +46,7 @@ public class Squirtle extends Pokemon {
 				{0,0,60,60,575,230,100,100, 60, 33},				 //Back Standby
 		};
 		
-		PokeBattleAnimation pba = new PokeBattleAnimation(bgPath, spritePaths, coordinates);
+		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
 		this.setBattleAnimation(pba);
 	}
 }
