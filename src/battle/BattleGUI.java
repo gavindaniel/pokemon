@@ -327,10 +327,9 @@ public class BattleGUI extends Application {
 		
 		window.setCenter(null);
 		window.setTop(null);
-		attackPane.getChildren().clear();
+//		attackPane.getChildren().clear();
 		
-		Trainer winner = (battle.isPokemonDrained(battle.getActiveTrainer().getActiveBattlePokemon())) 
-				? battle.getOppTrainer() : battle.getActiveTrainer();
+		Trainer winner = battle.getAttackTrainer();
 		
 		Label gameOver = new Label(winner.getName() + " is the winner !!");
 		window.setCenter(gameOver);
@@ -372,6 +371,21 @@ public class BattleGUI extends Application {
 //			}
 //
 		}
+	
+	private void runAttack(Attack chosenAttack, Pokemon attackPoke, Pokemon defendPoke) {
+		
+		battle.setCurrState('g');
+		
+		battle.applyAttack(chosenAttack, attackPoke, defendPoke);
+		
+		//Check if a pokemon has fainted
+		if (battle.isBattleOver()) switchToGameOverMenu();
+		else {
+			Trainer temp = battle.getAttackTrainer();
+			battle.setAttackTrainer(battle.getDefendTrainer());
+			battle.setDefendTrainer(temp);
+		}
+	}
 
 //		System.out.println("\nBattle is over.");
 //
@@ -392,19 +406,58 @@ public class BattleGUI extends Application {
 	}
 	
 	private void registerMainSelectHandler() {
+		
+		//Mouse click handler
 		window.setOnMouseClicked((event) -> {
 			double x = event.getSceneX();
 			double y = event.getSceneY();
 			
-			//Fight is chosen
-			if (x >= 484 && x<= 581 && y>= 585 && y<= 620) {
-				((BattleView) battleView).drawAttackMenu();
-				battle.setCurrState('a');
-			}
-
+//			System.out.println();
+//			System.out.println("X:" + x);
+//			System.out.println();
+//			System.out.println("Y:" + y);
 			
+			if (battle.getCurrState() == 'c') {
+				//Fight is chosen
+				if (x >= 484 && x<= 581 && y>= 585 && y<= 620) {
+					((BattleView) battleView).drawAttackMenu(0);
+					battle.setCurrState('a');
+				}
+			}
+			
+			else if (battle.getCurrState() == 'a') {
+				//Attack1 is chosen
+				if (x >= 43 && x<= 243 && y>= 585 && y<= 615) {
+					Pokemon attackPoke = battle.getAttackTrainer().getActiveBattlePokemon();
+					Pokemon defendPoke = battle.getDefendTrainer().getActiveBattlePokemon();
+					Attack currAttack = attackPoke.getAttackList().get(0);
+					runAttack(currAttack, attackPoke, defendPoke);
+				}
+				//Attack2 is chosen
+				else if (x >= 302 && x<= 477 && y>= 585 && y<= 615) {
+					Pokemon attackPoke = battle.getAttackTrainer().getActiveBattlePokemon();
+					Pokemon defendPoke = battle.getDefendTrainer().getActiveBattlePokemon();
+					Attack currAttack = attackPoke.getAttackList().get(1);
+					runAttack(currAttack, attackPoke, defendPoke);
+				}
+				//Attack3 is chosen
+				else if (x >= 43 && x<= 243 && y>= 631 && y<= 660) {
+					Pokemon attackPoke = battle.getAttackTrainer().getActiveBattlePokemon();
+					Pokemon defendPoke = battle.getDefendTrainer().getActiveBattlePokemon();
+					Attack currAttack = attackPoke.getAttackList().get(2);
+					runAttack(currAttack, attackPoke, defendPoke);
+				}
+				//Attack4 is chosen
+				else if (x >= 302 && x<= 477 && y>= 631 && y<= 660) {
+					Pokemon attackPoke = battle.getAttackTrainer().getActiveBattlePokemon();
+					Pokemon defendPoke = battle.getDefendTrainer().getActiveBattlePokemon();
+					Attack currAttack = attackPoke.getAttackList().get(3);
+					runAttack(currAttack, attackPoke, defendPoke);
+				}
+			}
 		});
 		
+		//Mouse move handler
 		window.setOnMouseMoved((event) -> {
 			
 			double x = event.getSceneX();
@@ -427,6 +480,26 @@ public class BattleGUI extends Application {
 				//Run is highlighted
 				else if (x >= 653 && x<= 713 && y>= 634 && y<= 668) {
 					((BattleView) battleView).drawMainSelectMenu(3);
+				}
+			}
+			
+			else if (battle.getCurrState() == 'a') {
+				
+				//Attack1 is highlighted
+				if (x >= 43 && x<= 243 && y>= 585 && y<= 615) {
+					((BattleView) battleView).drawAttackMenu(0);
+				}
+				//Attack2 is highlighted
+				else if (x >= 302 && x<= 477 && y>= 585 && y<= 615) {
+					((BattleView) battleView).drawAttackMenu(1);
+				}
+				//Attack3 is highlighted
+				else if (x >= 43 && x<= 243 && y>= 631 && y<= 660) {
+					((BattleView) battleView).drawAttackMenu(2);
+				}
+				//Attack4 is highlighted
+				else if (x >= 302 && x<= 477 && y>= 631 && y<= 660) {
+					((BattleView) battleView).drawAttackMenu(3);
 				}
 			}
 		});

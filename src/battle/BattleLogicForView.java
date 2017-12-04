@@ -105,8 +105,6 @@ public class BattleLogicForView extends Observable {
 	 */
 	public void setCurrState(char currState) {
 		this.currState = currState;
-		setChanged();
-		notifyObservers();
 	}
 
 	/**

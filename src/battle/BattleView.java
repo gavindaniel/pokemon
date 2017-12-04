@@ -23,10 +23,13 @@ public class BattleView extends Canvas implements Observer {
 	private BattleLogicForView battle;
 	private GraphicsContext gc;
 	private Timeline currentOppAttack;	//Keeps track of animation for opponent's chosen attack to start/stop animation.
-	private Timeline infoTextTimeline;
+	private Timeline infoTextTimeline;	//Timeline for printing battle updates
 	
 	private static Image battleGround;
 	private static Image battleMenus;
+	
+	private static final Font pokeFont = Font.loadFont("file:fonts/pokemon_pixel_font.ttf", 38);
+	
 	
 	public BattleView(BattleLogicForView battle, double width, double height) {
 		
@@ -64,9 +67,25 @@ public class BattleView extends Canvas implements Observer {
 	private void printBattleStage(Object message) {
 		
 		if (message instanceof Attack) {
-			if (battle.getAttackTrainer() == battle.getActiveTrainer()) startAttack((Attack) message);
+			if (battle.getAttackTrainer() == battle.getActiveTrainer()) {
+				String line1 = battle.getAttackTrainer().getActiveBattlePokemon().getName().toUpperCase() + " used";
+				String line2 = ((Attack) message).getName().toUpperCase() + "!";
+				
+				animateBattleText(line1, line2);
+				infoTextTimeline.setOnFinished((event) -> {
+					startAttack((Attack) message);
+				});
+			}
 			
-			else startDefend((Attack) message);
+			else {
+				String line1 = battle.getAttackTrainer().getActiveBattlePokemon().getName().toUpperCase() + " used";
+				String line2 = ((Attack) message).getName().toUpperCase() + "!";
+				
+				animateBattleText(line1, line2);
+				infoTextTimeline.setOnFinished((event) -> {
+					startDefend((Attack) message);
+				});				
+			}
 		}
 		
 		else {
@@ -95,7 +114,7 @@ public class BattleView extends Canvas implements Observer {
 		}
 		
 		else if (battle.getCurrState() == 'a') {
-			drawAttackMenu();
+			drawAttackMenu(0);
 		}
 	}
 	
@@ -179,18 +198,55 @@ public class BattleView extends Canvas implements Observer {
 	 */
 	private void animateBattleText(String line1, String line2) {
 		
+		int cycleCnt = 0;
+		
+		if(line2 == null) cycleCnt = line1.length();
+		else cycleCnt = line1.length() + line2.length();
+		
 		infoTextTimeline = new Timeline(new KeyFrame(Duration.millis(50), new AnimateBattleText(this.getWidth(), line1, line2)));
-		infoTextTimeline.setCycleCount(Animation.INDEFINITE);
+		infoTextTimeline.setCycleCount(cycleCnt);
 		infoTextTimeline.playFromStart();
 	}
 	
-	public void drawAttackMenu() {
+	public void drawAttackMenu(int arrowPos) {
+		
 		gc.drawImage(battleMenus, 16, 160, 240, 48, 0, this.getHeight() - 48*3, this.getWidth(), 48*3); //Attack Bar
+		
+		//Setting fonts and colors of text
+		gc.setFont(pokeFont);
+		gc.setFill(Color.BLACK);
+		
+		//Get attack names
+		List<Attack> attackList = battle.getAttackTrainer().getActiveBattlePokemon().getAttackList();
+		String attack1 = attackList.get(0).getName().toUpperCase();
+		String attack2 = attackList.get(1).getName().toUpperCase();
+		String attack3 = attackList.get(2).getName().toUpperCase();
+		String attack4 = attackList.get(3).getName().toUpperCase();
+		
+		//Draw attack names
+		double x = 45;
+		double y = 610;
+		double xGap = 260;
+		double yGap = 45;
+		double maxWidth = this.getWidth()/3 - 20;
+		gc.fillText(attack1, x, y, maxWidth);
+		gc.fillText(attack2, x + xGap, y, maxWidth);
+		gc.fillText(attack3, x, y + yGap, maxWidth);
+		gc.fillText(attack4, x + xGap, y + yGap, maxWidth);
+	
+		//Draw Arrow
+		if (arrowPos == 0) gc.drawImage(battleMenus, 277, 23, 6, 10, 24, 587, 6*3, 10*3);	//Attack1 highlighted
+		else if (arrowPos == 1) gc.drawImage(battleMenus, 277, 23, 6, 10, 24 + xGap, 587, 6*3, 10*3);	//Attack2 highlighted
+		else if (arrowPos == 2) gc.drawImage(battleMenus, 277, 23, 6, 10, 24, 587 + yGap, 6*3, 10*3);	//Attack3 highlighted
+		else gc.drawImage(battleMenus, 277, 23, 6, 10, 24 + xGap, 587 + yGap, 6*3, 10*3);	//Attack3 highlighted
 	}
 	
 	private void startIdle() {
 		
 		stopAllActiveTimelines();
+		
+		battle.setCurrState('c');
+		drawMainSelectMenu(0);
 		
 		Pokemon userPoke = battle.getActiveTrainer().getActiveBattlePokemon(); //User controlled Pokemon
 		Pokemon oppPoke = battle.getOppTrainer().getActiveBattlePokemon(); //Opposing Pokemon
@@ -306,16 +362,9 @@ public class BattleView extends Canvas implements Observer {
 			}
 			
 			else {
-				
-				if (line2 == null) infoTextTimeline.stop();
-				
-				else if (secondIndex >= line2.length()) infoTextTimeline.stop();
-				
-				else {
-					output2 += line2.charAt(secondIndex);
-					secondIndex++;
+					output2 += line2.charAt(secondIndex);	//setCycleCount property is used to stop animation 
+					secondIndex++;							//before NullPointerException is thrown.
 					gc.fillText(output2, tx, ty2, maxWidth - 20);
-				}
 			}
 		}}
 
