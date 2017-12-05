@@ -8,6 +8,37 @@ import pokemon.Pokemon;
 import java.util.Random;
 
 public class Capture {
+	
+	//New Capture logic
+		//Each rock will increase the percent for 
+		
+		
+		//Add into here the catch and run rate from the pokemon class
+		//the getters and setters in the pokemon class
+		
+		//Affect the health of the pokemon by 3% for each rock
+		//Give the pokemon 1% health for the food
+		
+		//Common
+		// 50% chance of getting caught at base
+		// 10% retreat chance
+		// Increase by 5% for rocks and bait thrown
+		// Caps for it are : 90%-20% for capture
+		// 5-40 for running
+		
+		//unCommon
+		// 25% chance of getting caught at base
+		// 25% chance of running away at base
+		// Increase by 5% for rocks and bait thrown
+		// Caps for it are : 50%-10% for capture
+		// 20-80 for retreat
+		
+		//rare
+		// 5% chance of getting caught at base
+		// 35% chance of running away at base
+		// Increase by 5% for rocks and bait thrown
+		// Caps for it are : 15%-0% for capture
+		// 20-80 for retreat
 		public Pokemon currentPoke;
 		public Trainer currentTrain;
 		
