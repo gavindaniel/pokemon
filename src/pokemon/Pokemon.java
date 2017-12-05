@@ -1,6 +1,7 @@
 package pokemon;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  * @author Abdullah Asaad
  *
  */
-public abstract class Pokemon {
+public abstract class Pokemon implements Serializable{
 	
 	private String name;
 	private Point position;

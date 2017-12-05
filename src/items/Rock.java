@@ -1,6 +1,8 @@
 package items;
 
-public class Rock extends Item{
+import java.io.Serializable;
+
+public class Rock extends Item implements Serializable{
 	String imagePath;
 	public Rock() {
 		super();

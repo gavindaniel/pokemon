@@ -1,6 +1,8 @@
 package items;
 
-public class HyperPotion extends Item{
+import java.io.Serializable;
+
+public class HyperPotion extends Item implements Serializable{
 	String imagePath;
 	public HyperPotion() {
 		super();

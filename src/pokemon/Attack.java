@@ -1,11 +1,13 @@
 package pokemon;
 
+import java.io.Serializable;
+
 /**
  * Represents an attack to be used by a pokemon.
  * @author Abdullah Asaad
  *
  */
-public abstract class Attack {
+public abstract class Attack implements Serializable {
 	
 	private String name;
 	private PokeType type;

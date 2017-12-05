@@ -1,6 +1,8 @@
 package items;
 
-public abstract class Item {
+import java.io.Serializable;
+
+public abstract class Item implements Serializable{
 
 	String imagePath;
 	public Item() {

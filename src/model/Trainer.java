@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Point;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import pokemon.Pikachu;
 import items.SafariBall;
 import pokemon.Pokemon;
 
-public class Trainer {
+public class Trainer implements Serializable{
 
 	private String name;
 

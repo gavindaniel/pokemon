@@ -15,7 +15,7 @@ import java.net.Socket;
 import java.util.List;
 import java.util.Vector;
 import java.awt.Point;
-
+import model.Trainer;
 
 
 
@@ -24,7 +24,7 @@ public class Server implements Serializable{
   private static ServerSocket serverSocket;
   private static List<ObjectOutputStream> outputStreams = new Vector<>();
 
-  private static Vector<Point> vector = new Vector<Point>();
+  private static Vector<Trainer> vector = new Vector<Trainer>();
 
 
   public static void main(String[] args) throws IOException {
@@ -60,7 +60,7 @@ public class Server implements Serializable{
   private static class ClientHandler implements Runnable {
 
  private ObjectInputStream input;
-    Point obj;
+    Trainer obj;
     int index;
 
     public ClientHandler(ObjectInputStream input) {
@@ -86,8 +86,8 @@ System.out.println("S: new: "+outputStreams.size()+" "+vector.size());
 
 System.out.println("S: read obj");
 
-                   obj = (Point)input.readObject();
-System.out.println("S: point/index "+obj.getX()+" "+obj.getY()+" "+index);
+                   obj = (Trainer)input.readObject();
+//System.out.println("S: point/index "+obj.getX()+" "+obj.getY()+" "+index);
 
 
                     writeVectorToClients(obj,index); 
@@ -103,7 +103,7 @@ System.out.println("S: point/index "+obj.getX()+" "+obj.getY()+" "+index);
     
     }
 
-    private void writeVectorToClients(Point object, int index) throws ClassNotFoundException{
+    private void writeVectorToClients(Trainer object, int index) throws ClassNotFoundException{
 
 
             for(int i = 0; i<outputStreams.size();i++){
@@ -111,7 +111,7 @@ System.out.println("S: point/index "+obj.getX()+" "+obj.getY()+" "+index);
 
               if(i!=index){
               try{
-                 outputStreams.get(i).writeObject((Point)object);
+                 outputStreams.get(i).writeObject((Trainer)object);
 System.out.println("S: write obj");
 
                   } catch (IOException ioe){

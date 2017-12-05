@@ -1,6 +1,8 @@
 package items;
 
-public class SafariBall extends Item{
+import java.io.Serializable;
+
+public class SafariBall extends Item implements Serializable{
 	String imagePath;
 	public SafariBall() {
 		super();

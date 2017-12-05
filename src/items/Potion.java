@@ -1,6 +1,8 @@
 package items;
 
-public class Potion extends Item{
+import java.io.Serializable;
+
+public class Potion extends Item implements Serializable{
 	String imagePath;
 	public Potion() {
 		super();

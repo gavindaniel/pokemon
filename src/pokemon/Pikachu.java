@@ -1,5 +1,6 @@
 package pokemon;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  * @author Abdullah Asaad
  *
  */
-public class Pikachu extends Pokemon {
+public class Pikachu extends Pokemon{
 
 	String standByPath,runAwayPath,capturePath;
 	public Pikachu() {

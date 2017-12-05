@@ -1,6 +1,8 @@
 package items;
 
-public class Bait extends Item{
+import java.io.Serializable;
+
+public class Bait extends Item implements Serializable{
 	String imagePath;
 	public Bait() {
 		super();

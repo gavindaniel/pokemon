@@ -1,5 +1,6 @@
 package pokemon;
 
+import java.io.Serializable;
 import java.util.List;
 
 import battle.BattleView;
@@ -18,7 +19,7 @@ import javafx.util.Duration;
  * @author Abdullah Asaad
  *
  */
-public class PokeBattleAnimation {
+public class PokeBattleAnimation implements Serializable{
 
 	private Timeline standby;
 	private Timeline firstAttack;

@@ -17,8 +17,11 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.SafariZone;
+import model.Trainer;
 import views.*;
 import network.User;
+import network.SerailizableTrainer;
+
 /**************************************************************/
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.*;
@@ -67,7 +70,11 @@ public class SafariZoneMain extends Application {
 	private ObjectOutputStream outputToServer;
 	private ObjectInputStream inputFromServer;
 	private static final String Address = "localhost";
-	public Point altPlayer;
+//	public Trainer altPlayer;
+	public SerializableTrainer altPlayer;
+
+
+
 	/***************************************/
 
 	public static void main(String[] args) {
@@ -77,7 +84,7 @@ public class SafariZoneMain extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		/***************************************/
-		// openConnection();
+		 openConnection();
 		/***************************************/
 		man = new FileManager();
 		primaryStage.setTitle("Pokemon: Safari Zone");
@@ -210,6 +217,24 @@ public class SafariZoneMain extends Application {
 			if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
 //				gameLoader.getSafariZone().movePlayer(event.getCode());
 				graphicView.animateTrainer(event.getCode(), false);
+				
+		           try {
+
+
+		                  outputToServer.writeObject(new SerilizableTrainer(gameLoader.getSafariZone().getMap().getTrainer()));
+
+
+		//System.out.println("PkMain: "+gameLoader.getSafariZone().getTrainerLoc().getX()+" "+gameLoader.getSafariZone().getTrainerLoc().getY());
+			
+
+
+
+		         	} catch (IOException e) {
+					e.printStackTrace();
+				}
+
+		
+			
 			} 
 		}
 	}
@@ -275,7 +300,7 @@ public class SafariZoneMain extends Application {
 			outputToServer = new ObjectOutputStream(socket.getOutputStream());
 			inputFromServer = new ObjectInputStream(socket.getInputStream());
 
-			altPlayer = new Point();
+			altPlayer = new SerializableTrainer();
 
 			// SeverListener will have a while(true) loop
 			ServerListener listener = new ServerListener();
@@ -294,8 +319,8 @@ public class SafariZoneMain extends Application {
 		public void run() {
 			while (true) {
 				try {
-					altPlayer = (Point) inputFromServer.readObject();
-					System.out.println("C: altPlayer: " + altPlayer.getX() + " " + altPlayer.getY());
+					altPlayer = (SerializableTrainer) inputFromServer.readObject();
+					System.out.println("C: altPlayer: " + altPlayer.getCurrentLocation().getX() + " " + altPlayer.getCurrentLocation().getY());
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
