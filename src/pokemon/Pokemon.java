@@ -10,7 +10,7 @@ import java.util.List;
  * @author Abdullah Asaad
  *
  */
-public abstract class Pokemon implements Serializable{
+public abstract class Pokemon{
 	
 	private String name;
 	private Point position;

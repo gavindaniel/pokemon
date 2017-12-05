@@ -4,28 +4,28 @@ import java.awt.Point;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.LinkedList;
 
-import items.Item;
+
 import pokemon.Pikachu;
 import items.SafariBall;
 import pokemon.Pokemon;
-
 import model.Trainer;
 import pokemon.Pokemon;
-
+import items.Item;
 
 
 public class SerializableTrainer implements Serializable{
 
 
         private String name;
-        private Point currentLocation;
+        public Point currentLocation;
 	private int zone_number;
 	private int numSteps;
-	private List<Pokemon> ownedPokemonList;		//List of all owned pokemon
-	private List<Pokemon> battlePokemonList;		//List of 3 pokemon to be used in battle
-	public List<Item> itemList;
-	private Pokemon activeBattlePokemon;		
+	private List<String> ownedPokemonList;		//List of all owned pokemon
+	private List<String> battlePokemonList;		//List of 3 pokemon to be used in battle
+	public List<String> itemList;
+	private String activeBattlePokemon;		
 
 
 
@@ -34,10 +34,14 @@ public class SerializableTrainer implements Serializable{
         name=trainer.getName();
         numSteps=trainer.getNumSteps();
         zone_number=trainer.getZone();
-        ownedPokemonList=trainer.getOwnedPokemonList();
-        battlePokemonList=trainer.getBattlePokemonList();
-        itemList=trainer.getItemList();
         currentLocation=trainer.getCurrentLocation();
+      //  activeBattlePokemon=trainer.getActiveBattlePokemon().getName();		
+
+
+
+        ownedPokemonList=getPokemonName(trainer.getOwnedPokemonList());
+        battlePokemonList=getPokemonName(trainer.getBattlePokemonList());
+//        itemList=getItemName(trainer.getItemList());
  
 
   
@@ -45,9 +49,17 @@ public class SerializableTrainer implements Serializable{
         }
 
 
-        public SerializableTrainer(){
+        public List getPokemonName(List<Pokemon> list){
 
+          List<String> copy= new LinkedList<String>();
+       
+          for( Pokemon pokemon : list ){ 
 
+            copy.add(pokemon.getName());
+
+          }
+
+           return copy;
         }
 
 

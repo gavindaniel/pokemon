@@ -7,7 +7,7 @@ import java.io.Serializable;
  * @author Abdullah Asaad
  *
  */
-public abstract class Attack implements Serializable {
+public abstract class Attack {
 	
 	private String name;
 	private PokeType type;

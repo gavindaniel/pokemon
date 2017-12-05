@@ -19,7 +19,7 @@ import javafx.util.Duration;
  * @author Abdullah Asaad
  *
  */
-public class PokeBattleAnimation implements Serializable{
+public class PokeBattleAnimation{
 
 	private Timeline standby;
 	private Timeline firstAttack;

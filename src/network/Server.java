@@ -15,7 +15,7 @@ import java.net.Socket;
 import java.util.List;
 import java.util.Vector;
 import java.awt.Point;
-import model.Trainer;
+import network.SerializableTrainer;
 
 
 
@@ -24,7 +24,7 @@ public class Server implements Serializable{
   private static ServerSocket serverSocket;
   private static List<ObjectOutputStream> outputStreams = new Vector<>();
 
-  private static Vector<Trainer> vector = new Vector<Trainer>();
+  private static Vector<SerializableTrainer> vector = new Vector<SerializableTrainer>();
 
 
   public static void main(String[] args) throws IOException {
@@ -60,7 +60,7 @@ public class Server implements Serializable{
   private static class ClientHandler implements Runnable {
 
  private ObjectInputStream input;
-    Trainer obj;
+    SerializableTrainer obj;
     int index;
 
     public ClientHandler(ObjectInputStream input) {
@@ -86,7 +86,7 @@ System.out.println("S: new: "+outputStreams.size()+" "+vector.size());
 
 System.out.println("S: read obj");
 
-                   obj = (Trainer)input.readObject();
+                   obj = (SerializableTrainer)input.readObject();
 //System.out.println("S: point/index "+obj.getX()+" "+obj.getY()+" "+index);
 
 
@@ -103,7 +103,7 @@ System.out.println("S: read obj");
     
     }
 
-    private void writeVectorToClients(Trainer object, int index) throws ClassNotFoundException{
+    private void writeVectorToClients(SerializableTrainer object, int index) throws ClassNotFoundException{
 
 
             for(int i = 0; i<outputStreams.size();i++){
@@ -111,7 +111,7 @@ System.out.println("S: read obj");
 
               if(i!=index){
               try{
-                 outputStreams.get(i).writeObject((Trainer)object);
+                 outputStreams.get(i).writeObject((SerializableTrainer)object);
 System.out.println("S: write obj");
 
                   } catch (IOException ioe){

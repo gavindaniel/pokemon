@@ -20,7 +20,7 @@ import model.SafariZone;
 import model.Trainer;
 import views.*;
 import network.User;
-import network.SerailizableTrainer;
+import network.SerializableTrainer;
 
 /**************************************************************/
 import javafx.scene.control.Alert.AlertType;
@@ -220,8 +220,16 @@ public class SafariZoneMain extends Application {
 				
 		           try {
 
+                           SerializableTrainer tr = new SerializableTrainer(gameLoader.getSafariZone().getMap().getTrainer());
 
-		                  outputToServer.writeObject(new SerilizableTrainer(gameLoader.getSafariZone().getMap().getTrainer()));
+//     System.out.println("Player "+tr.currentLocation.getX());
+
+//		                  outputToServer.writeObject(new SerializableTrainer(gameLoader.getSafariZone().getMap().getTrainer()));
+
+
+		                  outputToServer.writeObject(tr);
+
+
 
 
 		//System.out.println("PkMain: "+gameLoader.getSafariZone().getTrainerLoc().getX()+" "+gameLoader.getSafariZone().getTrainerLoc().getY());
@@ -300,7 +308,7 @@ public class SafariZoneMain extends Application {
 			outputToServer = new ObjectOutputStream(socket.getOutputStream());
 			inputFromServer = new ObjectInputStream(socket.getInputStream());
 
-			altPlayer = new SerializableTrainer();
+//			altPlayer = new SerializableTrainer();
 
 			// SeverListener will have a while(true) loop
 			ServerListener listener = new ServerListener();
@@ -320,7 +328,7 @@ public class SafariZoneMain extends Application {
 			while (true) {
 				try {
 					altPlayer = (SerializableTrainer) inputFromServer.readObject();
-					System.out.println("C: altPlayer: " + altPlayer.getCurrentLocation().getX() + " " + altPlayer.getCurrentLocation().getY());
+					System.out.println("C: altPlayer: " + altPlayer.currentLocation.getX() + " " + altPlayer.currentLocation.getY());
 				} catch (ClassNotFoundException e) {
 					e.printStackTrace();
 				} catch (IOException e) {
