@@ -105,7 +105,7 @@ public class GraphicView extends Canvas implements Observer {
 		capture_window = new BorderPane();
 		capture_scene = new Scene(capture_window, theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene")); //new
 		capture = new Capture(new Pikachu(), theGame.getMap().getTrainer());
-		captureView = new CaptureView(capture, theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene"), mainStage, game_scene, capture_scene);
+		//captureView = new CaptureView(capture, theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene"), mainStage, game_scene, capture_scene);
 		capture_window.setCenter(captureView);		
 		//----- Battle ------------
 		battle_window = new BorderPane();

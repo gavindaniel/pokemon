@@ -77,4 +77,13 @@ public class Pikachu extends Pokemon {
 		return capturePath;
 
 	}
+	@Override
+	public int[][] getCoordinates() {
+		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
+		 //Rows
+		int[][] coordinates = {{0,0,60,60,570,240,100,100, 60, 33}, //standBy
+				{10,10,80,82,530,245,100,100, 96, 60},				 //escape
+		};
+		return coordinates;
+	}
 }

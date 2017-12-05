@@ -357,5 +357,7 @@ public abstract class Pokemon {
 		return capturePath;
 	}
 
+	public abstract int[][] getCoordinates();
+
 
 }

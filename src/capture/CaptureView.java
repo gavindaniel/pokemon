@@ -10,14 +10,12 @@ import items.SafariBall;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
-import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 
 public class CaptureView extends Canvas implements Observer {
 	
@@ -32,20 +30,13 @@ public class CaptureView extends Canvas implements Observer {
 	 CaptureAnimations captureAnimation;
 	
 	
-	 private Stage mainStage;
-	 private Scene game_scene, capture_scene;
-	 
-	public CaptureView(Capture capture, double width, double height, Stage stage, Scene gameS, Scene captureS) {
-		
-		mainStage = stage;
-		game_scene = gameS;
-		capture_scene = captureS;
+	public CaptureView(Capture capture, double width, double height,BorderPane window) {
 		
 		this.setWidth(width);
 		this.setHeight(height);
-		this.window= (BorderPane) captureS.getRoot(); //We know the root is the BorderPane capture_window from SafariZoneMain
+		this.window=window;
 		this.capture = capture;
-		captureAnimation=new CaptureAnimations(this,"file:images/battle/battle-background.png",capture.currentPoke.getStandByPath(),capture.currentPoke.getRunAwayPath(),capture.currentPoke.getCapturePath());
+		captureAnimation=new CaptureAnimations(this,"file:images/battle/battle-background.png",capture.currentPoke.getStandByPath(),capture.currentPoke.getRunAwayPath(),capture.currentPoke.getCapturePath(),this.capture.currentPoke.getCoordinates());
 		gc = this.getGraphicsContext2D();
 		
 		battleGround = new Image("file:images/battle/battle-background.png", false);
@@ -106,7 +97,7 @@ public class CaptureView extends Canvas implements Observer {
 	    		capture.throwRock();
 	    }
 	    	if(event.getSource()==runButton) {
-	    		mainStage.setScene(game_scene);
+	    		System.exit(0);
 	    }
 	  }
 	    	
