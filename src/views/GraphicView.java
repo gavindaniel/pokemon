@@ -3,6 +3,7 @@ package views;
 import java.util.Observable;
 import java.util.Observer;
 
+import battle.BattleGUI;
 import capture.Capture;
 import capture.CaptureView;
 import javafx.animation.Animation;
@@ -276,8 +277,19 @@ public class GraphicView extends Canvas implements Observer {
 					timeline.stop();	
 					if (response == "pokemon")
 						mainStage.setScene(capture_scene);
-					else if (response == "trainer")
-						mainStage.setScene(battle_scene);
+					else if (response == "trainer") {
+						mainStage.hide();
+						BattleGUI gui = new BattleGUI();
+						Stage stage2 = new Stage();
+		
+						try {
+							gui.start(stage2);
+						} catch (Exception e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						//mainStage.setScene(battle_scene);
+					}
 				}
 			}
 			if (tic == 1)
