@@ -11,4 +11,5 @@ public enum BattleState {
 	CHOOSE_ATTACK,
 	CHOOSE_POKE,
 	ATTACKING,
+	SWITCHED
 }
