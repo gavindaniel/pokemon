@@ -107,11 +107,11 @@ public class BattleView extends Canvas implements Observer {
 	public void drawBattleMenus() {
 		gc.drawImage(battleMenus, 16, 110, 240, 48, 0, this.getHeight() - 48*3, this.getWidth(), 48*3); //Text Bar
 		
-		if (battle.getCurrState() == 'c') {
+		if (battle.getCurrState() == BattleState.IDLE) {
 			drawMainSelectMenu(0);
 		}
 		
-		else if (battle.getCurrState() == 'a') {
+		else if (battle.getCurrState() == BattleState.CHOOSE_ATTACK) {
 			drawAttackMenu(0);
 		}
 	}
@@ -260,7 +260,7 @@ public class BattleView extends Canvas implements Observer {
 		
 		stopAllActiveTimelines();
 		
-		battle.setCurrState('c');
+		battle.setCurrState(BattleState.IDLE);
 		drawMainSelectMenu(0);
 		
 		Pokemon userPoke = battle.getActiveTrainer().getActiveBattlePokemon(); //User controlled Pokemon

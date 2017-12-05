@@ -80,7 +80,7 @@ public class BattleGUI extends Application {
 		
 		//Trainers select pokemon
 		initializeGUINodes();
-//		setupPokeSelectionMenu(battle.getActiveTrainer());
+		setupPokeSelectionMenu(battle.getActiveTrainer());
 		
 		//Add battle view observer
 		battleView = new BattleView(battle, SCENE_WIDTH, SCENE_HEIGHT);
@@ -88,32 +88,32 @@ public class BattleGUI extends Application {
 		
 		/******************************For Quick Testing************************************/
 		  
-		List<Pokemon> pokeList1 = new ArrayList<>();
-		pokeList1.add(new Pikachu());
-		pokeList1.add(new Charmander());
-		pokeList1.add(new Bulbasaur());
-		for(Pokemon p : pokeList1) {
-			p.getBattleAnimation().setBattleView((BattleView) battleView);
-		}
-
-		List<Pokemon> pokeList2 = new ArrayList<>();
-		pokeList2.add(new Charmander());
-		pokeList2.add(new Pikachu());
-		pokeList2.add(new Squirtle());
-		
-		for(Pokemon p : pokeList2) {
-			p.getBattleAnimation().setBattleView((BattleView) battleView);
-		}
-
-		battle.getActiveTrainer().setBattlePokemonList(pokeList1);
-		battle.getOppTrainer().setBattlePokemonList(pokeList2);
+//		List<Pokemon> pokeList1 = new ArrayList<>();
+//		pokeList1.add(new Pikachu());
+//		pokeList1.add(new Charmander());
+//		pokeList1.add(new Bulbasaur());
+//		for(Pokemon p : pokeList1) {
+//			p.getBattleAnimation().setBattleView((BattleView) battleView);
+//		}
+//
+//		List<Pokemon> pokeList2 = new ArrayList<>();
+//		pokeList2.add(new Charmander());
+//		pokeList2.add(new Pikachu());
+//		pokeList2.add(new Squirtle());
+//		
+//		for(Pokemon p : pokeList2) {
+//			p.getBattleAnimation().setBattleView((BattleView) battleView);
+//		}
+//
+//		battle.getActiveTrainer().setBattlePokemonList(pokeList1);
+//		battle.getOppTrainer().setBattlePokemonList(pokeList2);
 		 
 		/**********************************************************************************/
 
-		setViewToBattle();
+//		setViewToBattle();
 		
 		//Run Battle
-		runBattle();
+//		runBattle();
 		
 		stage.setScene(scene);
 		stage.show();
@@ -382,7 +382,7 @@ public class BattleGUI extends Application {
 	
 	private void runAttack(Attack chosenAttack, Pokemon attackPoke, Pokemon defendPoke) {
 		
-		battle.setCurrState('g');
+		battle.setCurrState(BattleState.ATTACKING);
 		
 		battle.applyAttack(chosenAttack, attackPoke, defendPoke);
 		
@@ -404,15 +404,6 @@ public class BattleGUI extends Application {
 //		}
 //	}
 	
-	private void registerAttackButtonHandlers() {
-		
-		for (Node node : attackPane.getChildren()) {	
-			if (node instanceof Button) {
-				((Button) node).setOnAction(new AttackButtonListener());
-			}
-		}
-	}
-	
 	private void registerMainSelectHandler() {
 		
 		//Mouse click handler
@@ -425,15 +416,21 @@ public class BattleGUI extends Application {
 //			System.out.println();
 //			System.out.println("Y:" + y);
 			
-			if (battle.getCurrState() == 'c') {
-				//Fight is chosen
+			if (battle.getCurrState() == BattleState.IDLE) {
+				//Fight is chosen. Switch to choose attack menu
 				if (x >= 484 && x<= 581 && y>= 585 && y<= 620) {
 					((BattleView) battleView).drawAttackMenu(0);
-					battle.setCurrState('a');
+					battle.setCurrState(BattleState.CHOOSE_ATTACK);
+				}
+				
+				//Pokemon is chosen. Switch to choose pokemon menu 
+				else if (x >= 484 && x<= 619 && y>= 634 && y<= 668) {
+					battle.setCurrState(BattleState.CHOOSE_POKE);
+//					setupPokeSwitchMenu();
 				}
 			}
 			
-			else if (battle.getCurrState() == 'a') {
+			else if (battle.getCurrState() == BattleState.CHOOSE_ATTACK) {
 				//Attack1 is chosen
 				if (x >= 43 && x<= 243 && y>= 585 && y<= 615) {
 					Pokemon attackPoke = battle.getAttackTrainer().getActiveBattlePokemon();
@@ -471,7 +468,7 @@ public class BattleGUI extends Application {
 			double x = event.getSceneX();
 			double y = event.getSceneY();
 			
-			if (battle.getCurrState() == 'c') {	//User chooses action.
+			if (battle.getCurrState() == BattleState.IDLE) {	//User chooses action.
 			
 				//Fight is highlighted
 				if (x >= 484 && x<= 581 && y>= 585 && y<= 620) {
@@ -491,7 +488,7 @@ public class BattleGUI extends Application {
 				}
 			}
 			
-			else if (battle.getCurrState() == 'a') {
+			else if (battle.getCurrState() == BattleState.CHOOSE_ATTACK) {
 				
 				//Attack1 is highlighted
 				if (x >= 43 && x<= 243 && y>= 585 && y<= 615) {

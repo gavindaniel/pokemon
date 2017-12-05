@@ -21,7 +21,7 @@ public class BattleLogicForView extends Observable {
 	private Trainer defendTrainer;
 	private double[][] effectLookupTable; // Lookup table with values determining elemental attack effectiveness
 	
-	private char currState;
+	private BattleState currState;
 
 	public BattleLogicForView(Trainer actTrainer, Trainer oppTrainer) {
 
@@ -30,7 +30,7 @@ public class BattleLogicForView extends Observable {
 		this.attackTrainer = null;
 		this.defendTrainer = null;
 		
-		this.setCurrState('c');
+		this.setCurrState(BattleState.IDLE);
 
 		generateEffectLookupTable();
 	}
@@ -96,14 +96,14 @@ public class BattleLogicForView extends Observable {
 	/**
 	 * @return the currState
 	 */
-	public char getCurrState() {
+	public BattleState getCurrState() {
 		return currState;
 	}
 
 	/**
 	 * @param currState the currState to set
 	 */
-	public void setCurrState(char currState) {
+	public void setCurrState(BattleState currState) {
 		this.currState = currState;
 	}
 
