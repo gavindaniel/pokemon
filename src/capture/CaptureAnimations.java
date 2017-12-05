@@ -1,6 +1,8 @@
 package capture;
 
 
+
+
 import items.Bait;
 import items.Item;
 import items.SafariBall;
@@ -11,7 +13,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import pokemon.Pokemon;
 
 
 public class CaptureAnimations {
@@ -22,9 +28,10 @@ public class CaptureAnimations {
 	private GraphicsContext gc;
 	private String runAwayPath,capturePath;
 	private int[][] coordinates;
+	private Capture currentCapture;
 	
 	
-	public CaptureAnimations(CaptureView captureView, String bgPath, String standbyPath,String runAwayPath,String capturePath,int [][] coordinates) {
+	public CaptureAnimations(CaptureView captureView, String bgPath, String standbyPath,String runAwayPath,String capturePath,int [][] coordinates,Capture currentCapture) {
 		
 		this.captureView = captureView;
 		gc = captureView.getGraphicsContext2D();
@@ -32,6 +39,7 @@ public class CaptureAnimations {
 		this.runAwayPath=runAwayPath;
 		this.capturePath=capturePath;
 		this.coordinates=coordinates;
+		this.currentCapture=currentCapture;
 		constructTimelines(standbyPath);
 	}
 	
@@ -83,6 +91,22 @@ public class CaptureAnimations {
 			emotion = new Timeline(new KeyFrame(Duration.millis(50), new AnimatePokemonEmotion(item)));
 			emotion.setCycleCount(Animation.INDEFINITE);
 			emotion.play();
+		}
+		
+		//Draw 'health' bars
+		public void drawBars() {
+			gc.setFill(Color.BLACK);
+			gc.fillRoundRect(560, 177, 105, 25,20,20);
+			gc.fillRoundRect(560, 147, 105, 25,20,20);
+			gc.setFill(Color.RED);
+			gc.fillRoundRect(563, 180, 100, 20,20,20);
+			gc.fillRoundRect(563, 150, 100, 20,20,20);
+			gc.setFill(Color.GREEN);
+			gc.fillRoundRect(563, 180, currentCapture.getCurrentCatchRate()+5, 20,20,20);
+			gc.fillRoundRect(563, 150, currentCapture.getCurrentRunRate()+5, 20,20,20);
+			gc.setFill(Color.BLACK);
+			gc.fillText("Chance to run", 574, 164, 300);
+			gc.fillText("Chance to catch", 570, 194, 300);
 		}
 	
 			
@@ -180,6 +204,7 @@ public class CaptureAnimations {
 		public void handle(ActionEvent e) {
 
 			gc.drawImage(bgImg, 0, 0, captureView.getWidth(), captureView.getHeight());
+			drawBars();
 
 			// TODO 2: Draw the walker, update the proper variables, stop animation
 			gc.drawImage(spritesheet, sx, sy, sw, sh, dx, dy, dw, dh);
@@ -348,8 +373,8 @@ public class CaptureAnimations {
 
 		@Override
 		public void handle(ActionEvent e) {
-
 			gc.drawImage(bgImg, 0, 0, captureView.getWidth(), captureView.getHeight());
+			drawBars();
 
 			// TODO 2: Draw the walker, update the proper variables, stop animation
 			gc.drawImage(spritesheet, sx, sy, sw, sh, dx, dy, dw, dh);

@@ -301,31 +301,7 @@ public abstract class Pokemon {
 		if (currHP < 0) currHP = 0;
 	}
 	
-	//Set to return a catch rate depending on the frequency.
-		public int getRunRate() {
-			if(getOccurRate()==occurRate.RARE) {
-				return 40;
-			}
-			else if(getOccurRate()==occurRate.UNCOMMON) {
-				return 25;
-			}
-			else {
-				return 10;
-			}
-			
-		}
-		public int getCatchRate() {
-			if(getOccurRate()==occurRate.RARE) {
-				return 80;
-			}
-			else if(getOccurRate()==occurRate.UNCOMMON) {
-				return 50;
-			}
-			else {
-				return 25;
-			}
-			
-		}
+	
 	
 	/**
 	 * Create attacks for specific pokemon.
