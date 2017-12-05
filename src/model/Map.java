@@ -21,7 +21,7 @@ public class Map extends Observable {
 
 	private int size;
 	private Trainer trainer;
-//	private Tile[][] tiles;
+	private Vector<Trainer> trainers;
 	private Vector<Zone> zones;
 	private static final int numPokemon = 50;
 	private static Settings settings;
@@ -66,6 +66,9 @@ public class Map extends Observable {
 	}
 
 	public void ReadMapFromFile() {
+		
+		boolean trainer_already_found = false;
+		
 		for (int z = 1; z <= 4; z++) {
 			File file = new File("./files/zone"+z+".txt");
 			Zone tempZone = zones.get(z-1);
@@ -80,7 +83,12 @@ public class Map extends Observable {
 						if (line.charAt(i) != ' ') {
 							temp = new Tile(line.charAt(i));
 							tempZone.setTile(temp,r,c);
-							if (line.charAt(i) == 'P') trainer.setCurrentLocation(new Point(c, r));
+							if (line.charAt(i) == 'P') {
+								if (!trainer_already_found) {
+									trainer_already_found = true;
+									trainer.setCurrentLocation(new Point(c, r));
+								}
+							}
 							c++;
 						}
 					}
@@ -119,18 +127,24 @@ public class Map extends Observable {
 		}
 	}
 	
-	public void updateTrainerLocation(Point oldLoc, Point newLoc) {
+	public String updateTrainerLocation(Point oldLoc, Point newLoc) {
 		Point newP = newLoc;
+		String response = "nothing";
 		if (checkCanMoveHere(trainer.getZone()-1, oldLoc, newP)) {
 			if (checkZoneChange(newP))
 				newP = changeZone(oldLoc);
 			trainer.setCurrentLocation(newP);
 			trainer.setNumSteps(trainer.getNumSteps() - 1);
-//			System.out.println("r: "+trainer.getCurrentLocation().getY()+"\tc: "+trainer.getCurrentLocation().getX());
-			checkForPokemon(trainer.getZone()-1, newLoc);
+			if (checkForPokemon(trainer.getZone()-1, newLoc)) {
+				response = "pokemon";
+			}
+			if (checkForTrainer(trainer.getZone()-1, newLoc)) {
+				response = "trainer";
+			}
 			clearPokemon();
 			spawnPokemon();
 		}
+		return response;
 	}
 
 	public boolean checkCanMoveHere(int zoneNum, Point oldPosition, Point newPosition) {
@@ -147,6 +161,7 @@ public class Map extends Observable {
 			}
 			if (newTile.getType() == "ground") return true;
 			else if ((newTile.getType() == "grass") || (newTile.getSourceChar() == 'm') || (newTile.getType() == "stairs") || (newTile.getType() == "exit")) return true;
+			else if (newTile.getTrainerHere()) return false;
 			else return false;
 		} 
 		
@@ -157,27 +172,37 @@ public class Map extends Observable {
 		
 	}
 
-	public void checkForPokemon(int zoneNum, Point newPosition) {
+	public boolean checkForPokemon(int zoneNum, Point newPosition) {
 		int c = (int) newPosition.getX();
 		int r = (int) newPosition.getY();
 		try {
 			if (zones.get(zoneNum).getTile(r,c).getPokemonHere() == true) {
 				//Vector<Pokemon> temp = trainer.getPokemon();
 //				Thread.sleep(500);
-				System.out.println("alert");
 				List<Pokemon> temp = trainer.getOwnedPokemonList();
 				temp.add(new Pikachu());								// FIXME
 				trainer.setOwnedPokemonList(temp);
-				Alert alert = new Alert(AlertType.INFORMATION);
-				alert.setTitle("Pokemon!");
-				alert.setHeaderText("You found a Pokemon!");
-				alert.showAndWait();
+				return true;
 			}
 		} catch (ArrayIndexOutOfBoundsException aiobe) {
 			System.out.println(aiobe.toString());
 		} 
+		return false;
 	}
 
+	public boolean checkForTrainer(int zoneNum, Point newPosition) {
+		int c = (int) newPosition.getX();
+		int r = (int) newPosition.getY();
+		try {
+			if (zones.get(zoneNum).getTile(r,c).getTrainerHere() == true) {
+				return true;
+			}
+		} catch (ArrayIndexOutOfBoundsException aiobe) {
+			System.out.println(aiobe.toString());
+		} 
+		return false;
+	}
+	
 	public boolean checkZoneChange(Point newPosition) {
 		int new_c = (int) newPosition.getX();
 		int new_r = (int) newPosition.getY();
@@ -282,25 +307,5 @@ public class Map extends Observable {
 		}
 		return result;
 	}
-	
-//	/**
-//	 * Proved a textual version of the Pokemon locations
-//	 */
-//	public String drawPokemonMap(int zoneNum) {
-//		String result = "";
-//
-//		for (int r = 0; r < size; r++) {
-//			for (int c = 0; c < size; c++)
-//				if (r == trainer.getCurrentLocation().getY() && c == trainer.getCurrentLocation().getX())
-//					result += " P ";
-//				else
-//					if (zones.get(zoneNum).getTile(r,c).getPokemonHere() == false)  result += "   ";
-//					else  result += " Y ";
-//		
-//			if (r < size - 1)
-//				result += "\n";
-//		}
-//		return result;
-//	}
 	
 } // end of Class 'Map'

@@ -98,6 +98,9 @@ public class Tile {
 		else if (c == '&') {
 			type = "water";
 		}
+		else if (c == '6') {
+			type = "grass";
+		}
 		
 		pokemonHere = false;
 		
@@ -109,6 +112,9 @@ public class Tile {
 			trainerHere = false;
 			sourceChar = c;
 		}	
+		
+		if (c == '6')
+			trainerHere = true;
 	}
 	
 	public String getType() {

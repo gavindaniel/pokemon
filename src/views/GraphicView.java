@@ -2,18 +2,27 @@ package views;
 
 import java.util.Observable;
 import java.util.Observer;
+
+import capture.Capture;
+import capture.CaptureView;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.canvas.*;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import map.Tile;
 import model.SafariZone;
+import model.Trainer;
+import pokemon.Pikachu;
 
 public class GraphicView extends Canvas implements Observer {
 
@@ -60,6 +69,17 @@ public class GraphicView extends Canvas implements Observer {
 	
 	private double duration;
 	
+	private Stage mainStage;
+	private Scene game_scene, capture_scene, battle_scene;
+	
+	private BorderPane battle_window;
+	
+	private BorderPane capture_window;
+	private Capture capture;
+	private CaptureView captureView;
+	private String response;
+	
+	
 	@Override
 	public void update(Observable o, Object arg) {
 		theGame = (SafariZone) o;
@@ -74,14 +94,28 @@ public class GraphicView extends Canvas implements Observer {
 	/**
 	 * @param instance of the game 'PokemonGame'
 	 */
-	public GraphicView(SafariZone PokemonGame) {
+	public GraphicView(SafariZone PokemonGame, Stage main, Scene game) {
+		theGame = PokemonGame;
+		mainStage = main;
+		game_scene = game;
+		
+		response = "nothing";
+		//----- Capture -----------
+		capture_window = new BorderPane();
+		capture_scene = new Scene(capture_window, theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene")); //new
+		capture = new Capture(new Pikachu(), theGame.getMap().getTrainer());
+		captureView = new CaptureView(capture, theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene"), mainStage, game_scene, capture_scene);
+		capture_window.setCenter(captureView);		
+		//----- Battle ------------
+		battle_window = new BorderPane();
+		battle_scene = new Scene(battle_window, theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene")); //new 
+		//----- Animation ---------
 		xshift = 0; 
 		yshift = 0;
 		tic = 0;
 		direction = KeyCode.ENTER;
 		lastStep = 'L';
 		//-----------------------
-		theGame = PokemonGame;
 		row_lowerBound = theGame.getSettings().getLowerBound("graphic");
 		col_lowerBound = theGame.getSettings().getLowerBound("graphic");
 		row_upperBound = theGame.getSettings().getUpperBound("graphic");
@@ -234,19 +268,23 @@ public class GraphicView extends Canvas implements Observer {
 			}
 			clearCanvas();
 			drawViewableArea();
-			drawTrainer();		
+			drawTrainer();
+			
 			if (tic > 1) {
 				tic = 0;
-				if (done)
-					timeline.stop();
+				if (done || response == "pokemon") {
+					timeline.stop();	
+					if (response == "pokemon")
+						mainStage.setScene(capture_scene);
+					else if (response == "trainer")
+						mainStage.setScene(battle_scene);
+				}
 			}
 			if (tic == 1)
-					theGame.movePlayer(direction);
+					response = theGame.movePlayer(direction);
 		}
 	}
-	
-	
-	
+
 	
 	public void createImages() {
 		 ground = new Image("file:images/shrubs/ground-g.bmp");
