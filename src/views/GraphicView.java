@@ -280,6 +280,7 @@ public class GraphicView extends Canvas implements Observer {
 					else if (response == "trainer") {
 						mainStage.hide();
 						BattleGUI gui = new BattleGUI();
+						gui.setMainStage(mainStage);
 						Stage stage2 = new Stage();
 		
 						try {

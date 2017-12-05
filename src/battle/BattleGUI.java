@@ -58,14 +58,18 @@ public class BattleGUI extends Application {
 	//Declare observers
 	private Observer battleView;
 
+	private Stage mainStage;
+	private Stage battleStage;
+	
 	//Window Size
 	public static final double SCENE_WIDTH = 800;
 	public static final double SCENE_HEIGHT = 550 + 144;
 	
-
+	
+	
 	@Override
 	public void start(Stage stage) throws Exception {
-
+		battleStage = stage;
 		//Initialize main border pane and scene
 		stage.setTitle("Pokemon Battle");
 		window = new BorderPane();
@@ -333,6 +337,10 @@ public class BattleGUI extends Application {
 		
 		Label gameOver = new Label(winner.getName() + " is the winner !!");
 		window.setCenter(gameOver);
+		
+		battleStage.hide();
+		mainStage.show();
+		
 	}
 	
 	/**
@@ -546,4 +554,8 @@ public class BattleGUI extends Application {
 		}
 	}
 	
+	
+	public void setMainStage(Stage main) {
+		this.mainStage = main;
+	}
 }
