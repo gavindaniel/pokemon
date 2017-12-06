@@ -52,7 +52,6 @@ public class CaptureView extends Canvas implements Observer {
 		this.capture = capture;
 		captureAnimation=new CaptureAnimations(this,"file:images/battle/battle-background.png",capture.currentPoke.getStandByPath(),capture.currentPoke.getRunAwayPath(),capture.currentPoke.getCapturePath(),this.capture.currentPoke.getCoordinates(),capture);
 		gc = this.getGraphicsContext2D();
-		new SoundClip("sounds/107-battle-vs-wild-pokemon-.mp3");
 		
 		battleGround = new Image("file:images/battle/battle-background.png", false);
 		
@@ -203,6 +202,7 @@ public class CaptureView extends Canvas implements Observer {
 			} catch (UnsupportedAudioFileException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+				
 			}
 		  }
 			  
@@ -229,6 +229,10 @@ public class CaptureView extends Canvas implements Observer {
 		  
 			  
 		  
+	  }
+	  
+	  public void endCapture() {
+		  mainStage.setScene(game_scene);
 	  }
 	  
 	  
