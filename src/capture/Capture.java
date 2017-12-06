@@ -86,7 +86,7 @@ public class Capture {
 		public boolean retreat(int retreatChance) {
 			
 			System.out.println("Run rate: " +runRate);
-			System.out.println("retreatChance: " +retreatChance);
+			System.out.println("retreatRoll: " +retreatChance);
 			
 			if(runRate>retreatChance) {
 				System.out.println(currentPoke.getName()+" ran away.");
