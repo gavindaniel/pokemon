@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 
+import items.HyperPotion;
+import items.Item;
+import items.Potion;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -48,10 +51,12 @@ public class BattleGUI extends Application {
 	private BorderPane window;
 	private VBox pokeSelectBox;
 	private HBox pokeSwitchBox;
+	private HBox itemSelectBox;
 	private HBox selectButtonBox;
 	
 	//Observable Lists
 	private PokeTable pokeTable;
+	private ItemTable itemTable;
 	private ListView<String> selectedPokeListView;
 	private ObservableList<String> selectedPokemonList;
 
@@ -85,6 +90,7 @@ public class BattleGUI extends Application {
 		battleView = new BattleView(battle, SCENE_WIDTH, SCENE_HEIGHT);
 		battle.addObserver(battleView);
 		
+		/***********************************************************************************/
 		/******************************For Quick Testing************************************/
 		  
 		List<Pokemon> pokeList1 = new ArrayList<>();
@@ -106,7 +112,24 @@ public class BattleGUI extends Application {
 
 		battle.getActiveTrainer().setBattlePokemonList(pokeList1);
 		battle.getOppTrainer().setBattlePokemonList(pokeList2);
+		
+		List<Item> itemList1 = new ArrayList<>();
+		itemList1.add(new HyperPotion());
+		itemList1.add(new Potion());
+		itemList1.get(0).setQuantity(2);
+		itemList1.get(1).setQuantity(4);
+
+		List<Item> itemList2 = new ArrayList<>();
+		itemList2.add(new HyperPotion());
+		itemList2.add(new Potion());
+		itemList2.get(0).setQuantity(3);
+		itemList2.get(1).setQuantity(6);
+		
+		battle.getActiveTrainer().setItemList(itemList1);
+		battle.getOppTrainer().setItemList(itemList2);
+		
 		 
+		/**********************************************************************************/
 		/**********************************************************************************/
 
 		setViewToBattle();
@@ -257,10 +280,51 @@ public class BattleGUI extends Application {
 		BorderPane.setMargin(pokeSwitchBox, new Insets(40, 40, 40, 40));
 	}
 	
+	/**
+	 * Allows user to use items during battle.
+	 * @param trainer The trainer activating the item bag
+	 */
+	private void setupItemSelectMenu(Trainer trainer) {
+		
+		itemSelectBox = new HBox();
+		
+//		Label switchLabel = new Label(trainer.getName() + ", Choose your new pokemon");
+//		switchLabel.setStyle("-fx-font-size: 14pt; -fx-text-fill: brown");
+		
+		setupItemTable(trainer.getItemList());
+		
+		//Set up Select Button
+		Button selectButton = new Button(">>");
+		selectButton.setStyle("-fx-font-size: 18pt;");
+		
+		//Register button handler
+		selectButton.setOnAction(new ItemButtonListener(trainer));
+		
+		//Set width of itemTable
+		VBox tableBox = new VBox();
+		tableBox.getChildren().add(itemTable);
+		tableBox.setMaxWidth(570);
+		
+		//Add lists and button to switch box
+		itemSelectBox.getChildren().add(tableBox);
+		itemSelectBox.getChildren().add(selectButton);
+		itemSelectBox.setSpacing(30);
+		
+		// Add Box to center of borderPane
+		window.setCenter(itemSelectBox);
+		BorderPane.setMargin(itemSelectBox, new Insets(40, 40, 40, 40));
+	}
+	
 	private void removePokeSwitchMenu() {
 		
 		window.setCenter(null);
 		pokeSwitchBox.getChildren().clear();
+	}
+	
+	private void removeItemSelectMenu() {
+		
+		window.setCenter(null);
+		itemSelectBox.getChildren().clear();
 	}
 	
 	private class PokeTable extends TableView<Pokemon> {
@@ -296,6 +360,32 @@ public class BattleGUI extends Application {
 			this.getColumns().add(specialColumn);
 			this.getColumns().add(speedColumn);
 		}
+	}
+	
+	private class ItemTable extends TableView<Item> {
+		
+		public ItemTable() {
+			//set-up columns
+			TableColumn<Item, String> typeCol = new TableColumn<>("Item");
+			TableColumn<Item, Integer> quantCol = new TableColumn<>("Quantity");
+			
+			//Get column values
+			typeCol.setCellValueFactory(new PropertyValueFactory<Item, String>("itemType"));
+			quantCol.setCellValueFactory(new PropertyValueFactory<Item, Integer>("quantity"));
+			
+			//Add columns to table
+			this.getColumns().add(typeCol); 
+			this.getColumns().add(quantCol); 
+		}
+	}
+	
+	private void setupItemTable(List<Item> itemList) {
+		
+		//Set up list view to select pokemon
+		ObservableList<Item> obsItemList = FXCollections.observableArrayList(itemList);
+		itemTable = new ItemTable();
+		itemTable.setItems(obsItemList);
+
 	}
 	
 	private void setupSelectedPokeList(Trainer trainer) {
@@ -398,6 +488,7 @@ public class BattleGUI extends Application {
 	private void runAttack(Attack chosenAttack, Pokemon attackPoke, Pokemon defendPoke) {
 		
 		battle.setCurrState(BattleState.ATTACKING);
+		battle.setItemApplied(false);
 		
 		battle.applyAttack(chosenAttack, attackPoke, defendPoke);
 		
@@ -460,6 +551,12 @@ public class BattleGUI extends Application {
 					battle.setCurrState(BattleState.SWITCHING);
 					setupPokeSwitchMenu(battle.getAttackTrainer());
 				}
+				
+				//Bag is chosen. Switch to select item menu.
+				else if (x >= 653 && x<= 713 && y>= 585 && y<= 620 && !battle.isItemApplied()) {
+					setupItemSelectMenu(battle.getAttackTrainer());
+				}
+				
 			}
 			
 			//CHOOSE_ATTACK: can select from one of four attacks
@@ -629,5 +726,44 @@ public class BattleGUI extends Application {
 			
 		}
 	}
+	
+	private class ItemButtonListener implements EventHandler<ActionEvent> {
+
+		private Trainer currTrainer;
+		private boolean result;
+		
+		public ItemButtonListener(Trainer trainer) {
+			this.currTrainer = trainer;
+			result = false;
+		}
+		
+		@Override
+		public void handle(ActionEvent event) {
+			
+			Item chosenItem = itemTable.getSelectionModel().getSelectedItem();
+			
+			if (chosenItem instanceof HyperPotion) {
+				result = ((HyperPotion) chosenItem).applyToPokemon(currTrainer.getActiveBattlePokemon());
+			}
+			
+			else if (chosenItem instanceof Potion) {
+				result = ((Potion) chosenItem).applyToPokemon(currTrainer.getActiveBattlePokemon());
+			}
+			
+			
+			if (result) {
+				battle.setItemApplied(true);
+				battleView.update(battle, null);
+			}
+			
+			else {
+				newAlertMessage("Error", "Invalid Choice");
+			}
+			
+			removeItemSelectMenu();
+			setViewToBattle();
+		}
+	}
+	
 	
 }
