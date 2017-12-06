@@ -21,7 +21,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -30,6 +29,7 @@ import pokemon.Attack;
 import pokemon.Bulbasaur;
 import pokemon.Charmander;
 import pokemon.Pikachu;
+import pokemon.PokeType;
 import pokemon.Pokemon;
 import pokemon.Squirtle;
 
@@ -44,14 +44,12 @@ public class BattleGUI extends Application {
 
 	//Declare JavaFX nodes
 	private BorderPane window;
-	private HBox pokeSelectBox;
-	private VBox selectButtonBox;
-	private Button pokeSelectButton;
-	private Label selectLabel;
-	private GridPane attackPane;
+	private VBox pokeSelectBox;
+	private HBox pokeSwitchBox;
+	private HBox selectButtonBox;
 	
 	//Observable Lists
-	private OwnedPokeTable ownedPokeTable;
+	private PokeTable pokeTable;
 	private ListView<String> selectedPokeListView;
 	private ObservableList<String> selectedPokemonList;
 
@@ -79,7 +77,6 @@ public class BattleGUI extends Application {
 		initializeTrainersAndBattle();
 		
 		//Trainers select pokemon
-		initializeGUINodes();
 //		setupPokeSelectionMenu(battle.getActiveTrainer());
 		
 		//Add battle view observer
@@ -120,11 +117,12 @@ public class BattleGUI extends Application {
 		
 	}
 	
-	private void initializeGUINodes() {
-		
-		selectButtonBox = new VBox();
-		pokeSelectBox = new HBox();
-		
+	/**
+	 * Sets the main game stage.
+	 * @param mainStage the main game stage
+	 */
+	public void setMainStage(Stage mainStage) {
+		this.mainStage = mainStage;
 	}
 
 	private void initializeTrainersAndBattle() {
@@ -154,114 +152,147 @@ public class BattleGUI extends Application {
 	 * Changes from selection view to battle view.
 	 */
 	private void setViewToBattle() {
-	    
-		removePokeSelectionMenu();
-	    
-	    window.setCenter((Node) battleView);
-	    
-//	    setupAttackPane();
-	  }
-	
-	private void setupAttackPane() {
-		
-		//Initializing Attack Label
-		Label attackLabel = new Label(battle.getAttackTrainer() + ". Your Turn.");
-		attackLabel.setStyle("-fx-font-size: 14pt");
-		
-		//Initializing attack buttons
-		Button attack1 = new Button("Attack 1");
-		Button attack2 = new Button("Attack 2");
-		Button attack3 = new Button("Attack 3");
-		Button attack4 = new Button("Attack 4");
-		
-		//Adding button to grid pane
-		attackPane = new GridPane();
-		attackPane.add(attackLabel, 0, 0);
-		attackPane.add(attack1, 2, 0);
-		attackPane.add(attack2, 3, 0);
-		attackPane.add(attack3, 4, 0);
-		attackPane.add(attack4, 5, 0);
-		
-		//formating grid pane
-		attackPane.setHgap(10.0);
-		
-		window.setTop(attackPane);
+		window.setCenter((Node) battleView);
 	}
 	
-	private void updateAttackPane(Trainer trainer) {
-		
-		int i = 0;
-		
-		for (Node node : attackPane.getChildren()) {
-			
-			if (node instanceof Button) {
-				((Button) node).setText(trainer.getActiveBattlePokemon().getAttackList().get(i).getName());
-				i++;
-			}
-			
-			else {
-				((Label) node).setText(trainer.getName() + ". Your Turn.");
-			}
-		}
-	}
-	
+	/**
+	 * Displayed at start of battle.
+	 * Menu for selecting 3 pokemon to fight.
+	 * @param trainer The trainer to display menu for.
+	 */
 	private void setupPokeSelectionMenu(Trainer trainer) {
 		
-		selectLabel = new Label(trainer.getName() + " select your battle pokemon");
-		selectLabel.setStyle("-fx-font-size: 18pt");
+		selectButtonBox = new HBox();
+		pokeSelectBox = new VBox();
 		
-		setupOwnedPokeTable(trainer);
+		Label selectLabel = new Label(trainer.getName() + " select your battle pokemon");
+		selectLabel.setStyle("-fx-font-size: 14pt; -fx-text-fill: brown");
+		
+//		Label chooseLabel = new Label("Available Pokemon");
+//		chooseLabel.setStyle("-fx-font-size: 14pt");
+//		
+//		Label chosenLabel = new Label("Chosen Pokemon");
+//		chosenLabel.setStyle("-fx-font-size: 14pt");
+		
+		setupPokeTable(trainer.getOwnedPokemonList());
 		setupSelectedPokeList(trainer);
 		
 		//Set up Selection Button
-		pokeSelectButton = new Button(">");
+		Button pokeSelectButton = new Button(">>");
 		selectButtonBox.getChildren().add(pokeSelectButton);
-		selectButtonBox.setSpacing(15);
+		selectButtonBox.setSpacing(30);
 		
 		//Register button handler
 		pokeSelectButton.setOnAction(new SelectButtonListener(trainer));
 		
-		// Add lists and button to selection box
-		pokeSelectBox.getChildren().add(ownedPokeTable);
+		//Set width of pokeSelectBox
+		pokeSelectBox.setMaxWidth(570);
+		
+		//Add lists and button to selection box
+		pokeSelectBox.getChildren().add(pokeTable);
 		pokeSelectBox.getChildren().add(selectButtonBox);
 		pokeSelectBox.getChildren().add(selectedPokeListView);
 		pokeSelectBox.setSpacing(30);
-		pokeSelectBox.setPadding(new Insets(40, 0, 0, 0));
 
-		// Add Box to bottom of borderPane
-		window.setTop(selectLabel);
-		window.setBottom(pokeSelectBox);
-		BorderPane.setMargin(pokeSelectBox, new Insets(0, 0, 0, 100));
-		BorderPane.setMargin(selectLabel, new Insets(30, 0, 0, 100));
+		//Add labels
+		selectButtonBox.getChildren().add(selectLabel);
+		
+		// Add Box to center of borderPane
+		window.setCenter(pokeSelectBox);
+		BorderPane.setMargin(pokeSelectBox, new Insets(40, 40, 40, 40));
 	}
 	
 	/**
 	 * Removes pokemon selection menu
 	 */
 	private void removePokeSelectionMenu() {
-	    window.setBottom(null);
-	    window.setTop(null);
+	    window.setCenter(null);
 	    pokeSelectBox.getChildren().clear();
 	    selectButtonBox.getChildren().clear();
 	}
 	
-	private void setupOwnedPokeTable(Trainer trainer) {
+	private void setupPokeTable(List<Pokemon> pokeList) {
 		
 		//Set up list view to select pokemon
-		ObservableList<Pokemon> ownedPokemonList = FXCollections.observableArrayList(trainer.getOwnedPokemonList());
-		ownedPokeTable = new OwnedPokeTable();
-		ownedPokeTable.setItems(ownedPokemonList);
+		ObservableList<Pokemon> obsPokeList = FXCollections.observableArrayList(pokeList);
+		pokeTable = new PokeTable();
+		pokeTable.setItems(obsPokeList);
 
 	}
 	
-	private class OwnedPokeTable extends TableView<Pokemon> {
+	/**
+	 * Allows user to switch pokemon during battle
+	 * @param trainer The trainer activating the switch
+	 */
+	private void setupPokeSwitchMenu(Trainer trainer) {
 		
-		public OwnedPokeTable() {
+		pokeSwitchBox = new HBox();
+		
+		Label switchLabel = new Label(trainer.getName() + ", Choose your new pokemon");
+		switchLabel.setStyle("-fx-font-size: 14pt; -fx-text-fill: brown");
+		
+		setupPokeTable(trainer.getBattlePokemonList());
+		
+		//Set up Switch Button
+		Button switchButton = new Button(">>");
+		switchButton.setStyle("-fx-font-size: 18pt;");
+		
+		//Register button handler
+		switchButton.setOnAction(new SwitchButtonListener(trainer));
+		
+		//Set width of pokeTable
+		VBox tableBox = new VBox();
+		tableBox.getChildren().add(pokeTable);
+		tableBox.setMaxWidth(570);
+		
+		//Add lists and button to switch box
+		pokeSwitchBox.getChildren().add(tableBox);
+		pokeSwitchBox.getChildren().add(switchButton);
+		pokeSwitchBox.setSpacing(30);
+		
+		// Add Box to center of borderPane
+		window.setCenter(pokeSwitchBox);
+		BorderPane.setMargin(pokeSwitchBox, new Insets(40, 40, 40, 40));
+	}
+	
+	private void removePokeSwitchMenu() {
+		
+		window.setCenter(null);
+		pokeSwitchBox.getChildren().clear();
+	}
+	
+	private class PokeTable extends TableView<Pokemon> {
+		
+		public PokeTable() {
+			//set-up columns
 			TableColumn<Pokemon, String> nameColumn = new TableColumn<>("Pokemon");
-			nameColumn.setMaxWidth(250);
-			nameColumn.setMinWidth(250);
+			TableColumn<Pokemon, PokeType> typeColumn = new TableColumn<>("Type");
+			TableColumn<Pokemon, Integer> currHPColumn = new TableColumn<>("currHP");
+			TableColumn<Pokemon, Integer> maxHPColumn = new TableColumn<>("maxHP");
+			TableColumn<Pokemon, Integer> attackColumn = new TableColumn<>("attack");
+			TableColumn<Pokemon, Integer> defenseColumn = new TableColumn<>("defense");
+			TableColumn<Pokemon, Integer> specialColumn = new TableColumn<>("special");
+			TableColumn<Pokemon, Integer> speedColumn = new TableColumn<>("speed");
+			
+			//Get column values
 			nameColumn.setCellValueFactory(new PropertyValueFactory<Pokemon, String>("name"));
-			this.getColumns().add(nameColumn);
+			typeColumn.setCellValueFactory(new PropertyValueFactory<Pokemon, PokeType>("primaryType"));
+			currHPColumn.setCellValueFactory(new PropertyValueFactory<Pokemon, Integer>("currHP"));
+			maxHPColumn.setCellValueFactory(new PropertyValueFactory<Pokemon, Integer>("maxHP"));
+			attackColumn.setCellValueFactory(new PropertyValueFactory<Pokemon, Integer>("attack"));
+			defenseColumn.setCellValueFactory(new PropertyValueFactory<Pokemon, Integer>("defense"));
+			specialColumn.setCellValueFactory(new PropertyValueFactory<Pokemon, Integer>("special"));
+			speedColumn.setCellValueFactory(new PropertyValueFactory<Pokemon, Integer>("speed"));
+			
+			//Add columns to table
+			this.getColumns().add(nameColumn); 
+			this.getColumns().add(typeColumn); 
+			this.getColumns().add(currHPColumn); 
+			this.getColumns().add(maxHPColumn); 
+			this.getColumns().add(attackColumn); 
+			this.getColumns().add(defenseColumn); 
+			this.getColumns().add(specialColumn);
+			this.getColumns().add(speedColumn);
 		}
 	}
 	
@@ -276,43 +307,6 @@ public class BattleGUI extends Application {
 			selectedPokemonList.add(poke.getName());
 		}
 		selectedPokeListView.setItems(selectedPokemonList);
-	}
-
-	private class SelectButtonListener implements EventHandler<ActionEvent> {
-
-		private Pokemon chosenPoke;
-		private List<Pokemon> battleList;
-		
-		public SelectButtonListener(Trainer trainer) {
-			battleList = trainer.getBattlePokemonList();
-		}
-
-		@Override
-		public void handle(ActionEvent event) {
-
-				chosenPoke = ownedPokeTable.getSelectionModel().getSelectedItem();
-	
-				if (!battleList.contains(chosenPoke)) {
-					chosenPoke.getBattleAnimation().setBattleView((BattleView) battleView); //Set battleView for pokemon
-					battleList.add(chosenPoke);
-					selectedPokemonList.add(chosenPoke.getName());
-				}
-				
-				else {
-					String message = chosenPoke.getName() + " is already chosen. Pick another one.";
-					newAlertMessage("Error", message);
-				}
-				
-				if (checkReadyForBattle()) {
-					setViewToBattle();
-					runBattle();
-				}
-				
-				else if (battleList.size() == 3) {
-					removePokeSelectionMenu();
-					setupPokeSelectionMenu(battle.getOppTrainer()); //Setup menu for next trainer
-				}
-		}
 	}
 	
 	private boolean checkReadyForBattle() {
@@ -331,16 +325,15 @@ public class BattleGUI extends Application {
 		
 		window.setCenter(null);
 		window.setTop(null);
-//		attackPane.getChildren().clear();
 		
 		Trainer winner = battle.getAttackTrainer();
 		
 		Label gameOver = new Label(winner.getName() + " is the winner !!");
 		window.setCenter(gameOver);
 		
-		battleStage.hide();
-		mainStage.show();
-		
+		//Switch back to main game
+//		battleStage.hide();
+//		mainStage.show();
 	}
 	
 	/**
@@ -367,9 +360,6 @@ public class BattleGUI extends Application {
 		battle.initializeActiveBattlePokemon();
 		
 		registerMainSelectHandler();
-		
-//		updateAttackPane(battle.getAttackTrainer());
-//		registerAttackButtonHandlers();
 
 //		boolean isPokemonDrained = false;
 //		while (!battle.isBattleOver()) {
@@ -377,22 +367,62 @@ public class BattleGUI extends Application {
 //			if (isPokemonDrained) {
 //				battle.setActiveTrainer(battle.determineWhoStarts());
 //			}
-//
 		}
+	
+	/**
+	 * Restart battle after new pokemon is entered.
+	 * Either because of a user-triggered switch or when a pokemon faints.
+	 */
+	private void restartBattle(Pokemon activePoke) {
+		
+		if (battle.getCurrState() == BattleState.SWITCHING) {
+			switchTrainerControl();
+			battle.setCurrState(BattleState.IDLE);
+			battleView.update(battle, null);
+		}
+		
+		else if (battle.getCurrState() == BattleState.FAINTED) {
+			
+			// Determines who starts based on speed
+			battle.setAttackTrainer(battle.determineWhoStarts());
+			battle.setDefendTrainer((battle.getAttackTrainer()== battle.getActiveTrainer()) ? battle.getOppTrainer() : battle.getActiveTrainer());
+			
+			battle.setCurrState(BattleState.IDLE);
+			battleView.update(battle, null);
+		}
+		
+	}
 	
 	private void runAttack(Attack chosenAttack, Pokemon attackPoke, Pokemon defendPoke) {
 		
-		battle.setCurrState('g');
+		battle.setCurrState(BattleState.ATTACKING);
 		
 		battle.applyAttack(chosenAttack, attackPoke, defendPoke);
 		
-		//Check if a pokemon has fainted
-		if (battle.isBattleOver()) switchToGameOverMenu();
-		else {
-			Trainer temp = battle.getAttackTrainer();
-			battle.setAttackTrainer(battle.getDefendTrainer());
-			battle.setDefendTrainer(temp);
+		if (battle.isBattleOver()) { //Check if battle is over has fainted
+			battle.setCurrState(BattleState.END);
+			switchToGameOverMenu();
 		}
+		
+		//Check if a pokemon has fainted
+		else if (battle.isPokemonDrained(attackPoke) || battle.isPokemonDrained(defendPoke)) {
+			battle.setCurrState(BattleState.FAINTED);
+			((BattleView)battleView).update(battle, null);
+		}
+		
+		else {
+			switchTrainerControl();
+			battle.setCurrState(BattleState.IDLE);
+		}
+	}
+	
+	/**
+	 * Switches control from one trainer to the other.
+	 */
+	private void switchTrainerControl() {
+		Trainer temp = battle.getAttackTrainer();
+		battle.setAttackTrainer(battle.getDefendTrainer());
+		battle.setDefendTrainer(temp);
 	}
 
 //		System.out.println("\nBattle is over.");
@@ -403,15 +433,6 @@ public class BattleGUI extends Application {
 //			System.out.println(trainer1.getName() + " has defeated " + trainer2.getName());
 //		}
 //	}
-	
-	private void registerAttackButtonHandlers() {
-		
-		for (Node node : attackPane.getChildren()) {	
-			if (node instanceof Button) {
-				((Button) node).setOnAction(new AttackButtonListener());
-			}
-		}
-	}
 	
 	private void registerMainSelectHandler() {
 		
@@ -425,15 +446,24 @@ public class BattleGUI extends Application {
 //			System.out.println();
 //			System.out.println("Y:" + y);
 			
-			if (battle.getCurrState() == 'c') {
-				//Fight is chosen
+			
+			//IDLE: can select from the four main options.
+			if (battle.getCurrState() == BattleState.IDLE) {
+				//Fight is chosen. Switch to choose attack menu
 				if (x >= 484 && x<= 581 && y>= 585 && y<= 620) {
 					((BattleView) battleView).drawAttackMenu(0);
-					battle.setCurrState('a');
+					battle.setCurrState(BattleState.CHOOSE_ATTACK);
+				}
+				
+				//Pokemon is chosen. Switch to choose pokemon menu 
+				else if (x >= 484 && x<= 619 && y>= 634 && y<= 668) {
+					battle.setCurrState(BattleState.SWITCHING);
+					setupPokeSwitchMenu(battle.getAttackTrainer());
 				}
 			}
 			
-			else if (battle.getCurrState() == 'a') {
+			//CHOOSE_ATTACK: can select from one of four attacks
+			else if (battle.getCurrState() == BattleState.CHOOSE_ATTACK) {
 				//Attack1 is chosen
 				if (x >= 43 && x<= 243 && y>= 585 && y<= 615) {
 					Pokemon attackPoke = battle.getAttackTrainer().getActiveBattlePokemon();
@@ -463,6 +493,17 @@ public class BattleGUI extends Application {
 					runAttack(currAttack, attackPoke, defendPoke);
 				}
 			}
+			
+			/**
+			 * FAINTED: can only select pokemon option to switch to a new pokemon.
+			 */
+			else if (battle.getCurrState() == BattleState.FAINTED) {
+				//Pokemon is chosen. Switch to choose pokemon menu
+				if (x >= 484 && x<= 619 && y>= 634 && y<= 668) {
+					setupPokeSwitchMenu(battle.getAttackTrainer());
+				}
+			}
+			
 		});
 		
 		//Mouse move handler
@@ -471,7 +512,7 @@ public class BattleGUI extends Application {
 			double x = event.getSceneX();
 			double y = event.getSceneY();
 			
-			if (battle.getCurrState() == 'c') {	//User chooses action.
+			if (battle.getCurrState() == BattleState.IDLE || battle.getCurrState() == BattleState.FAINTED) {	//User chooses action.
 			
 				//Fight is highlighted
 				if (x >= 484 && x<= 581 && y>= 585 && y<= 620) {
@@ -491,7 +532,7 @@ public class BattleGUI extends Application {
 				}
 			}
 			
-			else if (battle.getCurrState() == 'a') {
+			else if (battle.getCurrState() == BattleState.CHOOSE_ATTACK) {
 				
 				//Attack1 is highlighted
 				if (x >= 43 && x<= 243 && y>= 585 && y<= 615) {
@@ -513,49 +554,80 @@ public class BattleGUI extends Application {
 		});
 	}
 	
-	private class AttackButtonListener implements EventHandler<ActionEvent> {
+	private class SelectButtonListener implements EventHandler<ActionEvent> {
+
+		private Pokemon chosenPoke;
+		private List<Pokemon> battleList;
 		
-		private Label label;
-		private Trainer attackTrainer;
-		private Trainer defendTrainer;
-		
-		public AttackButtonListener() {
-			label = (Label) attackPane.getChildren().get(0);
+		public SelectButtonListener(Trainer trainer) {
+			battleList = trainer.getBattlePokemonList();
 		}
 
 		@Override
 		public void handle(ActionEvent event) {
-			
-			//Get Text from clicked button
-			String buttonText = ((Button) event.getSource()).getText();
-			
-			//Identify current active trainer
-			attackTrainer = battle.getAttackTrainer();
-			defendTrainer = battle.getDefendTrainer(); 
-			
-			Attack chosenAttack = null;
-			
-			for (Attack attack : attackTrainer.getActiveBattlePokemon().getAttackList()) {
-				if (buttonText.equals(attack.getName())) {
-					chosenAttack = attack;
-					break;
+
+				chosenPoke = pokeTable.getSelectionModel().getSelectedItem();
+				
+				if (chosenPoke == null) return;
+	
+				if (!battleList.contains(chosenPoke)) {
+					chosenPoke.getBattleAnimation().setBattleView((BattleView) battleView); //Set battleView for pokemon
+					battleList.add(chosenPoke);
+					selectedPokemonList.add(chosenPoke.getName());
 				}
-			}
-			
-			battle.applyAttack(chosenAttack, attackTrainer.getActiveBattlePokemon(), defendTrainer.getActiveBattlePokemon());
-			label.setText(attackTrainer.getActiveBattlePokemon().getName() + " used " + chosenAttack.getName());
-			if (battle.isBattleOver()) switchToGameOverMenu();
-			else {
-				Trainer temp = battle.getAttackTrainer();
-				battle.setAttackTrainer(battle.getDefendTrainer());
-				battle.setDefendTrainer(temp);
-				updateAttackPane(battle.getAttackTrainer());
-			}
+				
+				else {
+					String message = chosenPoke.getName() + " is already chosen. Pick another one.";
+					newAlertMessage("Error", message);
+				}
+				
+				if (checkReadyForBattle()) {
+					removePokeSelectionMenu();
+					setViewToBattle();
+					runBattle();
+				}
+				
+				else if (battleList.size() == 3) {
+					removePokeSelectionMenu();
+					setupPokeSelectionMenu(battle.getOppTrainer()); //Setup menu for next trainer
+				}
 		}
 	}
 	
-	
-	public void setMainStage(Stage main) {
-		this.mainStage = main;
+	private class SwitchButtonListener implements EventHandler<ActionEvent> {
+
+		private Trainer currTrainer;
+		
+		public SwitchButtonListener(Trainer trainer) {
+			this.currTrainer = trainer; 
+		}
+		
+		@Override
+		public void handle(ActionEvent event) {
+			
+			Pokemon chosenPoke = pokeTable.getSelectionModel().getSelectedItem();
+			
+			if (chosenPoke == null) return;
+			
+				if (chosenPoke.getCurrHP() <= 0) {
+					String message = chosenPoke.getName() + " is completely drained. Choose another pokemon.";
+					newAlertMessage("Error", message);
+				}
+				
+				else if (chosenPoke == currTrainer.getActiveBattlePokemon()) {
+					String message = chosenPoke.getName() + " is currently active. Choose another pokemon.";
+					newAlertMessage("Error", message);
+				}
+				
+				else {
+					((BattleView) battleView).stopAllActiveTimelines(); //Stop any pokemon animations running before switch
+					currTrainer.setActiveBattlePokemon(chosenPoke);
+					removePokeSwitchMenu();
+					setViewToBattle();
+					restartBattle(chosenPoke);
+				}
+			
+		}
 	}
+	
 }
