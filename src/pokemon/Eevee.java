@@ -54,6 +54,9 @@ public class Eevee extends Pokemon {
 				{0,0,70,55,75,430,137,110, 72, 29},				 //Back Standby
 		};
 		
+		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
+		this.setBattleAnimation(pba);
+		
 	}
 	@Override
 	public String getStandByPath() {

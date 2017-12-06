@@ -56,6 +56,8 @@ public class Bulbasaur extends Pokemon {
 				{0,0,52,52,50,390,150,150, 52, 45},				 //Back Standby
 		};
 
+		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
+		this.setBattleAnimation(pba);
 		
 	}
 	@Override
