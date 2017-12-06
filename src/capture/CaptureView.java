@@ -28,7 +28,7 @@ public class CaptureView extends Canvas implements Observer {
 	private GraphicsContext gc;
 	private Image battleGround;
 	private BorderPane window;
-	Button throwBallButton,throwUltraBallButton,throwMasterBallButton;
+	Button throwBallButton,throwUltraBallButton,throwMasterBallButton,easyCatchButton,easyStayButton;
 	 Button throwBaitButton;
 	 Button throwRockButton;
 	 Button runButton;
@@ -158,6 +158,13 @@ public class CaptureView extends Canvas implements Observer {
 	    		captureAnimation.animateItemThrow(new Rock());
 	    		capture.throwRock();
 	    }
+	    	if(event.getSource()==easyCatchButton) {
+	    		capture.useEasyCatch();
+	    	}
+	    	if(event.getSource()==easyStayButton) {
+	    		capture.useEasyStay();
+	    	}
+	    	
 	    	if(event.getSource()==runButton) {
 	    		System.exit(0);
 	    }
@@ -226,6 +233,8 @@ public class CaptureView extends Canvas implements Observer {
 		 throwBallButton = new Button("Throw SafariBall");
 		 throwUltraBallButton = new Button("Throw UltraBall");
 		 throwMasterBallButton = new Button("Throw MasterBall");
+		 easyCatchButton = new Button("Use Easy Catch");
+		 easyStayButton = new Button("Use Easy Stay");
 		 throwBaitButton = new Button("Throw Bait");
 		 throwRockButton = new Button("Throw Rock");
 		 runButton = new Button("Run Away");
@@ -234,7 +243,9 @@ public class CaptureView extends Canvas implements Observer {
 		 captureButtons.add(throwRockButton, 2, 0);
 		 captureButtons.add(throwUltraBallButton, 3, 0);
 		 captureButtons.add(throwMasterBallButton, 4, 0);
-		 captureButtons.add(runButton, 5, 0);
+		 captureButtons.add(easyCatchButton, 5, 0);
+		 captureButtons.add(easyStayButton, 6, 0);
+		 captureButtons.add(runButton, 7, 0);
 		 captureButtons.setAlignment(Pos.CENTER);
 		 window.setTop(captureButtons);
 		 BorderPane.setAlignment(captureButtons, Pos.BOTTOM_CENTER);
@@ -243,6 +254,8 @@ public class CaptureView extends Canvas implements Observer {
 		 throwRockButton.setOnAction(new CaptureButtonListener());
 		 throwUltraBallButton.setOnAction(new CaptureButtonListener());
 		 throwMasterBallButton.setOnAction(new CaptureButtonListener());
+		 easyCatchButton.setOnAction(new CaptureButtonListener());
+		 easyStayButton.setOnAction(new CaptureButtonListener());
 		 runButton.setOnAction(new CaptureButtonListener());
 	 }
 	
