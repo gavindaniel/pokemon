@@ -47,8 +47,8 @@ public class Electrode extends Pokemon {
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 															 //Rows		
 		int[][] coordinates = {{2, 0,70,58,550,255,90,80, 72, 45}, //standBy
-				{2, 0,70,58,550,255,90,80, 80, 46},				 //First Attack
-				{2, 0,70,58,550,255,90,80, 80, 46},				 //Second Attack
+				{2, 0,70,58,550,255,90,80, 72, 46},				 //First Attack
+				{2, 0,70,58,550,255,90,80, 72, 46},				 //Second Attack
 				{2, 0,70,58,550,255,90,80, 72, 46},				 //Third Attack
 				{2, 0,70,58,550,255,90,80, 72, 45},				 //Fourth Attack
 				{2,0,70,58,110,430,120,100, 73, 45},				 //Back Standby

@@ -16,19 +16,20 @@ public class SoundClip {
 	Media hit;
 	String filepath;
 	MediaPlayer mediaPlayer;
-   // Constructor
-   public SoundClip(String filepath) throws UnsupportedAudioFileException {
-     filepath=filepath;
-      hit = new Media(new File(filepath).toURI().toString());
-	  mediaPlayer = new MediaPlayer(hit);
-	  mediaPlayer.play();
-   }
-   
-   public void setSound(String filepath) {
-	   filepath=filepath;
-   }
-   
-   public MediaPlayer getMedia() {
-	   return mediaPlayer;
-   }
+
+	// Constructor
+	public SoundClip(String filepath) throws UnsupportedAudioFileException {
+		this.filepath = filepath;
+		hit = new Media(new File(filepath).toURI().toString());
+		mediaPlayer = new MediaPlayer(hit);
+		mediaPlayer.play();
+	}
+
+	public void setSound(String filepath) {
+		this.filepath = filepath;
+	}
+
+	public MediaPlayer getMediaPlayer() {
+		return mediaPlayer;
+	}
 }

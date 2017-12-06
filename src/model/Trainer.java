@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import controller.Settings;
+import items.EasyCatch;
+import items.EasyStay;
 import items.Item;
 import items.MasterBall;
 import pokemon.Pikachu;
@@ -47,6 +49,12 @@ public class Trainer implements Serializable{
 		for(int i=0;i<30;i++) {
 			itemList.add(new SafariBall());
 		}
+		for(int i=0;i<3;i++) {
+			itemList.add(new UltraBall());
+			itemList.add(new EasyCatch());
+			itemList.add(new EasyStay());
+		}
+		
 	}
 	/**
 	 * @return the name
