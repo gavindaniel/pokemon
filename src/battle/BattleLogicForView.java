@@ -101,12 +101,12 @@ public class BattleLogicForView extends Observable {
 	}
 
 	/**
-	 * @param currState the currState to set
+	 * @param currState the current state of battle
 	 */
 	public void setCurrState(BattleState currState) {
 		this.currState = currState;
 	}
-
+	
 	/**
 	 * Top level function to handle battle sequence.
 	 */
@@ -337,9 +337,8 @@ public class BattleLogicForView extends Observable {
 	 *         otherwise.
 	 */
 	public boolean isBattleOver() {
-//		return areAllPokemonDrained(trainer1.getBattlePokemonList())
-//				|| areAllPokemonDrained(trainer2.getBattlePokemonList());
-		return isPokemonDrained(activeTrainer.getActiveBattlePokemon()) || isPokemonDrained(oppTrainer.getActiveBattlePokemon());
+		return areAllPokemonDrained(activeTrainer.getBattlePokemonList())
+				|| areAllPokemonDrained(oppTrainer.getBattlePokemonList());
 	}
 
 	/**

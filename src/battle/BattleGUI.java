@@ -21,7 +21,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -368,8 +367,31 @@ public class BattleGUI extends Application {
 //			if (isPokemonDrained) {
 //				battle.setActiveTrainer(battle.determineWhoStarts());
 //			}
-//
 		}
+	
+	/**
+	 * Restart battle after new pokemon is entered.
+	 * Either because of a user-triggered switch or when a pokemon faints.
+	 */
+	private void restartBattle(Pokemon activePoke) {
+		
+		if (battle.getCurrState() == BattleState.SWITCHING) {
+			switchTrainerControl();
+			battle.setCurrState(BattleState.IDLE);
+			battleView.update(battle, null);
+		}
+		
+		else if (battle.getCurrState() == BattleState.FAINTED) {
+			
+			// Determines who starts based on speed
+			battle.setAttackTrainer(battle.determineWhoStarts());
+			battle.setDefendTrainer((battle.getAttackTrainer()== battle.getActiveTrainer()) ? battle.getOppTrainer() : battle.getActiveTrainer());
+			
+			battle.setCurrState(BattleState.IDLE);
+			battleView.update(battle, null);
+		}
+		
+	}
 	
 	private void runAttack(Attack chosenAttack, Pokemon attackPoke, Pokemon defendPoke) {
 		
@@ -377,13 +399,29 @@ public class BattleGUI extends Application {
 		
 		battle.applyAttack(chosenAttack, attackPoke, defendPoke);
 		
-		//Check if a pokemon has fainted
-		if (battle.isBattleOver()) switchToGameOverMenu();
-		else {
-			Trainer temp = battle.getAttackTrainer();
-			battle.setAttackTrainer(battle.getDefendTrainer());
-			battle.setDefendTrainer(temp);
+		if (battle.isBattleOver()) { //Check if battle is over has fainted
+			battle.setCurrState(BattleState.END);
+			switchToGameOverMenu();
 		}
+		
+		//Check if a pokemon has fainted
+		else if (battle.isPokemonDrained(attackPoke) || battle.isPokemonDrained(defendPoke)) {
+			battle.setCurrState(BattleState.FAINTED);
+			((BattleView)battleView).update(battle, null);
+		}
+		
+		else {
+			switchTrainerControl();
+		}
+	}
+	
+	/**
+	 * Switches control from one trainer to the other.
+	 */
+	private void switchTrainerControl() {
+		Trainer temp = battle.getAttackTrainer();
+		battle.setAttackTrainer(battle.getDefendTrainer());
+		battle.setDefendTrainer(temp);
 	}
 
 //		System.out.println("\nBattle is over.");
@@ -407,6 +445,8 @@ public class BattleGUI extends Application {
 //			System.out.println();
 //			System.out.println("Y:" + y);
 			
+			
+			//IDLE: can select from the four main options.
 			if (battle.getCurrState() == BattleState.IDLE) {
 				//Fight is chosen. Switch to choose attack menu
 				if (x >= 484 && x<= 581 && y>= 585 && y<= 620) {
@@ -416,11 +456,12 @@ public class BattleGUI extends Application {
 				
 				//Pokemon is chosen. Switch to choose pokemon menu 
 				else if (x >= 484 && x<= 619 && y>= 634 && y<= 668) {
-					battle.setCurrState(BattleState.CHOOSE_POKE);
+					battle.setCurrState(BattleState.SWITCHING);
 					setupPokeSwitchMenu(battle.getAttackTrainer());
 				}
 			}
 			
+			//CHOOSE_ATTACK: can select from one of four attacks
 			else if (battle.getCurrState() == BattleState.CHOOSE_ATTACK) {
 				//Attack1 is chosen
 				if (x >= 43 && x<= 243 && y>= 585 && y<= 615) {
@@ -451,6 +492,17 @@ public class BattleGUI extends Application {
 					runAttack(currAttack, attackPoke, defendPoke);
 				}
 			}
+			
+			/**
+			 * FAINTED: can only select pokemon option to switch to a new pokemon.
+			 */
+			else if (battle.getCurrState() == BattleState.FAINTED) {
+				//Pokemon is chosen. Switch to choose pokemon menu
+				if (x >= 484 && x<= 619 && y>= 634 && y<= 668) {
+					setupPokeSwitchMenu(battle.getAttackTrainer());
+				}
+			}
+			
 		});
 		
 		//Mouse move handler
@@ -459,7 +511,7 @@ public class BattleGUI extends Application {
 			double x = event.getSceneX();
 			double y = event.getSceneY();
 			
-			if (battle.getCurrState() == BattleState.IDLE) {	//User chooses action.
+			if (battle.getCurrState() == BattleState.IDLE || battle.getCurrState() == BattleState.FAINTED) {	//User chooses action.
 			
 				//Fight is highlighted
 				if (x >= 484 && x<= 581 && y>= 585 && y<= 620) {
@@ -567,11 +619,11 @@ public class BattleGUI extends Application {
 				}
 				
 				else {
+					((BattleView) battleView).stopAllActiveTimelines(); //Stop any pokemon animations running before switch
 					currTrainer.setActiveBattlePokemon(chosenPoke);
-					battle.setCurrState(BattleState.SWITCHED);
 					removePokeSwitchMenu();
 					setViewToBattle();
-					//Restart Battle
+					restartBattle(chosenPoke);
 				}
 			
 		}

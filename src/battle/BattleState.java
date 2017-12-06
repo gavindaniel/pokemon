@@ -9,7 +9,8 @@ public enum BattleState {
 
 	IDLE,
 	CHOOSE_ATTACK,
-	CHOOSE_POKE,
 	ATTACKING,
-	SWITCHED
+	SWITCHING,
+	FAINTED,
+	END
 }

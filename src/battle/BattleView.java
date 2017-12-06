@@ -218,6 +218,9 @@ public class BattleView extends Canvas implements Observer {
 		if(line2 == null) cycleCnt = line1.length();
 		else cycleCnt = line1.length() + line2.length();
 		
+		//CLear text bar
+		gc.drawImage(battleMenus, 16, 110, 240/2, 48, 0, this.getHeight() - 48*3, this.getWidth()/2, 48*3);
+		
 		infoTextTimeline = new Timeline(new KeyFrame(Duration.millis(50), new AnimateBattleText(this.getWidth(), line1, line2)));
 		infoTextTimeline.setCycleCount(cycleCnt);
 		infoTextTimeline.playFromStart();
@@ -311,7 +314,7 @@ public class BattleView extends Canvas implements Observer {
 		defendPoke.getBattleAnimation().getBackStandby().play();
 	}
 	
-	private void stopAllActiveTimelines() {
+	public void stopAllActiveTimelines() {
 		
 		Pokemon userPoke = battle.getActiveTrainer().getActiveBattlePokemon(); //User controlled Pokemon
 		Pokemon oppPoke = battle.getOppTrainer().getActiveBattlePokemon(); //Opposing Pokemon
