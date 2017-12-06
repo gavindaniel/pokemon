@@ -1,7 +1,6 @@
 package pokemon;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,7 +13,7 @@ public class Charmander extends Pokemon {
 	String standByPath,runAwayPath,capturePath;
 	public Charmander() {
 		super("Charmander", PokeType.FIRE, null, OccurrenceRate.COMMON);
-		initializeStats(250, 171, 151, 167, 219);
+		initializeStats(150, 100, 90, 110, 120);
 		initializeAttacks();
 		initializeBattleAnimations();
 		this.standByPath="file:images/battle/Charmander/charmander-standby.png";
@@ -78,13 +77,4 @@ public class Charmander extends Pokemon {
 
 	}
 	
-	@Override
-	public int[][] getCoordinates() {
-		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
-		 //Rows
-		int[][] coordinates = {{0,0,47,60,555,235,100,100, 48, 33}, //standBy
-		{0,10,60,70,545,250,100,100, 59, 59},				 //Escape
-		};
-		return coordinates;
-	}
 }

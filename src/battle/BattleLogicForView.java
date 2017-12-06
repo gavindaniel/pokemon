@@ -22,6 +22,7 @@ public class BattleLogicForView extends Observable {
 	private double[][] effectLookupTable; // Lookup table with values determining elemental attack effectiveness
 	
 	private BattleState currState;
+	private boolean itemApplied;
 
 	public BattleLogicForView(Trainer actTrainer, Trainer oppTrainer) {
 
@@ -31,6 +32,7 @@ public class BattleLogicForView extends Observable {
 		this.defendTrainer = null;
 		
 		this.setCurrState(BattleState.IDLE);
+		this.itemApplied = false;
 
 		generateEffectLookupTable();
 	}
@@ -106,38 +108,20 @@ public class BattleLogicForView extends Observable {
 	public void setCurrState(BattleState currState) {
 		this.currState = currState;
 	}
-	
+
 	/**
-	 * Top level function to handle battle sequence.
+	 * @return the itemApplied
 	 */
-//	public void runBattle() {
-//		
-//		initializeActiveBattlePokemon();
-//
-//		activeTrainer = determineWhoStarts();
-//
-//		boolean isPokemonDrained = false;
-//
-//		while (!isBattleOver()) {
-//
-//			if (isPokemonDrained) {
-//				activeTrainer = determineWhoStarts();
-//			}
-//
-//			if (activeTrainer == trainer1)
-//				isPokemonDrained = playRound(trainer1, trainer2);
-//			else
-//				isPokemonDrained = playRound(trainer2, trainer1);
-//		}
-//
-//		System.out.println("\nBattle is over.");
-//
-//		if (areAllPokemonDrained(trainer1.getBattlePokemonList())) {
-//			System.out.println(trainer2.getName() + " has defeated " + trainer1.getName());
-//		} else {
-//			System.out.println(trainer1.getName() + " has defeated " + trainer2.getName());
-//		}
-//	}
+	public boolean isItemApplied() {
+		return itemApplied;
+	}
+
+	/**
+	 * @param itemApplied the itemApplied to set
+	 */
+	public void setItemApplied(boolean itemApplied) {
+		this.itemApplied = itemApplied;
+	}
 
 	/**
 	 * First pokemon selected by each trainer automatically starts in battle.
@@ -178,43 +162,6 @@ public class BattleLogicForView extends Observable {
 				return oppTrainer;
 		}
 	}
-
-	/**
-	 * Play a round of battle (i.e. each pokemon gets a turn to attack, unless one
-	 * dies in middle of round)
-	 * 
-	 * @param starter
-	 *            Pokemon to go first
-	 * @param finisher
-	 *            Pokemon to go second
-	 * 
-	 * @return true if a pokemon has been depleted during the round, false otherwise
-	 */
-//	private boolean playRound(Trainer starter, Trainer finisher) {
-//		// First Turn
-//		playTurn(starter, finisher);
-//		if (isPokemonDrained(finisher.getActiveBattlePokemon())) {
-//			System.out.println();
-//			System.out.println(finisher.getActiveBattlePokemon().getName() + " has fainted.");
-//			if (isBattleOver())
-//				return true;
-//			switchPokemon(finisher);
-//			return true;
-//		}
-//
-//		// Second Turn
-//		playTurn(finisher, starter);
-//		if (isPokemonDrained(starter.getActiveBattlePokemon())) {
-//			System.out.println();
-//			System.out.println(starter.getActiveBattlePokemon().getName() + " has fainted.");
-//			if (isBattleOver())
-//				return true;
-//			switchPokemon(starter);
-//			return true;
-//		}
-//
-//		return false;
-//	}
 
 	public void printCurrentBattleStatus() {
 
@@ -279,55 +226,6 @@ public class BattleLogicForView extends Observable {
 		double damage = .7 * ((double) attackPokemon.getAttack() / (double) defendPokemon.getDefense())
 				* attack.getDamage() * multiplier;
 		return (int) damage;
-	}
-
-	private void switchPokemon(Trainer trainer) {
-
-		printSwitchMenu(trainer);
-
-		Pokemon chosenPoke = getSwitchChoice(trainer);
-
-		trainer.setActiveBattlePokemon(chosenPoke);
-	}
-
-	private void printSwitchMenu(Trainer trainer) {
-
-		System.out.println(trainer.getName() + ", Select new pokemon to enter battlefield:");
-
-		List<Pokemon> pokeList = trainer.getBattlePokemonList();
-
-		for (int i = 0; i < pokeList.size(); i++) {
-			System.out.println((i) + ": " + pokeList.get(i).getName());
-		}
-	}
-
-	private Pokemon getSwitchChoice(Trainer trainer) {
-
-		List<Pokemon> pokeList = trainer.getBattlePokemonList();
-		Pokemon currPoke = trainer.getActiveBattlePokemon();
-
-		Scanner in = new Scanner(System.in);
-		int choice;
-
-		while (true) {
-
-			if (in.hasNextInt()) {
-
-				choice = in.nextInt();
-
-				if (choice >= 0 && choice < 3) {
-
-					if (pokeList.get(choice).getCurrHP() <= 0) {
-						System.out.println(
-								pokeList.get(choice).getName() + " is completely drained. Choose another pokemon");
-					} else
-						break;
-				} else
-					System.out.println("Invalid Entry. Try Again");
-			} else
-				in.next();
-		}
-		return pokeList.get(choice);
 	}
 
 	/**

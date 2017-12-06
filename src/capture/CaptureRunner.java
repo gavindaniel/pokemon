@@ -1,30 +1,15 @@
 package capture;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Observer;
 
-import battle.BattleLogic;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.Trainer;
-import pokemon.Bulbasaur;
-import pokemon.Caterpie;
-import pokemon.Charmander;
-import pokemon.Eevee;
 import pokemon.Electrode;
-import pokemon.Pikachu;
-import pokemon.Pokemon;
-import pokemon.Squirtle;
 
 public class CaptureRunner extends Application {
 

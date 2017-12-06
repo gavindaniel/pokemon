@@ -1,15 +1,19 @@
 package pokemon;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Class represents the common, water pokemon 'Squirtle'.
+ * @author Abdullah Asaad
+ *
+ */
 public class Squirtle extends Pokemon {
 
 	String standByPath,runAwayPath,capturePath;
 	public Squirtle() {
 		super("Squirtle", PokeType.WATER, null, OccurrenceRate.COMMON);
-		initializeStats(260, 163, 195, 167, 153);
+		initializeStats(155, 100, 120, 100, 90);
 		initializeAttacks();
 		initializeBattleAnimations();
 		this.standByPath="file:images/battle/Squirtle/squirtle-standby.png";
@@ -22,7 +26,7 @@ public class Squirtle extends Pokemon {
 
 		ArrayList<Attack> listOfAttacks = this.getAttackList();
 
-		listOfAttacks.add(new ActiveAttack("Hydro Pump", 110, PokeType.WATER, 60));
+		listOfAttacks.add(new ActiveAttack("Hydro Pump", 100, PokeType.WATER, 60));
 		listOfAttacks.add(new ActiveAttack("Bubble Beam", 65, PokeType.WATER, 90));
 		listOfAttacks.add(new ActiveAttack("Slash", 70, PokeType.NORMAL, 75));
 		listOfAttacks.add(new PassiveStatBuff("Harden", PokeType.NORMAL, 100, 1, 0, 1, 1.5, 1));
@@ -53,6 +57,7 @@ public class Squirtle extends Pokemon {
 		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
 		this.setBattleAnimation(pba);
 	}
+	
 	@Override
 	public String getStandByPath() {
 		// TODO Auto-generated method stub
@@ -71,13 +76,5 @@ public class Squirtle extends Pokemon {
 		return capturePath;
 
 	}
-	@Override
-	public int[][] getCoordinates() {
-		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
-		 //Rows
-		int[][] coordinates = {{0,0,53,55,565,235,100,100, 53, 28}, //standBy
-		{0,0,76,67,565,235,110,110, 75, 65},				 //Escape
-		};
-		return coordinates;
-	}
+
 }

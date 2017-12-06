@@ -2,11 +2,10 @@ package pokemon;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
- * Class represents the common, elcetric pokemon 'Pikachu'.
+ * Class represents the common, electric pokemon 'Pikachu'.
  * @author Abdullah Asaad
  *
  */
@@ -15,7 +14,7 @@ public class Pikachu extends Pokemon{
 	String standByPath,runAwayPath,capturePath;
 	public Pikachu() {
 		super("Pikachu", PokeType.ELECTRIC, null, OccurrenceRate.COMMON);
-		initializeStats(242, 177, 125, 167, 247);
+		initializeStats(150, 105, 90, 100, 150);
 		initializeAttacks();
 		initializeBattleAnimations();
 		this.standByPath="file:images/battle/Pikachu2/pikachu-standby.png";
@@ -59,7 +58,6 @@ public class Pikachu extends Pokemon{
 		this.setBattleAnimation(pba);
 	}
 
-	
 	@Override
 	public String getStandByPath() {
 		// TODO Auto-generated method stub

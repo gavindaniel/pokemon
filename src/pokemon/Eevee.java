@@ -1,11 +1,10 @@
 package pokemon;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
- * Class represents the common, grass pokemon 'Caterpie'.
+ * Class represents the common, fire pokemon 'Eevee'.
  * @author Abdullah Asaad
  *
  */
@@ -13,8 +12,8 @@ public class Eevee extends Pokemon {
 
 	String standByPath,runAwayPath,capturePath;
 	public Eevee() {
-		super("Eevee", PokeType.NORMAL, PokeType.NORMAL, OccurrenceRate.COMMON);
-		initializeStats(55, 55, 50, 45, 65);
+		super("Eevee", PokeType.FIRE, PokeType.NORMAL, OccurrenceRate.COMMON);
+		initializeStats(170, 110, 108, 90, 100);
 		initializeAttacks();
 		initializeBattleAnimations();
 		this.standByPath="file:images/battle/Eevee/eeveestandby.png";
@@ -27,10 +26,10 @@ public class Eevee extends Pokemon {
 		
 		ArrayList<Attack> listOfAttacks = this.getAttackList();
 
-		listOfAttacks.add(new ActiveAttack("Tackle", 40, PokeType.NORMAL, 100));
 		listOfAttacks.add(new ActiveAttack("Quick Attack",40,PokeType.NORMAL, 100));
-		listOfAttacks.add(new ActiveAttack("Swift", 60, PokeType.NORMAL, 100));
-		listOfAttacks.add(new PassiveStatBuff("Recover", PokeType.NORMAL, 100, 1, 181, 1, 1, 1));
+		listOfAttacks.add(new ActiveAttack("Ember", 80, PokeType.FIRE, 100));
+		listOfAttacks.add(new ActiveAttack("Sand Attack", 60, PokeType.NORMAL, 85));
+		listOfAttacks.add(new PassiveAttackBuff("Charge", PokeType.FIRE, 100, 1, 2, 1.15));
 
 		return listOfAttacks;
 	}
@@ -39,20 +38,20 @@ public class Eevee extends Pokemon {
 	public void initializeBattleAnimations() {
 		List<String> spritePaths = new ArrayList<>(5);
 		spritePaths.add("file:images/battle/Eevee/eeveestandby.png");
+		spritePaths.add("file:images/battle/Eevee/eeveequickattack.png");
 		spritePaths.add("file:images/battle/Eevee/eeveeember.png");
-		spritePaths.add("file:images/battle/Eevee/eeveeember.png");
-		spritePaths.add("file:images/battle/Eevee/eeveeattack.png");
+		spritePaths.add("file:images/battle/Eevee/eeveequickattack.png");
 		spritePaths.add("file:images/battle/Eevee/eeveestandby.png");
 		spritePaths.add("file:images/battle/Eevee/eeveeback.png");
 				
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 															 //Rows		
-		int[][] coordinates = {{0,0,63,55,555,240,100,100, 64, 25}, //standBy
-				{0,0,74,67,515,245,140,110, 78, 39},				 //First Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Second Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Third Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Fourth Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Back Standby
+		int[][] coordinates = {{0,0,63,55,545,255,94,80, 64, 25}, //standBy
+				{20,0,85,85,515,260,114,90, 113, 39},				 //First Attack
+				{0,0,80,80,535,270,114,90, 78, 37},				 //Second Attack
+				{20,0,85,85,515,260,114,90, 113, 39},				 //Third Attack
+				{0,0,63,55,545,255,94,80, 64, 25},				 //Fourth Attack
+				{0,0,70,55,75,430,137,110, 72, 29},				 //Back Standby
 		};
 		
 		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
@@ -75,17 +74,6 @@ public class Eevee extends Pokemon {
 		// TODO Auto-generated method stub
 		return capturePath;
 
-	}
-
-	@Override
-	public int[][] getCoordinates() {
-		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
-		 //Rows		
-		int[][] coordinates = {{0,0,63,55,555,240,100,100, 64, 25}, //standBy
-		{0,0,74,67,515,245,140,110, 78, 39},				 //escape
-		
-		};
-		return coordinates;
 	}
 	
 }

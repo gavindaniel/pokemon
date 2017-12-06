@@ -72,9 +72,6 @@ public class BattleView extends Canvas implements Observer {
 				animateBattleText(line1, line2);
 				infoTextTimeline.setOnFinished((event) -> {
 					startAttack((Attack) message);
-					if (battle.getCurrState() == BattleState.FAINTED) {
-						animateBattleText("POKEMON will", "have FAINTED");
-					}
 				});
 			}
 			
@@ -266,7 +263,15 @@ public class BattleView extends Canvas implements Observer {
 		
 		stopAllActiveTimelines();
 		
-//		battle.setCurrState(BattleState.IDLE);
+		if (battle.getCurrState() == BattleState.FAINTED) {
+			animateBattleText(battle.getDefendTrainer().getActiveBattlePokemon().getName().toUpperCase() + " has fainted!",
+					 "Choose another pokemon");
+		}
+		
+		else {
+			battle.setCurrState(BattleState.IDLE);			
+		}
+		
 		drawMainSelectMenu(0);
 		
 		Pokemon userPoke = battle.getActiveTrainer().getActiveBattlePokemon(); //User controlled Pokemon
@@ -383,9 +388,9 @@ public class BattleView extends Canvas implements Observer {
 			}
 			
 			else {
-					output2 += line2.charAt(secondIndex);	//setCycleCount property is used to stop animation 
-					secondIndex++;							//before NullPointerException is thrown.
-					gc.fillText(output2, tx, ty2, maxWidth - 20);
+				output2 += line2.charAt(secondIndex);	//setCycleCount property is used to stop animation 
+				secondIndex++;							//before NullPointerException is thrown.
+				gc.fillText(output2, tx, ty2, maxWidth - 20);
 			}
 		}}
 	
