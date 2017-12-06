@@ -45,8 +45,6 @@ public class Charmander extends Pokemon {
 		spritePaths.add("file:images/battle/Charmander/charmander-standby.png");
 		spritePaths.add("file:images/battle/Charmander/charmander-back.png");
 		
-		String bgPath = "file:images/battle/battle-background.png";
-		
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 																	 //Rows
 		int[][] coordinates = {{0,0,50,60,555,250,90,90, 48, 33}, //standBy
@@ -57,7 +55,7 @@ public class Charmander extends Pokemon {
 				{0,0,63,60,50,400,150,150, 64, 38}, //Back Standby
 		};
 		
-		PokeBattleAnimation pba = new PokeBattleAnimation(bgPath, spritePaths, coordinates);
+		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
 		this.setBattleAnimation(pba);
 	}
 
