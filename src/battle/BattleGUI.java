@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Observer;
 
+import controller.SoundClip;
 import items.HyperPotion;
 import items.Item;
 import items.Potion;
@@ -26,17 +27,21 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.Trainer;
 import pokemon.Attack;
 import pokemon.Bulbasaur;
+import pokemon.Caterpie;
 import pokemon.Charmander;
+import pokemon.Dragonite;
+import pokemon.Eevee;
 import pokemon.Electrode;
 import pokemon.Flareon;
 import pokemon.Pikachu;
 import pokemon.PokeType;
 import pokemon.Pokemon;
-import pokemon.Squirtle;
 
 public class BattleGUI extends Application {
 
@@ -84,58 +89,18 @@ public class BattleGUI extends Application {
 		initializeTrainersAndBattle();
 		
 		//Trainers select pokemon
-//		setupPokeSelectionMenu(battle.getActiveTrainer());
+		setupPokeSelectionMenu(battle.getActiveTrainer());
 		
 		//Add battle view observer
 		battleView = new BattleView(battle, SCENE_WIDTH, SCENE_HEIGHT);
 		battle.addObserver(battleView);
 		
-		/***********************************************************************************/
-		/******************************For Quick Testing************************************/
-		  
-		List<Pokemon> pokeList1 = new ArrayList<>();
-		pokeList1.add(new Electrode());
-		pokeList1.add(new Charmander());
-		pokeList1.add(new Bulbasaur());
-		for(Pokemon p : pokeList1) {
-			p.getBattleAnimation().setBattleView((BattleView) battleView);
-		}
-
-		List<Pokemon> pokeList2 = new ArrayList<>();
-		pokeList2.add(new Flareon());
-		pokeList2.add(new Pikachu());
-		pokeList2.add(new Squirtle());
+		MediaPlayer battleMusicPlayer = (new SoundClip("sounds/Battlemusic.mp3")).getMediaPlayer();
 		
-		for(Pokemon p : pokeList2) {
-			p.getBattleAnimation().setBattleView((BattleView) battleView);
-		}
-
-		battle.getActiveTrainer().setBattlePokemonList(pokeList1);
-		battle.getOppTrainer().setBattlePokemonList(pokeList2);
-		
-		List<Item> itemList1 = new ArrayList<>();
-		itemList1.add(new HyperPotion());
-		itemList1.add(new Potion());
-		itemList1.get(0).setQuantity(2);
-		itemList1.get(1).setQuantity(4);
-
-		List<Item> itemList2 = new ArrayList<>();
-		itemList2.add(new HyperPotion());
-		itemList2.add(new Potion());
-		itemList2.get(0).setQuantity(3);
-		itemList2.get(1).setQuantity(6);
-		
-		battle.getActiveTrainer().setItemList(itemList1);
-		battle.getOppTrainer().setItemList(itemList2);
-		
-		 
-		/**********************************************************************************/
-		/**********************************************************************************/
-
-		setViewToBattle();
-		
-		//Run Battle
-		runBattle();
+		battleMusicPlayer.setOnEndOfMedia(new Runnable() {
+		       public void run() {
+		         battleMusicPlayer.seek(Duration.ZERO);
+		       }});
 		
 		stage.setScene(scene);
 		stage.show();
@@ -149,26 +114,57 @@ public class BattleGUI extends Application {
 	public void setMainStage(Stage mainStage) {
 		this.mainStage = mainStage;
 	}
+	
+	/**
+	 * Return battle logic object
+	 * @return 
+	 */
+	public BattleLogicForView getBattleModel() {
+		return this.battle;
+	}
 
 	private void initializeTrainersAndBattle() {
 
 		List<Pokemon> pokeList1 = new ArrayList<>();
-		pokeList1.add(new Pikachu());
-		pokeList1.add(new Charmander());
 		pokeList1.add(new Bulbasaur());
-		pokeList1.add(new Squirtle());
+		pokeList1.add(new Caterpie());
+		pokeList1.add(new Charmander());
+		pokeList1.add(new Dragonite());
+		pokeList1.add(new Eevee());
+		pokeList1.add(new Electrode());
+		pokeList1.add(new Flareon());
+		pokeList1.add(new Pikachu());
 
 		List<Pokemon> pokeList2 = new ArrayList<>();
-		pokeList2.add(new Pikachu());
-		pokeList2.add(new Charmander());
 		pokeList2.add(new Bulbasaur());
-		pokeList2.add(new Squirtle());
+		pokeList2.add(new Caterpie());
+		pokeList2.add(new Charmander());
+		pokeList2.add(new Dragonite());
+		pokeList2.add(new Eevee());
+		pokeList2.add(new Electrode());
+		pokeList2.add(new Flareon());
+		pokeList2.add(new Pikachu());
 
 		Trainer trainer1 = new Trainer("Player1");
 		trainer1.setOwnedPokemonList(pokeList1);
 
 		Trainer trainer2 = new Trainer("Player2");
 		trainer2.setOwnedPokemonList(pokeList2);
+		
+		List<Item> itemList1 = new ArrayList<>();
+		itemList1.add(new HyperPotion());
+		itemList1.add(new Potion());
+		itemList1.get(0).setQuantity(2);
+		itemList1.get(1).setQuantity(4);
+
+		List<Item> itemList2 = new ArrayList<>();
+		itemList2.add(new HyperPotion());
+		itemList2.add(new Potion());
+		itemList2.get(0).setQuantity(3);
+		itemList2.get(1).setQuantity(6);
+		
+		trainer1.setItemList(itemList1);
+		trainer2.setItemList(itemList2);
 
 		battle = new BattleLogicForView(trainer1, trainer2);
 	}
