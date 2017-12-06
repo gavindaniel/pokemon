@@ -63,11 +63,14 @@ public class Capture {
 			
 			System.out.println("Run rate: " +runRate);
 			System.out.println("retreatChance: " +retreatChance);
+			return true;
+			/*
 			if(runRate>retreatChance) {
 				System.out.println(currentPoke.getName()+" ran away.");
 				return true;
 			}
 			return false;
+			*/
 		}
 		
 		
