@@ -3,6 +3,7 @@ package views;
 import java.util.Observable;
 import java.util.Observer;
 
+import items.Item;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -56,7 +57,9 @@ public class BagView extends BorderPane implements Observer {
 		result += "*********************\n";
 		result += "***  Trainer  Items  ***\n";
 		result += "*********************\n\n";
-		result += "Safari Balls\t30\n";
+		for (Item item: theGame.getMap().getTrainer().getItemList()) {
+			
+		}
 //		for (Pokemon pokemon : theGame.getMap().getTrainer().getOwnedPokemonList()) {
 //			result += pokemon.getName() + "\t";
 //			result += pokemon.getCurrHP() + "/";

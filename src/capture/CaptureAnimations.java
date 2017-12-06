@@ -3,6 +3,9 @@ package capture;
 
 
 
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+import controller.SoundClip;
 import items.Bait;
 import items.Item;
 import items.MasterBall;
@@ -34,7 +37,7 @@ public class CaptureAnimations {
 	private Item itemCurrent;
 	
 	
-	public CaptureAnimations(CaptureView captureView, String bgPath, String standbyPath,String runAwayPath,String capturePath,int [][] coordinates,Capture currentCapture) {
+	public CaptureAnimations(CaptureView captureView, String bgPath, String standbyPath,String runAwayPath,String capturePath,int [][] coordinates,Capture currentCapture) throws UnsupportedAudioFileException {
 		
 		this.captureView = captureView;
 		gc = captureView.getGraphicsContext2D();
@@ -44,6 +47,7 @@ public class CaptureAnimations {
 		this.coordinates=coordinates;
 		this.currentCapture=currentCapture;
 		constructTimelines(standbyPath);
+		
 	}
 	
 	private void constructTimelines(String standbyPath) {
@@ -231,6 +235,7 @@ public class CaptureAnimations {
 			if(dw==0) {
 				gc.drawImage(bgImg, 0, 0, captureView.getWidth(), captureView.getHeight());
 				capture.stop();
+				captureView.endCapture();
 			}
 		}
 	}

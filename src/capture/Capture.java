@@ -6,6 +6,7 @@ import items.EasyCatch;
 import items.EasyStay;
 import items.Item;
 import items.MasterBall;
+import items.Potion;
 import items.SafariBall;
 import items.UltraBall;
 import model.Trainer;
@@ -227,6 +228,7 @@ public class Capture {
 					if(catchRate<catchChance) {
 						currentTrain.addPokemonToOwned(currentPoke);
 						System.out.println(currentPoke.getName()+" Caught");
+						giveRandomItem();
 						return true;
 					}
 					else {
@@ -235,6 +237,25 @@ public class Capture {
 				
 			}
 					
+		}
+		
+		//Give random item
+		public boolean giveRandomItem() {
+			int chance=new Random().nextInt(100)+1;
+			if(chance>=70 && chance<=79 ) {
+				currentTrain.itemList.add(new Potion());
+				return true;
+			}
+			if(chance>=80 && chance<=89 ) {
+				currentTrain.itemList.add(new UltraBall());
+				return true;
+			}
+			if(chance>=90 && chance<=99 ) {
+				currentTrain.itemList.add(new EasyCatch());
+				return true;
+			}
+			return false;
+			
 		}
 		
 		//THE MAAAAASTER BALL
@@ -290,9 +311,11 @@ public class Capture {
 		}
 		
 		public int getCurrentCatchRate() {
+			checkCap();
 			return catchRate;
 		}
 		public int getCurrentRunRate() {
+			checkCap();
 			return runRate;
 		}
 		 
