@@ -1,6 +1,8 @@
 package capture;
 
 
+
+
 import items.Bait;
 import items.Item;
 import items.SafariBall;
@@ -11,7 +13,11 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import pokemon.Pokemon;
 
 
 public class CaptureAnimations {
@@ -21,15 +27,19 @@ public class CaptureAnimations {
 	private CaptureView captureView;
 	private GraphicsContext gc;
 	private String runAwayPath,capturePath;
+	private int[][] coordinates;
+	private Capture currentCapture;
 	
 	
-	public CaptureAnimations(CaptureView captureView, String bgPath, String standbyPath,String runAwayPath,String capturePath) {
+	public CaptureAnimations(CaptureView captureView, String bgPath, String standbyPath,String runAwayPath,String capturePath,int [][] coordinates,Capture currentCapture) {
 		
 		this.captureView = captureView;
 		gc = captureView.getGraphicsContext2D();
 		bgImg = new Image(bgPath, false);
 		this.runAwayPath=runAwayPath;
 		this.capturePath=capturePath;
+		this.coordinates=coordinates;
+		this.currentCapture=currentCapture;
 		constructTimelines(standbyPath);
 	}
 	
@@ -82,6 +92,22 @@ public class CaptureAnimations {
 			emotion.setCycleCount(Animation.INDEFINITE);
 			emotion.play();
 		}
+		
+		//Draw 'health' bars
+		public void drawBars() {
+			gc.setFill(Color.BLACK);
+			gc.fillRoundRect(560, 177, 105, 25,20,20);
+			gc.fillRoundRect(560, 147, 105, 25,20,20);
+			gc.setFill(Color.RED);
+			gc.fillRoundRect(563, 180, 100, 20,20,20);
+			gc.fillRoundRect(563, 150, 100, 20,20,20);
+			gc.setFill(Color.GREEN);
+			gc.fillRoundRect(563, 180, currentCapture.getCurrentCatchRate()+5, 20,20,20);
+			gc.fillRoundRect(563, 150, currentCapture.getCurrentRunRate()+5, 20,20,20);
+			gc.setFill(Color.BLACK);
+			gc.fillText("Chance to run", 574, 164, 300);
+			gc.fillText("Chance to catch", 570, 194, 300);
+		}
 	
 			
 			
@@ -93,6 +119,9 @@ public class CaptureAnimations {
 		}
 		if(capture!=null || runAway!=null) {
 			return false;
+		}
+		if(itemThrow.getStatus()==Animation.Status.STOPPED && emotion==null) {
+			return true;
 		}
 		if(itemThrow.getStatus()==Animation.Status.STOPPED && emotion.getStatus()==Animation.Status.STOPPED) {
 			return true;
@@ -161,30 +190,31 @@ public class CaptureAnimations {
 			
 			spritesheet = new Image(capturePath, false);
 			ball=new Image("file:images/items/safariBall.png", false);
-			sx = 0;
-			sy = 0;
-			sw = 60;
-			sh = 60;
-			dx = 575;
-			dy = 230;
-			dw = 100;
-			dh = 100;
+			sx = coordinates[0][0];
+			sy = coordinates[0][1];
+			sw = coordinates[0][2];
+			sh = coordinates[0][3];
+			dx = coordinates[0][4];
+			dy = coordinates[0][5];
+			dw = coordinates[0][6];
+			dh = coordinates[0][7];
 		}
 
 		@Override
 		public void handle(ActionEvent e) {
 
 			gc.drawImage(bgImg, 0, 0, captureView.getWidth(), captureView.getHeight());
+			drawBars();
 
 			// TODO 2: Draw the walker, update the proper variables, stop animation
 			gc.drawImage(spritesheet, sx, sy, sw, sh, dx, dy, dw, dh);
 			gc.drawImage(ball, 560, 279, 35, 35);
 
-			sx += 60;
-			sx %= (60*33);
+			//sx += 60;
+			//sx %= (60*33);
 			dw-=5;
 			dh-=5;
-			dx-=.5;
+			dx-=.000001;
 			dy+=3;
 			if(dw==0) {
 				gc.drawImage(bgImg, 0, 0, captureView.getWidth(), captureView.getHeight());
@@ -208,14 +238,14 @@ public class CaptureAnimations {
 		private Image spritesheet;
 		public AnimatePokemonRun(String runAwayPath) {
 			spritesheet = new Image(runAwayPath, false);
-			sx = 0;
-			sy = 0;
-			sw = 98;
-			sh = 100;
-			dx = 500;
-			dy = 200;
-			dw = 150;
-			dh = 150;
+			sx = coordinates[1][0];
+			sy = coordinates[1][1];
+			sw = coordinates[1][2];
+			sh = coordinates[1][3];
+			dx = coordinates[1][4];
+			dy = coordinates[1][5];
+			dw = coordinates[1][6];
+			dh = coordinates[1][7];
 		}
 
 		/*
@@ -233,8 +263,24 @@ public class CaptureAnimations {
 		@Override
 		public void handle(ActionEvent e) {
 			gc.drawImage(bgImg, 0, 0, captureView.getWidth(), captureView.getHeight());
+			/*
+			 * sx the source rectangle's X coordinate position. 
+			 * sy the source rectangle's Y
+			 * coordinate position. 
+			 * sw the source rectangle's width. 
+			 * sh the source
+			 * rectangle's height. 
+			 * dx the destination rectangle's X coordinate position. 
+			 * dy the destination rectangle's Y coordinate position. 
+			 * dw the destination rectangle's width. 
+			 * dh the destination rectangle's height.
+			 */
+
 			gc.drawImage(spritesheet, sx, sy, sw, sh, dx, dy, dw, dh);
-			sx += 96;
+
+			sx += coordinates[1][8];
+			
+			
 	}
 	}
 	
@@ -315,26 +361,27 @@ public class CaptureAnimations {
 		public AnimateStandby(String standbyPath) {
 			
 			spritesheet = new Image(standbyPath, false);
-			sx = 0;
-			sy = 0;
-			sw = 60;
-			sh = 60;
-			dx = 575;
-			dy = 230;
-			dw = 100;
-			dh = 100;
+			sx = coordinates[0][0];
+			sy = coordinates[0][1];
+			sw = coordinates[0][2];
+			sh = coordinates[0][3];
+			dx = coordinates[0][4];
+			dy = coordinates[0][5];
+			dw = coordinates[0][6];
+			dh = coordinates[0][7];
 		}
 
 		@Override
 		public void handle(ActionEvent e) {
-
 			gc.drawImage(bgImg, 0, 0, captureView.getWidth(), captureView.getHeight());
+			drawBars();
 
 			// TODO 2: Draw the walker, update the proper variables, stop animation
 			gc.drawImage(spritesheet, sx, sy, sw, sh, dx, dy, dw, dh);
 
-			sx += 60;
-			sx %= (60*33);
+
+			sx += coordinates[0][8];
+			sx %= (coordinates[0][8]*coordinates[0][9]);
 		}
 	}
 }

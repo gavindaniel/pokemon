@@ -36,7 +36,7 @@ public class CaptureView extends Canvas implements Observer {
 		this.setHeight(height);
 		this.window=window;
 		this.capture = capture;
-		captureAnimation=new CaptureAnimations(this,"file:images/battle/battle-background.png",capture.currentPoke.getStandByPath(),capture.currentPoke.getRunAwayPath(),capture.currentPoke.getCapturePath());
+		captureAnimation=new CaptureAnimations(this,"file:images/battle/battle-background.png",capture.currentPoke.getStandByPath(),capture.currentPoke.getRunAwayPath(),capture.currentPoke.getCapturePath(),this.capture.currentPoke.getCoordinates(),capture);
 		gc = this.getGraphicsContext2D();
 		
 		battleGround = new Image("file:images/battle/battle-background.png", false);

@@ -5,21 +5,21 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Class represents the common, grass pokemon 'Bulbasaur'.
+ * Class represents the common, grass pokemon 'Caterpie'.
  * @author Abdullah Asaad
  *
  */
-public class Bulbasaur extends Pokemon {
+public class Caterpie extends Pokemon {
 
 	String standByPath,runAwayPath,capturePath;
-	public Bulbasaur() {
-		super("Bulbasaur", PokeType.GRASS, PokeType.POISON, OccurrenceRate.COMMON);
-		initializeStats(262, 165, 163, 197, 157);
+	public Caterpie() {
+		super("Caterpie", PokeType.GRASS, PokeType.NORMAL, OccurrenceRate.COMMON);
+		initializeStats(45, 30, 35, 20, 20);
 		initializeAttacks();
 		initializeBattleAnimations();
-		this.standByPath="file:images/battle/Bulbasaur/bulbasaur-standby.png";
-		this.runAwayPath="file:images/battle/Bulbasaur/bulbasaur-attack.png";
-		this.capturePath="file:images/battle/Bulbasaur/bulbasaur-standby.png";
+		this.standByPath="file:images/battle/Caterpie/caterpiestandby.png";
+		this.runAwayPath="file:images/battle/Caterpie/caterpieattack.png";
+		this.capturePath="file:images/battle/Caterpie/caterpiestandby.png";
 	}
 
 	@Override
@@ -27,9 +27,9 @@ public class Bulbasaur extends Pokemon {
 		
 		ArrayList<Attack> listOfAttacks = this.getAttackList();
 
-		listOfAttacks.add(new ActiveAttack("Razor Leaf", 55, PokeType.GRASS, 95));
-		listOfAttacks.add(new ActiveAttack("Body Slam", 85, PokeType.NORMAL, 80));
-		listOfAttacks.add(new ActiveAttack("Leech Life", 40, PokeType.GRASS, 100));
+		listOfAttacks.add(new ActiveAttack("Tackle", 40, PokeType.NORMAL, 100));
+		listOfAttacks.add(new PassiveStatBuff("String Shot",PokeType.GRASS, 100, 1, 181, 1, 1, 1));
+		listOfAttacks.add(new ActiveAttack("Bug Bite", 60, PokeType.GRASS, 95));
 		listOfAttacks.add(new PassiveStatBuff("Recover", PokeType.NORMAL, 100, 1, 181, 1, 1, 1));
 
 		return listOfAttacks;
@@ -38,17 +38,17 @@ public class Bulbasaur extends Pokemon {
 	@Override
 	public void initializeBattleAnimations() {
 		List<String> spritePaths = new ArrayList<>(5);
-		spritePaths.add("file:images/battle/Bulbasaur/bulbasaur-standby.png");
-		spritePaths.add("file:images/battle/Bulbasaur/bulbasaur-attack.png");
-		spritePaths.add("file:images/battle/Bulbasaur/bulbasaur-attack.png");
-		spritePaths.add("file:images/battle/Bulbasaur/bulbasaur-attack.png");
-		spritePaths.add("file:images/battle/Bulbasaur/bulbasaur-standby.png");
-		spritePaths.add("file:images/battle/Bulbasaur/bulbasaur-back.png");
+		spritePaths.add("file:images/battle/Caterpie/caterpiestandby.png");
+		spritePaths.add("file:images/battle/Caterpie/caterpieattack.png");
+		spritePaths.add("file:images/battle/Caterpie/caterpieattack.png");
+		spritePaths.add("file:images/battle/Caterpie/caterpieattack.png");
+		spritePaths.add("file:images/battle/Caterpie/caterpiestandby.png");
+		spritePaths.add("file:images/battle/Caterpie/caterpieback.png");
 				
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 															 //Rows		
-		int[][] coordinates = {{0,0,60,60,575,230,100,100, 60, 33}, //standBy
-				{0,0,60,60,575,230,100,100, 60, 33},				 //First Attack
+		int[][] coordinates = {{0,0,45,45,535,240,100,100, 46, 46}, //standBy
+				{0,0,70,55,535,240,110,100, 67, 53},				 //First Attack
 				{0,0,60,60,575,230,100,100, 60, 33},				 //Second Attack
 				{0,0,60,60,575,230,100,100, 60, 33},				 //Third Attack
 				{0,0,60,60,575,230,100,100, 60, 33},				 //Fourth Attack
@@ -81,8 +81,8 @@ public class Bulbasaur extends Pokemon {
 	public int[][] getCoordinates() {
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 //Rows		
-		int[][] coordinates = {{0,0,46,49,565,240,100,100, 45, 40}, //standBy
-		{0,0,65,65,565,240,110,100, 62, 63},				 //escape
+		int[][] coordinates = {{0,0,45,45,555,240,100,100, 46, 46}, //standBy
+		{0,0,70,55,535,240,110,100, 67, 53},				 //escape
 		
 		};
 		return coordinates;

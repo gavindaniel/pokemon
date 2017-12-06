@@ -34,6 +34,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Optional;
+
+import capture.CaptureView;
 //import controller.SafariZoneMain.ServerListener;
 import persistence.FileManager;
 import persistence.GameLoader;
@@ -44,6 +46,9 @@ public class SafariZoneMain extends Application {
 	private Settings settings;
 	private BorderPane start_window, menu_window, newgame_window, loadgame_window, game_window, info_window;
 	private Scene start_scene, menu_scene, newgame_scene, loadgame_scene, game_scene, info_scene;
+	
+	
+	
 
 	private MenuBar menuBar;
 	private Observer currentView;
@@ -61,6 +66,9 @@ public class SafariZoneMain extends Application {
 	private BorderPane option_window;
 	private Scene option_scene;
 	private OptionView optionView;
+	
+	//------ NEW NEW -----------
+	private CaptureView captureView;
 	/***************************************/
 	private int loggedIn;
 	public FileManager man;
@@ -127,12 +135,14 @@ public class SafariZoneMain extends Application {
 		newgame_window = new BorderPane();
 		loadgame_window = new BorderPane();
 		game_window = new BorderPane();
+//		capture_window = new BorderPane(); //new
 		// scene initialization 
 		start_scene = new Scene(start_window, settings.getWidth("scene"), settings.getHeight("scene"));
 		menu_scene = new Scene(menu_window, settings.getWidth("scene"), settings.getHeight("scene"));
 		newgame_scene = new Scene(newgame_window, settings.getWidth("scene"), settings.getHeight("scene"));
 		loadgame_scene = new Scene(loadgame_window, settings.getWidth("scene"), settings.getHeight("scene"));
 		game_scene = new Scene(game_window, settings.getWidth("scene"), settings.getHeight("scene"));
+//		capture_scene = new Scene(capture_window, settings.getWidth("scene"), settings.getHeight("scene")); //new
 		// adding listeners
 		game_scene.setOnKeyPressed(new KeyPressListener());
 		game_scene.setOnKeyReleased(new KeyReleaseListener());
@@ -140,8 +150,8 @@ public class SafariZoneMain extends Application {
 
 	private void setupViews() {
 		// in-game views
-		textView = new TextView(gameLoader.getSafariZone());
-		graphicView = new GraphicView(gameLoader.getSafariZone());
+//		textView = new TextView(gameLoader.getSafariZone());
+		graphicView = new GraphicView(gameLoader.getSafariZone(), stage, game_scene);
 		// other views
 		startView = new StartView(gameLoader.getSafariZone(), stage, start_scene, menu_scene);
 		start_window.setCenter(startView);
@@ -166,7 +176,7 @@ public class SafariZoneMain extends Application {
 	}
 	
 	private void addGameObservers() {
-		gameLoader.getSafariZone().addObserver(textView);
+//		gameLoader.getSafariZone().addObserver(textView);
 		gameLoader.getSafariZone().addObserver(graphicView);
 		gameLoader.getSafariZone().addObserver(pokemonView); 
 		gameLoader.getSafariZone().addObserver(bagView);		
@@ -187,15 +197,9 @@ public class SafariZoneMain extends Application {
 		// add the options
 		Menu menu = new Menu("Menu");
 		menu.getItems().addAll(pokemon, bag, map, trainer, save, option, exit); //, option
-		// view menu options
-		MenuItem textV = new MenuItem("Text");
-		MenuItem graphicV = new MenuItem("Graphics");
-		// add the options
-		Menu views = new Menu("View");
-		views.getItems().addAll(textV, graphicV);
 		// setup menu bar
 		menuBar = new MenuBar();
-		menuBar.getMenus().addAll(menu, views);
+		menuBar.getMenus().addAll(menu); //, views
 		// Add the same listener to all menu items requiring action
 		MenuItemListener menuListener = new MenuItemListener();
 		pokemon.setOnAction(menuListener);
@@ -205,9 +209,6 @@ public class SafariZoneMain extends Application {
 		save.setOnAction(menuListener);
 		option.setOnAction(menuListener);
 		exit.setOnAction(menuListener);
-		// view menu listeners
-		textV.setOnAction(menuListener);
-		graphicV.setOnAction(menuListener);
 	}
 	
 	
@@ -215,7 +216,6 @@ public class SafariZoneMain extends Application {
 		@Override
 		public void handle(KeyEvent event) {
 			if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN || event.getCode() == KeyCode.LEFT || event.getCode() == KeyCode.RIGHT) {
-//				gameLoader.getSafariZone().movePlayer(event.getCode());
 				graphicView.animateTrainer(event.getCode(), false);
 				
 		           try {
@@ -292,10 +292,6 @@ public class SafariZoneMain extends Application {
 //				gameLoader.getSafariZone().addObserver(graphicView);
 				stage.setScene(menu_scene);			
 			} 
-			else if (text.equals("Text"))
-				setViewTo(textView);
-			else if (text.equals("Graphics"))
-				setViewTo(graphicView);		
 		}
 	}
 

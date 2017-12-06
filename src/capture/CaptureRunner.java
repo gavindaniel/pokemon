@@ -18,7 +18,10 @@ import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 import model.Trainer;
 import pokemon.Bulbasaur;
+import pokemon.Caterpie;
 import pokemon.Charmander;
+import pokemon.Eevee;
+import pokemon.Electrode;
 import pokemon.Pikachu;
 import pokemon.Pokemon;
 import pokemon.Squirtle;
@@ -50,7 +53,7 @@ public class CaptureRunner extends Application {
 		Scene scene = new Scene(window, SCENE_WIDTH, SCENE_HEIGHT);
 		//Add battle view observer
 		trainer1=new Trainer("Person");
-		capture=new Capture(new Pikachu(), trainer1);
+		capture=new Capture(new Electrode(), trainer1);
 		captureView = new CaptureView(capture, SCENE_WIDTH, SCENE_HEIGHT,window);
 		window.setCenter((Node) captureView);
 		stage.setScene(scene);

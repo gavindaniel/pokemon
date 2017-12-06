@@ -11,11 +11,15 @@ import java.util.List;
  */
 public class Charmander extends Pokemon {
 
+	String standByPath,runAwayPath,capturePath;
 	public Charmander() {
 		super("Charmander", PokeType.FIRE, null, OccurrenceRate.COMMON);
 		initializeStats(250, 171, 151, 167, 219);
 		initializeAttacks();
 		initializeBattleAnimations();
+		this.standByPath="file:images/battle/Charmander/charmander-standby.png";
+		this.runAwayPath="file:images/battle/Charmander/charmander-flamethrower.png";
+		this.capturePath="file:images/battle/Charmander/charmander-standby.png";
 	}
 
 	@Override
@@ -48,10 +52,39 @@ public class Charmander extends Pokemon {
 				{5,0,70,70,545,245,100,100, 70, 56},				 //Second Attack
 				{5,0,70,70,545,245,100,100, 70, 56},				 //Third Attack
 				{0,0,50,60,555,250,90,90, 48, 60},				 //Fourth Attack
-				{0,0,63,60,50,400,150,150, 64, 38},				 //Back Standby
+				{0,0,63,60,50,400,150,150, 64, 38}, //Back Standby
 		};
 		
 		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
 		this.setBattleAnimation(pba);
+	}
+
+	@Override
+	public String getStandByPath() {
+		// TODO Auto-generated method stub
+		return standByPath;
+	}
+
+	@Override
+	public String getRunAwayPath() {
+		// TODO Auto-generated method stub
+		return runAwayPath;
+	}
+
+	@Override
+	public String getCapturePath() {
+		// TODO Auto-generated method stub
+		return capturePath;
+
+	}
+	
+	@Override
+	public int[][] getCoordinates() {
+		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
+		 //Rows
+		int[][] coordinates = {{0,0,47,60,555,235,100,100, 48, 33}, //standBy
+		{0,10,60,70,545,250,100,100, 59, 59},				 //Escape
+		};
+		return coordinates;
 	}
 }

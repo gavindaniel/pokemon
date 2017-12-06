@@ -38,9 +38,9 @@ public class SafariZone extends Observable {
 	}
 	
 	// Move Player
-	public void movePlayer(KeyCode direction) {
+	public String movePlayer(KeyCode direction) {
+		String response;
 		if (!gameOver()) {
-//			System.out.println("moving player...");
 			Point oldLoc = theMap.getTrainer().getCurrentLocation();
 			Point newLoc = oldLoc;
 			int newC = (int) newLoc.getX();
@@ -57,17 +57,19 @@ public class SafariZone extends Observable {
 
 			newLoc = new Point(newC, newR);
 
-			theMap.updateTrainerLocation(oldLoc, newLoc);
+			response = theMap.updateTrainerLocation(oldLoc, newLoc);
 
 			setChanged();
 			notifyObservers();
 		} else {
-			Alert alert = new Alert(AlertType.INFORMATION);
-			alert.setTitle("Game Over");
-			alert.setHeaderText("You ran out of steps!");
-			alert.setContentText("You caught " + theMap.getTrainer().getOwnedPokemonList().size() + " Pokemon");
-			alert.showAndWait();
+//			Alert alert = new Alert(AlertType.INFORMATION);
+//			alert.setTitle("Game Over");
+//			alert.setHeaderText("You ran out of steps!");
+//			alert.setContentText("You caught " + theMap.getTrainer().getOwnedPokemonList().size() + " Pokemon");
+//			alert.showAndWait();
+			response = "game over";
 		}
+		return response;
 	}
 
 	public boolean gameOver() {
