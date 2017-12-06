@@ -7,8 +7,10 @@ import java.util.List;
 
 import controller.Settings;
 import items.Item;
+import items.MasterBall;
 import pokemon.Pikachu;
 import items.SafariBall;
+import items.UltraBall;
 import pokemon.Pokemon;
 
 public class Trainer implements Serializable{
@@ -230,4 +232,29 @@ public class Trainer implements Serializable{
 		return false;
 		
 	}
+	
+	
+	//Remove ultraball
+	public boolean removeUltraBall() {
+		for(Item item:itemList) {
+			if(item.getClass()==UltraBall.class) {
+				itemList.remove(item);
+				return true;
+			}
+		}
+		return false;
+		
+	}
+	
+	//Remove masterball
+		public boolean removeMasterBall() {
+			for(Item item:itemList) {
+				if(item.getClass()==MasterBall.class) {
+					itemList.remove(item);
+					return true;
+				}
+			}
+			return false;
+			
+		}
 }
