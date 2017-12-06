@@ -72,6 +72,9 @@ public class BattleView extends Canvas implements Observer {
 				animateBattleText(line1, line2);
 				infoTextTimeline.setOnFinished((event) -> {
 					startAttack((Attack) message);
+					if (battle.getCurrState() == BattleState.FAINTED) {
+						animateBattleText("POKEMON will", "have FAINTED");
+					}
 				});
 			}
 			
@@ -263,7 +266,7 @@ public class BattleView extends Canvas implements Observer {
 		
 		stopAllActiveTimelines();
 		
-		battle.setCurrState(BattleState.IDLE);
+//		battle.setCurrState(BattleState.IDLE);
 		drawMainSelectMenu(0);
 		
 		Pokemon userPoke = battle.getActiveTrainer().getActiveBattlePokemon(); //User controlled Pokemon

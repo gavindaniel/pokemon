@@ -412,6 +412,7 @@ public class BattleGUI extends Application {
 		
 		else {
 			switchTrainerControl();
+			battle.setCurrState(BattleState.IDLE);
 		}
 	}
 	
