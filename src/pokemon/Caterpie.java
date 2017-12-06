@@ -56,6 +56,8 @@ public class Caterpie extends Pokemon {
 				{0,0,50,45,50,390,150,150, 50, 53},				 //Back Standby
 		};
 
+		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
+		this.setBattleAnimation(pba);
 		
 	}
 	

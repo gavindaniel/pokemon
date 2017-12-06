@@ -54,7 +54,8 @@ public class Electrode extends Pokemon {
 				{2,0,70,58,110,430,120,100, 73, 45},				 //Back Standby
 		};
 
-		
+		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
+		this.setBattleAnimation(pba);
 	}
 	
 	@Override
