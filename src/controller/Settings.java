@@ -10,6 +10,7 @@ public class Settings {
 	private static double input_height, input_width;
 	private static double input_display_height, input_display_width;
 	private static double tile_source_size, tile_display_size;
+	private static double image_shift_amount;
 	private static double trainer_source_width, trainer_source_height;
 	private static double trainer_display_width, trainer_display_height;
 	private static int graphic_display_lowerbound, graphic_display_upperbound;
@@ -50,6 +51,7 @@ public class Settings {
 		sprite_y = 0;						//	trainer y location on the sprite sheet
 		timeline_1_duration = 150;			//	duration of timeline 1 to animate Trainer movement (in miliseconds)
 		timeline_2_duration = 10;			//	duration of timeline 2 to animate the speech of professor Oak
+		image_shift_amount = 16;			// shifts images by half their size when animating walking
 		//---------options related settings-----------------
 		option_button_width = 150;
 		option_button_height = 50;
@@ -150,5 +152,23 @@ public class Settings {
 			return option_button_font_size;
 		else //if (key == "option label")
 			return option_label_font_size;
+	}
+	
+	public double getShiftAmount() {
+		return image_shift_amount;
+	}
+	
+	//-------- Setters ---------
+	public void setX(String key, double x) {
+		if (key == "trainer")
+			trainer_x = x;
+		else //if (key == "sprite")
+			sprite_x = x;
+	}
+	public void setY(String key, double y) {
+		if (key == "trainer")
+			 trainer_y = y;
+		else //if (key == "sprite")
+			sprite_y = y;
 	}
 }
