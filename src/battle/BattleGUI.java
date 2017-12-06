@@ -407,12 +407,10 @@ public class BattleGUI extends Application {
 		//Check if a pokemon has fainted
 		else if (battle.isPokemonDrained(attackPoke) || battle.isPokemonDrained(defendPoke)) {
 			battle.setCurrState(BattleState.FAINTED);
-			((BattleView)battleView).update(battle, null);
 		}
 		
 		else {
 			switchTrainerControl();
-			battle.setCurrState(BattleState.IDLE);
 		}
 	}
 	
@@ -500,7 +498,7 @@ public class BattleGUI extends Application {
 			else if (battle.getCurrState() == BattleState.FAINTED) {
 				//Pokemon is chosen. Switch to choose pokemon menu
 				if (x >= 484 && x<= 619 && y>= 634 && y<= 668) {
-					setupPokeSwitchMenu(battle.getAttackTrainer());
+					setupPokeSwitchMenu(battle.getDefendTrainer());
 				}
 			}
 			
