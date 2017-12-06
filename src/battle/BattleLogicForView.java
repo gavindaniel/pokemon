@@ -3,7 +3,6 @@ package battle;
 import java.util.List;
 import java.util.Observable;
 import java.util.Random;
-import java.util.Scanner;
 
 import model.Trainer;
 import pokemon.ActiveAttack;

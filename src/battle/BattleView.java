@@ -202,7 +202,7 @@ public class BattleView extends Canvas implements Observer {
 	private Color determineHealthColor(double healthPercent) {
 		
 		if (healthPercent > .5) return Color.rgb(71, 198, 111);
-		else if ((healthPercent > .15) && (healthPercent < .5)) return Color.rgb(229, 208, 68);
+		else if ((healthPercent > .15) && (healthPercent <= .5)) return Color.rgb(229, 208, 68);
 		else return Color.rgb(224, 76, 76);
 	}
 	
