@@ -150,6 +150,21 @@ public class BattleGUI extends Application {
 
 		Trainer trainer2 = new Trainer("Player2");
 		trainer2.setOwnedPokemonList(pokeList2);
+		
+		List<Item> itemList1 = new ArrayList<>();
+		itemList1.add(new HyperPotion());
+		itemList1.add(new Potion());
+		itemList1.get(0).setQuantity(2);
+		itemList1.get(1).setQuantity(4);
+
+		List<Item> itemList2 = new ArrayList<>();
+		itemList2.add(new HyperPotion());
+		itemList2.add(new Potion());
+		itemList2.get(0).setQuantity(3);
+		itemList2.get(1).setQuantity(6);
+		
+		trainer1.setItemList(itemList1);
+		trainer2.setItemList(itemList2);
 
 		battle = new BattleLogicForView(trainer1, trainer2);
 	}
