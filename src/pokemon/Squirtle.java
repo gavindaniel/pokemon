@@ -77,4 +77,14 @@ public class Squirtle extends Pokemon {
 
 	}
 
+	@Override
+	public int[][] getCoordinates() {
+		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
+		 //Rows
+		int[][] coordinates = {{0,0,53,55,565,235,100,100, 53, 28}, //standBy
+		{0,0,76,67,555,230,115,115, 75, 65},				 //Escape/Bubblebeam
+		};
+		return coordinates;
+	}
 }
+

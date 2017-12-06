@@ -32,6 +32,8 @@ public class Caterpie extends Pokemon {
 		listOfAttacks.add(new PassiveStatBuff("Recover", PokeType.NORMAL, 100, 1, getMaxHP()/3, 1, 1, 1));
 
 		return listOfAttacks;
+
+
 	}
 
 	@Override
@@ -53,9 +55,8 @@ public class Caterpie extends Pokemon {
 				{0,0,45,45,535,240,100,100, 46, 50},				 //Fourth Attack
 				{0,0,50,45,50,390,150,150, 50, 53},				 //Back Standby
 		};
+
 		
-		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
-		this.setBattleAnimation(pba);
 	}
 	
 	@Override
@@ -76,5 +77,18 @@ public class Caterpie extends Pokemon {
 		return capturePath;
 
 	}
+
+
+	@Override
+	public int[][] getCoordinates() {
+		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
+		 //Rows		
+		int[][] coordinates = {{0,0,45,45,555,240,100,100, 46, 46}, //standBy
+		{0,0,70,55,535,220,115,115, 67, 53},				 //escape/caterpieattack
+		
+		};
+		return coordinates;
+	}
+
 	
 }

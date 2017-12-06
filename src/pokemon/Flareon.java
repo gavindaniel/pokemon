@@ -5,6 +5,13 @@ import java.util.List;
 
 /**
  * Class represents the uncommon, fire pokemon 'Flareon'.
+=======
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Class represents the common, grass pokemon 'Caterpie'.
+>>>>>>> ian
  * @author Abdullah Asaad
  *
  */
@@ -16,11 +23,13 @@ public class Flareon extends Pokemon {
 		initializeStats(230, 250, 130, 190, 150);
 		initializeAttacks();
 		initializeBattleAnimations();
+		this.standByPath="file:images/battle/Flareon/flareonstandby.png";
+		this.runAwayPath="file:images/battle/Flareon/flareonfireblast.png";
+		this.capturePath="file:images/battle/Flareon/flareonstandby.png";
 	}
 
 	@Override
 	public ArrayList<Attack> initializeAttacks() {
-		
 		ArrayList<Attack> listOfAttacks = this.getAttackList();
 
 		listOfAttacks.add(new ActiveAttack("Fire Blast", 100, PokeType.FIRE, 75));
@@ -71,6 +80,17 @@ public class Flareon extends Pokemon {
 		// TODO Auto-generated method stub
 		return capturePath;
 
+	}
+
+	@Override
+	public int[][] getCoordinates() {
+		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
+		 //Rows		
+		int[][] coordinates = {{0,0,58,95,555,240,100,100,59, 28}, //standBy
+		{0,0,95,112,525,215,130,130, 94, 35},				 //escape/fireblast
+		
+		};
+		return coordinates;
 	}
 	
 }

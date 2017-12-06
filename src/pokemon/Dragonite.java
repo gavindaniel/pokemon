@@ -75,4 +75,10 @@ public class Dragonite extends Pokemon {
 
 	}
 
+	@Override
+	public int[][] getCoordinates() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

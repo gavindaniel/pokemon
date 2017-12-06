@@ -5,7 +5,9 @@ package capture;
 
 import items.Bait;
 import items.Item;
+import items.MasterBall;
 import items.SafariBall;
+import items.UltraBall;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -29,6 +31,7 @@ public class CaptureAnimations {
 	private String runAwayPath,capturePath;
 	private int[][] coordinates;
 	private Capture currentCapture;
+	private Item itemCurrent;
 	
 	
 	public CaptureAnimations(CaptureView captureView, String bgPath, String standbyPath,String runAwayPath,String capturePath,int [][] coordinates,Capture currentCapture) {
@@ -102,7 +105,7 @@ public class CaptureAnimations {
 			gc.fillRoundRect(563, 180, 100, 20,20,20);
 			gc.fillRoundRect(563, 150, 100, 20,20,20);
 			gc.setFill(Color.GREEN);
-			gc.fillRoundRect(563, 180, currentCapture.getCurrentCatchRate()+5, 20,20,20);
+			gc.fillRoundRect(563, 180, 100-currentCapture.getCurrentCatchRate()+5, 20,20,20);
 			gc.fillRoundRect(563, 150, currentCapture.getCurrentRunRate()+5, 20,20,20);
 			gc.setFill(Color.BLACK);
 			gc.fillText("Chance to run", 574, 164, 300);
@@ -189,7 +192,16 @@ public class CaptureAnimations {
 		public AnimatePokemonCapture(String capturePath) {
 			
 			spritesheet = new Image(capturePath, false);
-			ball=new Image("file:images/items/safariBall.png", false);
+			
+			if(itemCurrent.getClass()==SafariBall.class) {
+			ball=new Image("file:images/items/safariball2.png", false);
+			}
+			else if(itemCurrent.getClass()==UltraBall.class) {
+				ball=new Image("file:images/items/ultraball.png", false);
+				}
+			if(itemCurrent.getClass()==MasterBall.class) {
+				ball=new Image("file:images/items/masterball.png", false);
+				}
 			sx = coordinates[0][0];
 			sy = coordinates[0][1];
 			sw = coordinates[0][2];
@@ -296,7 +308,6 @@ public class CaptureAnimations {
 		int tic;
 		double x,y,w,h;
 		private Image item;
-		Item itemCurrent;
 
 		public AnimateItemThrow(Item currentItem) {
 			String ItemPath=currentItem.getImagePath();
@@ -327,9 +338,16 @@ public class CaptureAnimations {
 			}
 			if(tic>66) {
 				itemThrow.stop();
-				if(itemCurrent.getClass()==SafariBall.class) {
+				if(itemCurrent.getClass()==SafariBall.class ) {
 					captureView.attemptCapture();
 					captureView.attemptRetreat();	
+				}
+				else if(itemCurrent.getClass()==UltraBall.class) {
+					captureView.attemptUltraCapture();
+					captureView.attemptRetreat();
+				}
+				else if(itemCurrent.getClass()==MasterBall.class) {
+					captureView.attemptMasterCapture();
 				}
 				else {
 					if (itemCurrent.getClass()==Bait.class) {

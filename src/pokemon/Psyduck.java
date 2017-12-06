@@ -5,6 +5,13 @@ import java.util.List;
 
 /**
  * Class represents the common, water pokemon 'Psyduck'.
+=======
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Class represents the common, grass pokemon 'Caterpie'.
+>>>>>>> ian
  * @author Abdullah Asaad
  *
  */
@@ -16,11 +23,13 @@ public class Psyduck extends Pokemon {
 		initializeStats(160, 110, 100, 120, 105);
 		initializeAttacks();
 		initializeBattleAnimations();
+		this.standByPath="file:images/battle/Psyduck/psyduckstandby.png";
+		this.runAwayPath="file:images/battle/Psyduck/psyduckpsychic.png";
+		this.capturePath="file:images/battle/Psyduck/psyduckstandby.png";
 	}
 
 	@Override
 	public ArrayList<Attack> initializeAttacks() {
-		
 		ArrayList<Attack> listOfAttacks = this.getAttackList();
 
 		listOfAttacks.add(new ActiveAttack("Scratch", 40, PokeType.NORMAL, 100));
@@ -74,5 +83,15 @@ public class Psyduck extends Pokemon {
 	}
 
 
+	@Override
+	public int[][] getCoordinates() {
+		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
+		 //Rows		
+		int[][] coordinates = {{0,0,52,53,565,240,100,100,51, 48}, //standBy
+		{0,0,65,65,560,235,110,110, 64, 40},				 //escape/psychic
+		
+		};
+		return coordinates;
+	}
 	
 }

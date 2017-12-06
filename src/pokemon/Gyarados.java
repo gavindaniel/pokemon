@@ -72,5 +72,11 @@ public class Gyarados extends Pokemon {
 		return capturePath;
 
 	}
+
+	@Override
+	public int[][] getCoordinates() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

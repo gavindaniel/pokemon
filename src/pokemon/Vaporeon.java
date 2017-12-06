@@ -5,6 +5,13 @@ import java.util.List;
 
 /**
  * Class represents the uncommon, water pokemon 'Vaporeon'.
+=======
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Class represents the common, grass pokemon 'Caterpie'.
+>>>>>>> ian
  * @author Abdullah Asaad
  *
  */
@@ -16,6 +23,9 @@ public class Vaporeon extends Pokemon {
 		initializeStats(330, 150, 130, 210, 150);
 		initializeAttacks();
 		initializeBattleAnimations();
+		this.standByPath="file:images/battle/Vaporeon/vaporeonstand-by.png";
+		this.runAwayPath="file:images/battle/Vaporeon/vaporeonwatergun.png";
+		this.capturePath="file:images/battle/Vaporeon/vaporeonstand-by.png";
 	}
 
 	@Override
@@ -29,6 +39,7 @@ public class Vaporeon extends Pokemon {
 		listOfAttacks.add(new ActiveAttack("Sand Attack", 60, PokeType.NORMAL, 85));
 
 		return listOfAttacks;
+
 	}
 
 	@Override
@@ -53,6 +64,7 @@ public class Vaporeon extends Pokemon {
 		
 		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
 		this.setBattleAnimation(pba);
+
 	}
 	@Override
 	public String getStandByPath() {
@@ -75,8 +87,14 @@ public class Vaporeon extends Pokemon {
 
 	@Override
 	public int[][] getCoordinates() {
+
+		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
+		 //Rows		
+		int[][] coordinates = {{0,0,100,72,565,240,100,100,102, 33}, //standBy
+		{0,0,98,101,560,245,110,110, 105, 40},				 //escape/hydropump
 		
-		return null;
+		};
+		return coordinates;
 	}
 	
 }

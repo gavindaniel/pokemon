@@ -4,9 +4,14 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Random;
 
+import javax.sound.sampled.UnsupportedAudioFileException;
+
+import controller.SoundClip;
 import items.Bait;
+import items.MasterBall;
 import items.Rock;
 import items.SafariBall;
+import items.UltraBall;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -23,14 +28,14 @@ public class CaptureView extends Canvas implements Observer {
 	private GraphicsContext gc;
 	private Image battleGround;
 	private BorderPane window;
-	Button throwBallButton;
+	Button throwBallButton,throwUltraBallButton,throwMasterBallButton;
 	 Button throwBaitButton;
 	 Button throwRockButton;
 	 Button runButton;
 	 CaptureAnimations captureAnimation;
 	
 	
-	public CaptureView(Capture capture, double width, double height,BorderPane window) {
+	public CaptureView(Capture capture, double width, double height,BorderPane window) throws UnsupportedAudioFileException {
 		
 		this.setWidth(width);
 		this.setHeight(height);
@@ -38,6 +43,7 @@ public class CaptureView extends Canvas implements Observer {
 		this.capture = capture;
 		captureAnimation=new CaptureAnimations(this,"file:images/battle/battle-background.png",capture.currentPoke.getStandByPath(),capture.currentPoke.getRunAwayPath(),capture.currentPoke.getCapturePath(),this.capture.currentPoke.getCoordinates(),capture);
 		gc = this.getGraphicsContext2D();
+		new SoundClip("sounds/107-battle-vs-wild-pokemon-.mp3");
 		
 		battleGround = new Image("file:images/battle/battle-background.png", false);
 		
@@ -79,8 +85,16 @@ public class CaptureView extends Canvas implements Observer {
 	    @Override
 	    public void handle(ActionEvent event) {
 	    	if(captureAnimation.canUseItem()) {
+	    		
+	    		//Throw safariball
 	    	if(event.getSource()==throwBallButton) {
 	    		if(capture.checkSafariBalls()) {
+	    		try {
+					new SoundClip("sounds/ball_throw.wav");
+				} catch (UnsupportedAudioFileException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	    		captureAnimation.animateItemThrow(new SafariBall());
 	    		capture.currentTrain.removeSafariBall();
 	    		}
@@ -88,11 +102,59 @@ public class CaptureView extends Canvas implements Observer {
 	    			System.out.println("Out of pokeballs");
 	    		}
 	    }
+	    	
+	    	//Throw ultraball
+	    	if(event.getSource()==throwUltraBallButton) {
+	    		if(capture.checkUltraBalls()) {
+	    			try {
+						new SoundClip("sounds/ball_throw2.wav");
+					} catch (UnsupportedAudioFileException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	    		captureAnimation.animateItemThrow(new UltraBall());
+	    		capture.currentTrain.removeUltraBall();
+	    		}
+	    		else {
+	    			System.out.println("Out of UltraBalls");
+	    		}
+	    }
+	    	
+	    	//Throw masterball
+	    	if(event.getSource()==throwMasterBallButton) {
+	    		if(capture.checkMasterBalls()) {
+	    			try {
+						new SoundClip("sounds/ball_throw2.wav");
+					} catch (UnsupportedAudioFileException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+	    		captureAnimation.animateItemThrow(new MasterBall());
+	    		capture.currentTrain.removeMasterBall();
+	    		}
+	    		else {
+	    			System.out.println("Out of MasterBalls");
+	    		}
+	    }
+	    	
+	    	
 	    	if(event.getSource()==throwBaitButton) {
+	    		try {
+					new SoundClip("sounds/food_throw.wav");
+				} catch (UnsupportedAudioFileException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	    		captureAnimation.animateItemThrow(new Bait());
 	    		capture.throwBait();
 	    }
 	    	if(event.getSource()==throwRockButton) {
+	    		try {
+					new SoundClip("sounds/rock_throw.wav");
+				} catch (UnsupportedAudioFileException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	    		captureAnimation.animateItemThrow(new Rock());
 	    		capture.throwRock();
 	    }
@@ -107,7 +169,7 @@ public class CaptureView extends Canvas implements Observer {
 	  //Let the pokemon try to retreat
 	  public void attemptRetreat() {
 		  
-	    	if(capture.retreat(new Random().nextInt(100))) {
+	    	if(capture.retreat(new Random().nextInt(100)+1)) {
 	    		captureAnimation.animateRunAway();
 	    	}
 	    	
@@ -117,10 +179,38 @@ public class CaptureView extends Canvas implements Observer {
 	  //Try to capture the pokemon
 	  public void attemptCapture() {
 		  
-		  if(capture.throwBall(new Random().nextInt(100))) {
+		  if(capture.throwBall(new Random().nextInt(100)+1)) {
+			  System.out.println(capture.currentTrain.getOwnedPokemonList());
+			  captureAnimation.animateCapture();
+			  try {
+				new SoundClip("sounds/108-victory-vs-wild-pokemon-.mp3");
+			} catch (UnsupportedAudioFileException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		  }
+			  
+		  
+	  }
+	  
+	//Try to capture the pokemon with ultraball
+	  public void attemptUltraCapture() {
+		  
+		  if(capture.throwUltraBall(new Random().nextInt(100)+1)) {
 			  System.out.println(capture.currentTrain.getOwnedPokemonList());
 			  captureAnimation.animateCapture();
 		  }
+			  
+		  
+	  }
+	  
+	//Catch pokemon with masterball
+	  public void attemptMasterCapture() {
+		  
+		  capture.throwMasterBall();
+			  System.out.println(capture.currentTrain.getOwnedPokemonList());
+			  captureAnimation.animateCapture();
+		  
 			  
 		  
 	  }
@@ -133,20 +223,26 @@ public class CaptureView extends Canvas implements Observer {
 	//Set up capture buttons
 	 public void setUpCaptureButtons() {
 		 GridPane captureButtons=new GridPane();
-		 throwBallButton = new Button("Throw Ball");
+		 throwBallButton = new Button("Throw SafariBall");
+		 throwUltraBallButton = new Button("Throw UltraBall");
+		 throwMasterBallButton = new Button("Throw MasterBall");
 		 throwBaitButton = new Button("Throw Bait");
 		 throwRockButton = new Button("Throw Rock");
 		 runButton = new Button("Run Away");
 		 captureButtons.add(throwBallButton, 0, 0);
 		 captureButtons.add(throwBaitButton, 1, 0);
 		 captureButtons.add(throwRockButton, 2, 0);
-		 captureButtons.add(runButton, 3, 0);
+		 captureButtons.add(throwUltraBallButton, 3, 0);
+		 captureButtons.add(throwMasterBallButton, 4, 0);
+		 captureButtons.add(runButton, 5, 0);
 		 captureButtons.setAlignment(Pos.CENTER);
 		 window.setTop(captureButtons);
 		 BorderPane.setAlignment(captureButtons, Pos.BOTTOM_CENTER);
 		 throwBallButton.setOnAction(new CaptureButtonListener());
 		 throwBaitButton.setOnAction(new CaptureButtonListener());
 		 throwRockButton.setOnAction(new CaptureButtonListener());
+		 throwUltraBallButton.setOnAction(new CaptureButtonListener());
+		 throwMasterBallButton.setOnAction(new CaptureButtonListener());
 		 runButton.setOnAction(new CaptureButtonListener());
 	 }
 	

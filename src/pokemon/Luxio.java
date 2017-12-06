@@ -5,6 +5,13 @@ import java.util.List;
 
 /**
  * Class represents the uncommon, electric pokemon 'Luxio'.
+=======
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Class represents the common, grass pokemon 'Caterpie'.
+>>>>>>> ian
  * @author Abdullah Asaad
  *
  */
@@ -16,6 +23,9 @@ public class Luxio extends Pokemon {
 		initializeStats(220, 180, 120, 130, 130);
 		initializeAttacks();
 		initializeBattleAnimations();
+		this.standByPath="file:images/battle/Luxio/luxiostandby.png";
+		this.runAwayPath="file:images/battle/Luxio/luxiothunder.png";
+		this.capturePath="file:images/battle/Luxio/luxiostandby.png";
 	}
 
 	@Override
@@ -72,6 +82,15 @@ public class Luxio extends Pokemon {
 		return capturePath;
 
 	}
-
+	@Override
+	public int[][] getCoordinates() {
+		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
+		 //Rows		
+		int[][] coordinates = {{0,0,70,76,565,240,100,100,70, 49}, //standBy
+		{0,0,70,90,555,240,100,100, 71, 35},				 //escape/thunder
+		
+		};
+		return coordinates;
+	}
 	
 }

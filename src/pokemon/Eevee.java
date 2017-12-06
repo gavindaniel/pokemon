@@ -54,8 +54,6 @@ public class Eevee extends Pokemon {
 				{0,0,70,55,75,430,137,110, 72, 29},				 //Back Standby
 		};
 		
-		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
-		this.setBattleAnimation(pba);
 	}
 	@Override
 	public String getStandByPath() {
@@ -74,6 +72,17 @@ public class Eevee extends Pokemon {
 		// TODO Auto-generated method stub
 		return capturePath;
 
+	}
+
+	@Override
+	public int[][] getCoordinates() {
+		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
+		 //Rows		
+		int[][] coordinates = {{0,0,63,55,555,240,100,100, 64, 25}, //standBy
+		{0,0,74,67,550,245,100,100, 78, 39},				 //escape/ember
+		
+		};
+		return coordinates;
 	}
 	
 }

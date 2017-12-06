@@ -5,6 +5,13 @@ import java.util.List;
 
 /**
  * Class represents the uncommon, grass pokemon 'Ivysaur'.
+=======
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Class represents the common, grass pokemon 'Caterpie'.
+>>>>>>> ian
  * @author Abdullah Asaad
  *
  */
@@ -16,6 +23,9 @@ public class Ivysaur extends Pokemon {
 		initializeStats(225, 150, 150, 160, 130);
 		initializeAttacks();
 		initializeBattleAnimations();
+		this.standByPath="file:images/battle/Ivysaur/ivysaurstandby.png";
+		this.runAwayPath="file:images/battle/Ivysaur/ivysaursolarbeam.png";
+		this.capturePath="file:images/battle/Ivysaur/ivysaurstandby.png";
 	}
 
 	@Override
@@ -29,6 +39,7 @@ public class Ivysaur extends Pokemon {
 		listOfAttacks.add(new ActiveAttack("Bite", 70, PokeType.NORMAL, 85));
 
 		return listOfAttacks;
+
 	}
 
 	@Override
@@ -73,5 +84,15 @@ public class Ivysaur extends Pokemon {
 
 	}
 
+	@Override
+	public int[][] getCoordinates() {
+		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
+		 //Rows		
+		int[][] coordinates = {{0,0,83,65,555,240,100,100,84, 49}, //standBy
+		{0,0,95,73,555,240,100,100, 97, 35},				 //escape/solarbeam
+		
+		};
+		return coordinates;
+	}
 	
 }

@@ -32,10 +32,12 @@ public class Bulbasaur extends Pokemon {
 		listOfAttacks.add(new PassiveStatBuff("Recover", PokeType.NORMAL, 100, 1, getMaxHP()/3, 1, 1, 1));
 
 		return listOfAttacks;
+
 	}
 
 	@Override
 	public void initializeBattleAnimations() {
+
 		List<String> spritePaths = new ArrayList<>(5);
 		spritePaths.add("file:images/battle/Bulbasaur/bulbasaur-standby.png");
 		spritePaths.add("file:images/battle/Bulbasaur/bulbasaur-attack.png");
@@ -53,9 +55,8 @@ public class Bulbasaur extends Pokemon {
 				{0,0,46,50,550,255,85,85, 45, 40},				 //Fourth Attack
 				{0,0,52,52,50,390,150,150, 52, 45},				 //Back Standby
 		};
+
 		
-		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
-		this.setBattleAnimation(pba);
 	}
 	@Override
 	public String getStandByPath() {
@@ -74,6 +75,17 @@ public class Bulbasaur extends Pokemon {
 		// TODO Auto-generated method stub
 		return capturePath;
 
+	}
+
+	@Override
+	public int[][] getCoordinates() {
+		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
+		 //Rows		
+		int[][] coordinates = {{0,0,46,49,565,240,100,100, 45, 40}, //standBy
+		{0,0,65,65,555,230,120,120, 62, 63},				 //escape
+		
+		};
+		return coordinates;
 	}
 
 	

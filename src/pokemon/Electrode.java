@@ -23,7 +23,6 @@ public class Electrode extends Pokemon {
 
 	@Override
 	public ArrayList<Attack> initializeAttacks() {
-		
 		ArrayList<Attack> listOfAttacks = this.getAttackList();
 
 		listOfAttacks.add(new ActiveAttack("Thunderbolt", 90, PokeType.ELECTRIC, 75));
@@ -36,6 +35,7 @@ public class Electrode extends Pokemon {
 
 	@Override
 	public void initializeBattleAnimations() {
+
 		List<String> spritePaths = new ArrayList<>(5);
 		spritePaths.add("file:images/battle/Electrode/electrodestandby.png");
 		spritePaths.add("file:images/battle/Electrode/electrodeattack.png");
@@ -53,9 +53,8 @@ public class Electrode extends Pokemon {
 				{2, 0,70,58,550,255,90,80, 72, 45},				 //Fourth Attack
 				{2,0,70,58,110,430,120,100, 73, 45},				 //Back Standby
 		};
+
 		
-		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
-		this.setBattleAnimation(pba);
 	}
 	
 	@Override
@@ -76,5 +75,17 @@ public class Electrode extends Pokemon {
 		return capturePath;
 
 	}
+
+	@Override
+	public int[][] getCoordinates() {
+		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
+		 //Rows		
+		int[][] coordinates = {{0,0,72,59,555,240,100,100,72, 45}, //standBy
+		{0,0,72,59,555,245,100,100, 72, 44},				 //escape/electrode attack
+		
+		};
+		return coordinates;
+	}
+
 	
 }
