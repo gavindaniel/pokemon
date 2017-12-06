@@ -53,11 +53,19 @@ public class BagView extends BorderPane implements Observer {
 	
 	public void updateTextArea() {
 		String result = "";
-		
 		result += "*********************\n";
 		result += "***  Trainer  Items  ***\n";
 		result += "*********************\n\n";
 		for (Item item: theGame.getMap().getTrainer().getItemList()) {
+			if(!result.contains(item.getClass().getSimpleName())) {
+				int itemCount=0;
+				for (Item item2: theGame.getMap().getTrainer().getItemList()) {
+					if(item2.getClass()==item.getClass()) {
+						itemCount++;
+					}
+				}
+			result += item.toString() + ": " +itemCount +"\n";
+			}
 			
 		}
 //		for (Pokemon pokemon : theGame.getMap().getTrainer().getOwnedPokemonList()) {
