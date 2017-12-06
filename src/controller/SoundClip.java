@@ -13,11 +13,22 @@ import javafx.scene.media.MediaPlayer;
 // Hence, we use a Swing application.
 public class SoundClip {
 
+	Media hit;
+	String filepath;
+	MediaPlayer mediaPlayer;
    // Constructor
    public SoundClip(String filepath) throws UnsupportedAudioFileException {
-     
-      Media hit = new Media(new File(filepath).toURI().toString());
-	  MediaPlayer mediaPlayer = new MediaPlayer(hit);
+     filepath=filepath;
+      hit = new Media(new File(filepath).toURI().toString());
+	  mediaPlayer = new MediaPlayer(hit);
 	  mediaPlayer.play();
+   }
+   
+   public void setSound(String filepath) {
+	   filepath=filepath;
+   }
+   
+   public MediaPlayer getMedia() {
+	   return mediaPlayer;
    }
 }
