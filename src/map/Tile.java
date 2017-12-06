@@ -23,6 +23,9 @@ public class Tile {
 	
 	public Tile(char c) {
 		
+		if (c == 'i') {
+			type = "item";
+		}
 		if (c == '_' || c == 'P') {
 			type = "ground";
 		}

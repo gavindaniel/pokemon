@@ -25,7 +25,7 @@ public class Map extends Observable {
 	private Trainer trainer;
 	private Vector<Trainer> trainers;
 	private Vector<Zone> zones;
-	private static final int numPokemon = 50;
+	private static final int numPokemon = 10;
 	private static Settings settings;
 
 	public Map() {
@@ -75,8 +75,10 @@ public class Map extends Observable {
 			File file = new File("./files/zone"+z+".txt");
 			Zone tempZone = zones.get(z-1);
 			Tile temp = new Tile();
-			int r = 0;//settings.getTreeLine();
-			int c = 0;//settings.getTreeLine();
+			int r = settings.getTreeLine();
+			int c = settings.getTreeLine();
+			int row_count = 0;
+			int col_count = 0;
 			try {
 				Scanner sc = new Scanner(file);
 				while (sc.hasNextLine()) {
@@ -92,18 +94,20 @@ public class Map extends Observable {
 								}
 							}
 							c++;
+							col_count++;
 						}
 					}
-					if (r == 0)
-						tempZone.setColumnSize(c);
-					c = 0;//settings.getTreeLine();
+					if (row_count == 0)
+						tempZone.setColumnSize(col_count);
+					c = settings.getTreeLine();
 					r++;
+					row_count++;
 				}
 				sc.close();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
-			tempZone.setRowSize(r);
+			tempZone.setRowSize(row_count);
 			zones.set(z-1,tempZone);
 		}
 	}
@@ -121,10 +125,10 @@ public class Map extends Observable {
 		int random_c;
 		clearPokemon(); //clears the zones of any pokemon
 		for (int z = 0; z < zones.size(); z++) {
-			if (zones.get(z).getColumnSize() > zones.get(z).getRowSize())
-				max = zones.get(z).getRowSize();
-			else if (zones.get(z).getColumnSize() <= zones.get(z).getRowSize())
-				max = zones.get(z).getColumnSize();
+//			if (zones.get(z).getColumnSize() > zones.get(z).getRowSize())
+//				max = zones.get(z).getRowSize();
+//			else if (zones.get(z).getColumnSize() <= zones.get(z).getRowSize())
+//				max = zones.get(z).getColumnSize();
 			while (num <= numPokemon) {
 				random_r = ThreadLocalRandom.current().nextInt(min, max); // removed '+ 1' to not include size (200)
 				random_c = ThreadLocalRandom.current().nextInt(min, max); // removed '+ 1' to not include size (200)
@@ -135,15 +139,19 @@ public class Map extends Observable {
 						num++;
 					}
 			}
+			num = 1;
 		}
 	}
+	
 	
 	public String updateTrainerLocation(Point oldLoc, Point newLoc) {
 		Point newP = newLoc;
 		String response = "nothing";
 		if (checkCanMoveHere(trainer.getZone()-1, oldLoc, newP)) {
-			if (checkZoneChange(newP))
-				newP = changeZone(oldLoc);
+			if (checkZoneChange(newP)) {
+				newP = changeZone(trainer, oldLoc);
+				System.out.println("trying to swtich");
+			}
 			trainer.setCurrentLocation(newP);
 			trainer.setNumSteps(trainer.getNumSteps() - 1);
 			Pokemon temp = checkForPokemon(trainer.getZone()-1, newLoc);
@@ -239,7 +247,11 @@ public class Map extends Observable {
 		int zoneNum = trainer.getZone()-1;
 		Tile newTile = zones.get(zoneNum).getTile(new_r, new_c);
 		try {
-			if (newTile.getType() == "exit") return true;
+			if (newTile.getType() == "exit") {
+				System.out.println("trying to switch zones");
+				return true;
+				
+			}
 			else return false;
 		} 
 		
@@ -249,27 +261,29 @@ public class Map extends Observable {
 		} 
 	}
 	// if check for zone change was true, switch the zone so the view updates
-	public Point changeZone(Point oldPosition) {
+	public Point changeZone(Trainer player, Point oldPosition) {
 		int c = (int) oldPosition.getX();
 		int r = (int) oldPosition.getY();
 		
-		int prevZone = trainer.getZone();
+		int prevZone = player.getZone();
+		System.out.println("prev zone: " + prevZone);
+//		System.out.println(x);
 		if (prevZone == 1) {
 			if (c == 61) {
 				r += 8;
 				c = 24;
-				trainer.setZone(2); // might need to be 1 
+				player.setZone(2); // might need to be 1 
 			}
 			else if (r == 21) {
 				r = 47;
 				c += 10;
-				trainer.setZone(3);
+				player.setZone(3);
 			}
 			else if (c == 21) {
 				// r = 36 (top) or 37 (bottom)
 				r += 8;
 				c = 61;
-				trainer.setZone(4);
+				player.setZone(4);
 			}
 			return new Point(c,r);
 		}
@@ -277,13 +291,13 @@ public class Map extends Observable {
 			if (r == 41 || r == 42 || r == 43) {
 				r -= 8;
 				c = 61; 
-				trainer.setZone(1); // might need to be 1 
+				player.setZone(1); // might need to be 1 
 				return new Point(c,r);
 			}
 			else if (r == 24 || r == 25) {
 				r += 17;
 				c = 71;
-				trainer.setZone(3);
+				player.setZone(3);
 			}
 			return new Point(c,r); //don't change 
 		}
@@ -291,17 +305,17 @@ public class Map extends Observable {
 			if (r == 41 || r == 42) {
 				r -= 17;
 				c = 24;
-				trainer.setZone(2);
+				player.setZone(2);
 			}
 			else if (c == 50 || c == 51 || c == 52) {
 				r = 21;
 				c -= 10;
-				trainer.setZone(1);
+				player.setZone(1);
 			}
 			else if (c == 28 || c == 29) { // r = 47
 				r = 21;
 				c += 28;
-				trainer.setZone(4);
+				player.setZone(4);
 			}
 			return new Point(c,r); //don't change 
 		}
@@ -309,12 +323,12 @@ public class Map extends Observable {
 			if (c == 61) { // r = 44 (top) or 45 (bottom)
 				r -= 8;
 				c = 21;
-				trainer.setZone(1);
+				player.setZone(1);
 			}
 			else if (c == 56 || c == 57) { // top-right exit	: r = 21
 				r = 47;
 				c -= 28;
-				trainer.setZone(3);
+				player.setZone(3);
 			}
 			return new Point(c,r);
 		}

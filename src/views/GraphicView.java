@@ -73,6 +73,7 @@ public class GraphicView extends Canvas implements Observer {
 	private static Image water_topright;
 	private static Image water_bottomleft;
 	private static Image water_bottomright;
+	private static Image poke_ball;
 	
 	private double duration;
 	
@@ -167,11 +168,17 @@ public class GraphicView extends Canvas implements Observer {
 		double rc = 0, cc = 0; //row_index, col_index;
 		Tile temp;
 		Image img;
+		Image grass;
 		for (int r = row_lowerBound; r <= row_upperBound; r++) {
 			for (int c = col_lowerBound; c <= col_upperBound; c++) {
 				try {
 					temp = theGame.getMap().getZone(zoneNum).getTile(pr + r, pc + c);
 					img = getImage(temp.getSourceChar());
+					if (temp.getSourceChar() == 'i') {
+						grass = getImage('_');
+						gc.drawImage(grass, 0, 0, imageSize, imageSize, (cc * displaySize)+xshift, (rc * displaySize)+yshift, displaySize, displaySize);
+						gc.drawImage(img, 0, 0, imageSize, imageSize, (cc * displaySize)+xshift, (rc * displaySize)+yshift, displaySize, displaySize);
+					}
 					gc.drawImage(img, 0, 0, imageSize, imageSize, (cc * displaySize)+xshift, (rc * displaySize)+yshift, displaySize, displaySize);
 					cc++;
 				} catch (NullPointerException npe) {
@@ -402,8 +409,11 @@ public class GraphicView extends Canvas implements Observer {
 		 water_topright = new Image("file:images/water/water-tr.bmp");
 		 water_bottomleft = new Image("file:images/water/water-bl.bmp");
 		 water_bottomright = new Image("file:images/water/water-br.bmp");
+		 poke_ball = new Image("file:images/items/item.png");
 	}
 	public Image getImage(char c) {
+		if (c == 'i')
+			return poke_ball;
 		if (c == '_' || c == 'P')
 			return ground;
 		else if (c == 'G')
