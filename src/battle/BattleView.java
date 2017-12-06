@@ -72,6 +72,9 @@ public class BattleView extends Canvas implements Observer {
 				animateBattleText(line1, line2);
 				infoTextTimeline.setOnFinished((event) -> {
 					startAttack((Attack) message);
+					if (battle.getCurrState() == BattleState.FAINTED) {
+						animateBattleText("POKEMON will", "have FAINTED");
+					}
 				});
 			}
 			
@@ -107,11 +110,11 @@ public class BattleView extends Canvas implements Observer {
 	public void drawBattleMenus() {
 		gc.drawImage(battleMenus, 16, 110, 240, 48, 0, this.getHeight() - 48*3, this.getWidth(), 48*3); //Text Bar
 		
-		if (battle.getCurrState() == 'c') {
+		if (battle.getCurrState() == BattleState.IDLE) {
 			drawMainSelectMenu(0);
 		}
 		
-		else if (battle.getCurrState() == 'a') {
+		else if (battle.getCurrState() == BattleState.CHOOSE_ATTACK) {
 			drawAttackMenu(0);
 		}
 	}
@@ -218,6 +221,9 @@ public class BattleView extends Canvas implements Observer {
 		if(line2 == null) cycleCnt = line1.length();
 		else cycleCnt = line1.length() + line2.length();
 		
+		//CLear text bar
+		gc.drawImage(battleMenus, 16, 110, 240/2, 48, 0, this.getHeight() - 48*3, this.getWidth()/2, 48*3);
+		
 		infoTextTimeline = new Timeline(new KeyFrame(Duration.millis(50), new AnimateBattleText(this.getWidth(), line1, line2)));
 		infoTextTimeline.setCycleCount(cycleCnt);
 		infoTextTimeline.playFromStart();
@@ -260,7 +266,7 @@ public class BattleView extends Canvas implements Observer {
 		
 		stopAllActiveTimelines();
 		
-		battle.setCurrState('c');
+//		battle.setCurrState(BattleState.IDLE);
 		drawMainSelectMenu(0);
 		
 		Pokemon userPoke = battle.getActiveTrainer().getActiveBattlePokemon(); //User controlled Pokemon
@@ -311,7 +317,7 @@ public class BattleView extends Canvas implements Observer {
 		defendPoke.getBattleAnimation().getBackStandby().play();
 	}
 	
-	private void stopAllActiveTimelines() {
+	public void stopAllActiveTimelines() {
 		
 		Pokemon userPoke = battle.getActiveTrainer().getActiveBattlePokemon(); //User controlled Pokemon
 		Pokemon oppPoke = battle.getOppTrainer().getActiveBattlePokemon(); //Opposing Pokemon

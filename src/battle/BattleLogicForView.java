@@ -21,7 +21,7 @@ public class BattleLogicForView extends Observable {
 	private Trainer defendTrainer;
 	private double[][] effectLookupTable; // Lookup table with values determining elemental attack effectiveness
 	
-	private char currState;
+	private BattleState currState;
 
 	public BattleLogicForView(Trainer actTrainer, Trainer oppTrainer) {
 
@@ -30,7 +30,7 @@ public class BattleLogicForView extends Observable {
 		this.attackTrainer = null;
 		this.defendTrainer = null;
 		
-		this.setCurrState('c');
+		this.setCurrState(BattleState.IDLE);
 
 		generateEffectLookupTable();
 	}
@@ -96,17 +96,17 @@ public class BattleLogicForView extends Observable {
 	/**
 	 * @return the currState
 	 */
-	public char getCurrState() {
+	public BattleState getCurrState() {
 		return currState;
 	}
 
 	/**
-	 * @param currState the currState to set
+	 * @param currState the current state of battle
 	 */
-	public void setCurrState(char currState) {
+	public void setCurrState(BattleState currState) {
 		this.currState = currState;
 	}
-
+	
 	/**
 	 * Top level function to handle battle sequence.
 	 */
@@ -337,9 +337,8 @@ public class BattleLogicForView extends Observable {
 	 *         otherwise.
 	 */
 	public boolean isBattleOver() {
-//		return areAllPokemonDrained(trainer1.getBattlePokemonList())
-//				|| areAllPokemonDrained(trainer2.getBattlePokemonList());
-		return isPokemonDrained(activeTrainer.getActiveBattlePokemon()) || isPokemonDrained(oppTrainer.getActiveBattlePokemon());
+		return areAllPokemonDrained(activeTrainer.getBattlePokemonList())
+				|| areAllPokemonDrained(oppTrainer.getBattlePokemonList());
 	}
 
 	/**
