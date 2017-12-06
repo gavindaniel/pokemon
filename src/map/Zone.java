@@ -8,6 +8,8 @@ public class Zone {
 	private Tile[][] tiles;
 	private Settings settings;
 	private int size;
+	private int num_columns;
+	private int num_rows;
 	
 	public Zone(int num) {
 		zone_number = num;
@@ -27,5 +29,18 @@ public class Zone {
 	}
 	public void setTile(Tile t, int r, int c) {
 		tiles[r][c] = t;
+	}
+	
+	public int getColumnSize() {
+		return num_columns;
+	}
+	public int getRowSize() {
+		return num_rows;
+	}
+	public void setColumnSize(int c) {
+		num_columns = c;
+	}
+	public void setRowSize(int r) {
+		num_rows = r;
 	}
 }

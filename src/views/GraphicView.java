@@ -1,7 +1,10 @@
 package views;
 
+import java.awt.Point;
 import java.util.Observable;
 import java.util.Observer;
+
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import battle.BattleGUI;
 import capture.Capture;
@@ -23,7 +26,10 @@ import javafx.util.Duration;
 import map.Tile;
 import model.SafariZone;
 import model.Trainer;
+import pokemon.Bulbasaur;
+import pokemon.Charmander;
 import pokemon.Pikachu;
+import pokemon.Pokemon;
 
 public class GraphicView extends Canvas implements Observer {
 
@@ -79,7 +85,8 @@ public class GraphicView extends Canvas implements Observer {
 	private Capture capture;
 	private CaptureView captureView;
 	private String response;
-	
+	private Point trainerLocation, newLocation;
+	private double shift_amount;
 	
 	@Override
 	public void update(Observable o, Object arg) {
@@ -94,8 +101,9 @@ public class GraphicView extends Canvas implements Observer {
 	
 	/**
 	 * @param instance of the game 'PokemonGame'
+	 * @throws UnsupportedAudioFileException 
 	 */
-	public GraphicView(SafariZone PokemonGame, Stage main, Scene game) {
+	public GraphicView(SafariZone PokemonGame, Stage main, Scene game) throws UnsupportedAudioFileException {
 		theGame = PokemonGame;
 		mainStage = main;
 		game_scene = game;
@@ -104,8 +112,8 @@ public class GraphicView extends Canvas implements Observer {
 		//----- Capture -----------
 		capture_window = new BorderPane();
 		capture_scene = new Scene(capture_window, theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene")); //new
-		capture = new Capture(new Pikachu(), theGame.getMap().getTrainer());
-		//captureView = new CaptureView(capture, theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene"), mainStage, game_scene, capture_scene);
+		capture = new Capture(new Charmander(), theGame.getMap().getTrainer());
+		captureView = new CaptureView(capture, theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene"), mainStage, game_scene, capture_scene);
 		capture_window.setCenter(captureView);		
 		//----- Battle ------------
 		battle_window = new BorderPane();
@@ -116,6 +124,10 @@ public class GraphicView extends Canvas implements Observer {
 		tic = 0;
 		direction = KeyCode.ENTER;
 		lastStep = 'L';
+		shift_amount = theGame.getSettings().getShiftAmount();
+		//--------- Other ------------
+		trainerLocation = theGame.getMap().getTrainer().getCurrentLocation();
+		newLocation = theGame.getMap().getTrainer().getCurrentLocation();
 		//-----------------------
 		row_lowerBound = theGame.getSettings().getLowerBound("graphic");
 		col_lowerBound = theGame.getSettings().getLowerBound("graphic");
@@ -139,15 +151,18 @@ public class GraphicView extends Canvas implements Observer {
 	private void initializePane() {
 		gc = this.getGraphicsContext2D();
 		createImages();
-		drawViewableArea();
+		drawViewableArea(trainerLocation); //theGame.getMap().getTrainer().getCurrentLocation()
 		drawTrainer();
 	}
+	
 	/**
 	 *	draws the viewable area around the trainer based on his/her location
 	 */
-	public void drawViewableArea() {
-		int pc = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();	//	trainer location (column)
-		int pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();	//	trainer location (row)
+	public void drawViewableArea(Point trainerLocation) {
+//		int pc = (int) theGame.getMap().getTrainer().getCurrentLocation().getX();	//	trainer location (column)
+//		int pr = (int) theGame.getMap().getTrainer().getCurrentLocation().getY();	//	trainer location (row)
+		int pc = (int) trainerLocation.getX();	//	trainer location (column)
+		int pr = (int) trainerLocation.getY();	//	trainer location (row)
 		int zoneNum = theGame.getMap().getTrainer().getZone();	//	trainer location (zone number)
 		double rc = 0, cc = 0; //row_index, col_index;
 		Tile temp;
@@ -166,25 +181,35 @@ public class GraphicView extends Canvas implements Observer {
 			cc = 0; rc++;
 		}
 	}
+	
 	/**
-	 *	clears the canvas 
+	 *	checks the viewable area for the tree line so draw viewable area will or will not shift
 	 */
-	public void clearCanvas() {
-		gc.clearRect(0, 0, theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene"));
+	public boolean checkForTreeLine(Point trainerLocation) {
+		int pc = (int) trainerLocation.getX();	//	trainer location (column)
+		int pr = (int) trainerLocation.getY();	//	trainer location (row)
+		int zoneNum = theGame.getMap().getTrainer().getZone();	//	trainer location (zone number)
+		double rc = 0, cc = 0; //row_index, col_index;
+		Tile temp;
+		
+		for (int r = row_lowerBound; r <= row_upperBound; r++) {
+			for (int c = col_lowerBound; c <= col_upperBound; c++) {
+				try {
+					temp = theGame.getMap().getZone(zoneNum).getTile(pr + r, pc + c);
+//					img = getImage(temp.getSourceChar());
+//					gc.drawImage(img, 0, 0, imageSize, imageSize, (cc * displaySize)+xshift, (rc * displaySize)+yshift, displaySize, displaySize);
+					cc++;
+				} catch (NullPointerException npe) {
+					// needed just in case some weird shit happens
+					return true;
+				}
+			}
+			cc = 0; rc++;
+		}
+		return false;
+//		
 	}
-	/**
-	 *	resets the variables for drawing trainer location
-	 */
-	public void resetTrainer() {
-		sx = theGame.getSettings().getX("sprite");
-		sy = theGame.getSettings().getY("sprite");
-		sw = theGame.getSettings().getWidth("source");
-		sh = theGame.getSettings().getHeight("source");
-		dx = theGame.getSettings().getX("trainer");
-		dy = theGame.getSettings().getY("trainer");
-		dw = theGame.getSettings().getWidth("display");
-		dh = theGame.getSettings().getHeight("display");
-	}
+	
 	/**
 	 *	draws the trainer based on a range of values 
 	 */
@@ -213,12 +238,17 @@ public class GraphicView extends Canvas implements Observer {
 		@Override
 		public void handle(ActionEvent event) {
 			tic++;
+			
+//			boolean edge_of_map;
+//			edge_of_map = checkForTreeLine(newLocation);
+			
 			if (direction == KeyCode.RIGHT) {
 				if (tic == 1) {
 					sx = 89;
 					sy = lastStep == 'L' ? 30 : 150;
 					lastStep = lastStep == 'L' ? 'R' : 'L';
-					xshift = -16;
+//					if (!edge_of_map)
+						xshift = -16;
 					col_upperBound += 1;
 				}
 				if (tic == 2) {
@@ -232,7 +262,8 @@ public class GraphicView extends Canvas implements Observer {
 					sx = 28;
 					sy = lastStep == 'L' ? 30 : 150;
 					lastStep = lastStep == 'L' ? 'R' : 'L';
-					xshift = -16;
+//					if (!edge_of_map)
+						xshift = -16;
 					col_lowerBound -= 1;
 				}
 				if (tic == 2) { 
@@ -246,7 +277,8 @@ public class GraphicView extends Canvas implements Observer {
 					sx = 58;
 					sy = lastStep == 'L' ? 30 : 150;
 					lastStep = lastStep == 'L' ? 'R' : 'L';
-					yshift = -16;
+//					if (!edge_of_map)
+						yshift = -16;
 					row_lowerBound -= 1;
 				}
 				if (tic == 2) {
@@ -260,7 +292,8 @@ public class GraphicView extends Canvas implements Observer {
 					sx = -2;
 					sy = lastStep == 'L' ? 30 : 150;
 					lastStep = lastStep == 'L' ? 'R' : 'L';
-					yshift = -16;
+//					if (!edge_of_map)
+						yshift = -16;
 				}
 				if (tic == 2) {
 					sy = 0;
@@ -268,15 +301,29 @@ public class GraphicView extends Canvas implements Observer {
 				}
 			}
 			clearCanvas();
-			drawViewableArea();
+//			if (!edge_of_map)
+				trainerLocation = newLocation;
+			drawViewableArea(trainerLocation);
 			drawTrainer();
 			
 			if (tic > 1) {
 				tic = 0;
-				if (done || response == "pokemon") {
+				if (done || response.contains("pokemon")) {
 					timeline.stop();	
-					if (response == "pokemon")
+					if (response.contains("pokemon")) {
+						System.out.println(response);
+						Pokemon temp = getPokemon(response);
+						System.out.println(temp.getName());
+						capture = new Capture(temp, theGame.getMap().getTrainer());
+						try {
+							captureView = new CaptureView(capture, theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene"), mainStage, game_scene, capture_scene);
+						} catch (UnsupportedAudioFileException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+						capture_window.setCenter(captureView);	
 						mainStage.setScene(capture_scene);
+					}
 					else if (response == "trainer") {
 						mainStage.hide();
 						BattleGUI gui = new BattleGUI();
@@ -289,15 +336,46 @@ public class GraphicView extends Canvas implements Observer {
 							// TODO Auto-generated catch block
 							e.printStackTrace();
 						}
-						//mainStage.setScene(battle_scene);
 					}
 				}
 			}
-			if (tic == 1)
-					response = theGame.movePlayer(direction);
+			if (tic == 1) { 
+//				Point prevLocation = theGame.getMap().getTrainer().getCurrentLocation();
+				response = theGame.movePlayer(direction);
+				newLocation = theGame.getMap().getTrainer().getCurrentLocation();
+			}
 		}
 	}
 
+	
+	public Pokemon getPokemon(String pokeName) {
+		if (pokeName.contains("Pikachu")) 
+			return new Pikachu();
+		else if (pokeName.contains("Charmander")) 
+			return new Charmander();
+		else 
+			return new Bulbasaur();
+	}
+	
+	/**
+	 *	clears the canvas 
+	 */
+	public void clearCanvas() {
+		gc.clearRect(0, 0, theGame.getSettings().getWidth("scene"), theGame.getSettings().getHeight("scene"));
+	}
+	/**
+	 *	resets the variables for drawing trainer location
+	 */
+	public void resetTrainer() {
+		sx = theGame.getSettings().getX("sprite");
+		sy = theGame.getSettings().getY("sprite");
+		sw = theGame.getSettings().getWidth("source");
+		sh = theGame.getSettings().getHeight("source");
+		dx = theGame.getSettings().getX("trainer");
+		dy = theGame.getSettings().getY("trainer");
+		dw = theGame.getSettings().getWidth("display");
+		dh = theGame.getSettings().getHeight("display");
+	}
 	
 	public void createImages() {
 		 ground = new Image("file:images/shrubs/ground-g.bmp");

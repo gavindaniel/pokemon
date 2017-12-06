@@ -15,12 +15,14 @@ import items.UltraBall;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 public class CaptureView extends Canvas implements Observer {
 	
@@ -35,11 +37,18 @@ public class CaptureView extends Canvas implements Observer {
 	 CaptureAnimations captureAnimation;
 	
 	
-	public CaptureView(Capture capture, double width, double height,BorderPane window) throws UnsupportedAudioFileException {
+	 private Stage mainStage;
+	 private Scene game_scene, capture_scene;
+	 
+	public CaptureView(Capture capture, double width, double height, Stage stage, Scene gameS, Scene captureS)  throws UnsupportedAudioFileException {
+		
+		mainStage = stage;
+		game_scene = gameS;
+		capture_scene = captureS;
 		
 		this.setWidth(width);
 		this.setHeight(height);
-		this.window=window;
+		this.window= (BorderPane) captureS.getRoot();
 		this.capture = capture;
 		captureAnimation=new CaptureAnimations(this,"file:images/battle/battle-background.png",capture.currentPoke.getStandByPath(),capture.currentPoke.getRunAwayPath(),capture.currentPoke.getCapturePath(),this.capture.currentPoke.getCoordinates(),capture);
 		gc = this.getGraphicsContext2D();
@@ -159,7 +168,7 @@ public class CaptureView extends Canvas implements Observer {
 	    		capture.throwRock();
 	    }
 	    	if(event.getSource()==runButton) {
-	    		System.exit(0);
+	    		mainStage.setScene(game_scene);
 	    }
 	  }
 	    	
