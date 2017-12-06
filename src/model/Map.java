@@ -14,6 +14,8 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import map.Tile;
 import map.Zone;
+import pokemon.Bulbasaur;
+import pokemon.Charmander;
 import pokemon.Pikachu;
 import pokemon.Pokemon;
 
@@ -73,8 +75,8 @@ public class Map extends Observable {
 			File file = new File("./files/zone"+z+".txt");
 			Zone tempZone = zones.get(z-1);
 			Tile temp = new Tile();
-			int r = settings.getTreeLine();
-			int c = settings.getTreeLine();
+			int r = 0;//settings.getTreeLine();
+			int c = 0;//settings.getTreeLine();
 			try {
 				Scanner sc = new Scanner(file);
 				while (sc.hasNextLine()) {
@@ -92,32 +94,41 @@ public class Map extends Observable {
 							c++;
 						}
 					}
-					c = settings.getTreeLine();
+					if (r == 0)
+						tempZone.setColumnSize(c);
+					c = 0;//settings.getTreeLine();
 					r++;
 				}
 				sc.close();
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			}
+			tempZone.setRowSize(r);
 			zones.set(z-1,tempZone);
 		}
 	}
 	public void clearPokemon() {
 		for (int z = 0; z < zones.size(); z++)
-			for (int r = 0; r < size; r++)
-				for (int c = 0; c < size; c++)
+			for (int r = 0; r < zones.get(z).getRowSize(); r++)
+				for (int c = 0; c < zones.get(z).getColumnSize(); c++)
 					zones.get(z).getTile(r,c).setPokemonHere(false);
 	}
 	public void spawnPokemon() {
 		int min = 0;
 		int max = size;
 		int num = 1;
+		int random_r;
+		int random_c;
 		clearPokemon(); //clears the zones of any pokemon
-		while (num <= numPokemon) {
-			int random_r = ThreadLocalRandom.current().nextInt(min, max); // removed '+ 1' to not include size (200)
-			int random_c = ThreadLocalRandom.current().nextInt(min, max); // removed '+ 1' to not include size (200)
+		for (int z = 0; z < zones.size(); z++) {
+			if (zones.get(z).getColumnSize() > zones.get(z).getRowSize())
+				max = zones.get(z).getRowSize();
+			else if (zones.get(z).getColumnSize() <= zones.get(z).getRowSize())
+				max = zones.get(z).getColumnSize();
+			while (num <= numPokemon) {
+				random_r = ThreadLocalRandom.current().nextInt(min, max); // removed '+ 1' to not include size (200)
+				random_c = ThreadLocalRandom.current().nextInt(min, max); // removed '+ 1' to not include size (200)
 			
-			for (int z = 0; z < zones.size(); z++) {
 				if (zones.get(z).getTile(random_r, random_c).getPokemonHere() == false)
 					if (zones.get(z).getTile(random_r, random_c).getType() == "grass") {
 						zones.get(z).getTile(random_r, random_c).setPokemonHere(true);
@@ -135,8 +146,9 @@ public class Map extends Observable {
 				newP = changeZone(oldLoc);
 			trainer.setCurrentLocation(newP);
 			trainer.setNumSteps(trainer.getNumSteps() - 1);
-			if (checkForPokemon(trainer.getZone()-1, newLoc)) {
-				response = "pokemon";
+			Pokemon temp = checkForPokemon(trainer.getZone()-1, newLoc);
+			if (temp != null) {
+				response = "pokemon-" + temp.getName();
 			}
 			if (checkForTrainer(trainer.getZone()-1, newLoc)) {
 				response = "trainer";
@@ -171,23 +183,41 @@ public class Map extends Observable {
 		} 
 		
 	}
-
-	public boolean checkForPokemon(int zoneNum, Point newPosition) {
+	
+	public Pokemon checkForPokemon(int zoneNum, Point newPosition) {
 		int c = (int) newPosition.getX();
 		int r = (int) newPosition.getY();
 		try {
 			if (zones.get(zoneNum).getTile(r,c).getPokemonHere() == true) {
-				//Vector<Pokemon> temp = trainer.getPokemon();
-//				Thread.sleep(500);
-				List<Pokemon> temp = trainer.getOwnedPokemonList();
-				temp.add(new Pikachu());								// FIXME
-				trainer.setOwnedPokemonList(temp);
-				return true;
+				
+//				List<Pokemon> temp = trainer.getOwnedPokemonList();
+//				trainer.setOwnedPokemonList(temp);
+				return getRandomPokemon();
 			}
 		} catch (ArrayIndexOutOfBoundsException aiobe) {
 			System.out.println(aiobe.toString());
 		} 
-		return false;
+		return null;
+	}
+
+	public Pokemon getRandomPokemon() {
+		int random = ThreadLocalRandom.current().nextInt(0, 3); //9
+		if (random == 0)
+			return new Pikachu();
+		if (random == 1)
+			return new Charmander();
+//		if (random == 2)
+			return new Bulbasaur();
+//		if (random == 3)
+//			return new Pikachu();
+//		if (random == 4)
+//			return new Pikachu();
+//		if (random == 5)
+//			return new Pikachu();
+//		if (random == 6)
+//			return new Pikachu();
+//		if (random == 7)
+//			return new Pikachu();
 	}
 
 	public boolean checkForTrainer(int zoneNum, Point newPosition) {

@@ -15,12 +15,14 @@ import items.UltraBall;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 public class CaptureView extends Canvas implements Observer {
 	
@@ -28,18 +30,25 @@ public class CaptureView extends Canvas implements Observer {
 	private GraphicsContext gc;
 	private Image battleGround;
 	private BorderPane window;
-	Button throwBallButton,throwUltraBallButton,throwMasterBallButton;
+	Button throwBallButton,throwUltraBallButton,throwMasterBallButton,easyCatchButton,easyStayButton;
 	 Button throwBaitButton;
 	 Button throwRockButton;
 	 Button runButton;
 	 CaptureAnimations captureAnimation;
 	
 	
-	public CaptureView(Capture capture, double width, double height,BorderPane window) throws UnsupportedAudioFileException {
+	 private Stage mainStage;
+	 private Scene game_scene, capture_scene;
+	 
+	public CaptureView(Capture capture, double width, double height, Stage stage, Scene gameS, Scene captureS)  throws UnsupportedAudioFileException {
+		
+		mainStage = stage;
+		game_scene = gameS;
+		capture_scene = captureS;
 		
 		this.setWidth(width);
 		this.setHeight(height);
-		this.window=window;
+		this.window= (BorderPane) captureS.getRoot();
 		this.capture = capture;
 		captureAnimation=new CaptureAnimations(this,"file:images/battle/battle-background.png",capture.currentPoke.getStandByPath(),capture.currentPoke.getRunAwayPath(),capture.currentPoke.getCapturePath(),this.capture.currentPoke.getCoordinates(),capture);
 		gc = this.getGraphicsContext2D();
@@ -158,8 +167,15 @@ public class CaptureView extends Canvas implements Observer {
 	    		captureAnimation.animateItemThrow(new Rock());
 	    		capture.throwRock();
 	    }
+	    	if(event.getSource()==easyCatchButton) {
+	    		capture.useEasyCatch();
+	    	}
+	    	if(event.getSource()==easyStayButton) {
+	    		capture.useEasyStay();
+	    	}
+	    	
 	    	if(event.getSource()==runButton) {
-	    		System.exit(0);
+	    		mainStage.setScene(game_scene);
 	    }
 	  }
 	    	
@@ -226,6 +242,8 @@ public class CaptureView extends Canvas implements Observer {
 		 throwBallButton = new Button("Throw SafariBall");
 		 throwUltraBallButton = new Button("Throw UltraBall");
 		 throwMasterBallButton = new Button("Throw MasterBall");
+		 easyCatchButton = new Button("Use Easy Catch");
+		 easyStayButton = new Button("Use Easy Stay");
 		 throwBaitButton = new Button("Throw Bait");
 		 throwRockButton = new Button("Throw Rock");
 		 runButton = new Button("Run Away");
@@ -234,7 +252,9 @@ public class CaptureView extends Canvas implements Observer {
 		 captureButtons.add(throwRockButton, 2, 0);
 		 captureButtons.add(throwUltraBallButton, 3, 0);
 		 captureButtons.add(throwMasterBallButton, 4, 0);
-		 captureButtons.add(runButton, 5, 0);
+		 captureButtons.add(easyCatchButton, 5, 0);
+		 captureButtons.add(easyStayButton, 6, 0);
+		 captureButtons.add(runButton, 7, 0);
 		 captureButtons.setAlignment(Pos.CENTER);
 		 window.setTop(captureButtons);
 		 BorderPane.setAlignment(captureButtons, Pos.BOTTOM_CENTER);
@@ -243,6 +263,8 @@ public class CaptureView extends Canvas implements Observer {
 		 throwRockButton.setOnAction(new CaptureButtonListener());
 		 throwUltraBallButton.setOnAction(new CaptureButtonListener());
 		 throwMasterBallButton.setOnAction(new CaptureButtonListener());
+		 easyCatchButton.setOnAction(new CaptureButtonListener());
+		 easyStayButton.setOnAction(new CaptureButtonListener());
 		 runButton.setOnAction(new CaptureButtonListener());
 	 }
 	

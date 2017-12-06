@@ -2,6 +2,9 @@ package capture;
 
 import java.util.Scanner;
 
+import items.EasyCatch;
+import items.EasyStay;
+import items.Item;
 import items.MasterBall;
 import items.SafariBall;
 import items.UltraBall;
@@ -121,6 +124,51 @@ public class Capture {
 			System.out.println("Chance to run: "+ runRate+ "%");
 			System.out.println("Chance to catch: "+ (100-catchRate)+ "%");
 		}
+		
+		public void useEasyStay() {
+			for(Item item:currentTrain.itemList) {
+				if(item.getClass()==EasyStay.class) {
+					runRate-=20;
+					
+				} 
+		}
+			removeEasyStay();
+		}
+		
+		
+		public boolean removeEasyStay() {
+			for(Item item:currentTrain.itemList) {
+				if(item.getClass()==EasyStay.class) {
+					currentTrain.itemList.remove(item);
+					return true;
+					
+				} 
+		}
+			return false;
+		}
+		
+		public void useEasyCatch() {
+			for(Item item:currentTrain.itemList) {
+				if(item.getClass()==EasyCatch.class) {
+					catchRate-=20;
+					
+				} 
+		}
+			removeEasyCatch();
+		}
+		
+		
+		public boolean removeEasyCatch() {
+			for(Item item:currentTrain.itemList) {
+				if(item.getClass()==EasyCatch.class) {
+					currentTrain.itemList.remove(item);
+					return true;
+					
+				} 
+		}
+			return false;
+		}
+		
 		
 		public void checkCap() {
 			//Set cap for common

@@ -35,6 +35,8 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.Optional;
 
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import capture.CaptureView;
 //import controller.SafariZoneMain.ServerListener;
 import persistence.FileManager;
@@ -44,10 +46,9 @@ public class SafariZoneMain extends Application {
 
 	private Stage stage, info_stage;
 	private Settings settings;
-	private BorderPane start_window, menu_window, newgame_window, loadgame_window, game_window, info_window;
-	private Scene start_scene, menu_scene, newgame_scene, loadgame_scene, game_scene, info_scene;
-	
-	
+	private BorderPane start_window, menu_window, newgame_window, loadgame_window, game_window, info_window, option_window;
+	private Scene start_scene, menu_scene, newgame_scene, loadgame_scene, game_scene, info_scene, option_scene;
+	/*******************************************************/
 	
 
 	private MenuBar menuBar;
@@ -61,10 +62,6 @@ public class SafariZoneMain extends Application {
 	private PokemonView pokemonView;
 	private BagView bagView;
 	private TrainerView trainerView;
-	
-	//------ NEW ---------------
-	private BorderPane option_window;
-	private Scene option_scene;
 	private OptionView optionView;
 	
 	//------ NEW NEW -----------
@@ -151,7 +148,12 @@ public class SafariZoneMain extends Application {
 	private void setupViews() {
 		// in-game views
 //		textView = new TextView(gameLoader.getSafariZone());
-		graphicView = new GraphicView(gameLoader.getSafariZone(), stage, game_scene);
+		try {
+			graphicView = new GraphicView(gameLoader.getSafariZone(), stage, game_scene);
+		} catch (UnsupportedAudioFileException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		// other views
 		startView = new StartView(gameLoader.getSafariZone(), stage, start_scene, menu_scene);
 		start_window.setCenter(startView);
