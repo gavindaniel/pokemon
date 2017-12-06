@@ -30,6 +30,9 @@ public class CaptureAnimations {
 	private int[][] coordinates;
 	private Capture currentCapture;
 	
+	//Create items
+	//Sounds
+	//Animations
 	
 	public CaptureAnimations(CaptureView captureView, String bgPath, String standbyPath,String runAwayPath,String capturePath,int [][] coordinates,Capture currentCapture) {
 		

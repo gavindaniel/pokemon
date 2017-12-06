@@ -82,8 +82,8 @@ public class Charmander extends Pokemon {
 	public int[][] getCoordinates() {
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 //Rows
-		int[][] coordinates = {{0,0,47,60,555,235,100,100, 48, 33}, //standBy
-		{0,10,60,70,545,250,100,100, 59, 59},				 //Escape
+		int[][] coordinates = {{0,0,47,60,555,255,90,90, 48, 33}, //standBy
+		{0,0,60,80,545,250,100,100, 59, 59},				 //Escape
 		};
 		return coordinates;
 	}

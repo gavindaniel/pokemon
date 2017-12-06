@@ -82,7 +82,7 @@ public class Caterpie extends Pokemon {
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 //Rows		
 		int[][] coordinates = {{0,0,45,45,555,240,100,100, 46, 46}, //standBy
-		{0,0,70,55,535,240,110,100, 67, 53},				 //escape
+		{0,0,70,55,535,220,115,115, 67, 53},				 //escape/caterpieattack
 		
 		};
 		return coordinates;

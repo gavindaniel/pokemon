@@ -9,17 +9,17 @@ import java.util.List;
  * @author Abdullah Asaad
  *
  */
-public class Eevee extends Pokemon {
+public class Luxio extends Pokemon {
 
 	String standByPath,runAwayPath,capturePath;
-	public Eevee() {
-		super("Eevee", PokeType.NORMAL, PokeType.NORMAL, OccurrenceRate.COMMON);
-		initializeStats(55, 55, 50, 45, 65);
+	public Luxio() {
+		super("Luxio", PokeType.ELECTRIC, PokeType.POISON, OccurrenceRate.UNCOMMON);
+		initializeStats(60, 85, 49, 60, 49);
 		initializeAttacks();
 		initializeBattleAnimations();
-		this.standByPath="file:images/battle/Eevee/eeveestandby.png";
-		this.runAwayPath="file:images/battle/Eevee/eeveeember.png";
-		this.capturePath="file:images/battle/Eevee/eeveestandby.png";
+		this.standByPath="file:images/battle/Luxio/luxiostandby.png";
+		this.runAwayPath="file:images/battle/Luxio/luxiothunder.png";
+		this.capturePath="file:images/battle/Luxio/luxiostandby.png";
 	}
 
 	@Override
@@ -27,9 +27,9 @@ public class Eevee extends Pokemon {
 		
 		ArrayList<Attack> listOfAttacks = this.getAttackList();
 
-		listOfAttacks.add(new ActiveAttack("Tackle", 40, PokeType.NORMAL, 100));
-		listOfAttacks.add(new ActiveAttack("Quick Attack",40,PokeType.NORMAL, 100));
-		listOfAttacks.add(new ActiveAttack("Swift", 60, PokeType.NORMAL, 100));
+		listOfAttacks.add(new ActiveAttack("Spark", 40, PokeType.ELECTRIC, 100));
+		listOfAttacks.add(new ActiveAttack("Thunder Fang",65,PokeType.ELECTRIC, 95));
+		listOfAttacks.add(new ActiveAttack("Discharge", 80, PokeType.ELECTRIC, 100));
 		listOfAttacks.add(new PassiveStatBuff("Recover", PokeType.NORMAL, 100, 1, 181, 1, 1, 1));
 
 		return listOfAttacks;
@@ -38,12 +38,12 @@ public class Eevee extends Pokemon {
 	@Override
 	public void initializeBattleAnimations() {
 		List<String> spritePaths = new ArrayList<>(5);
-		spritePaths.add("file:images/battle/Eevee/eeveestandby.png");
-		spritePaths.add("file:images/battle/Eevee/eeveeember.png");
-		spritePaths.add("file:images/battle/Eevee/eeveeember.png");
-		spritePaths.add("file:images/battle/Eevee/eeveeattack.png");
-		spritePaths.add("file:images/battle/Eevee/eeveestandby.png");
-		spritePaths.add("file:images/battle/Eevee/eeveeback.png");
+		spritePaths.add("file:images/battle/Luxio/luxiostandby.png");
+		spritePaths.add("file:images/battle/Luxio/luxiothunder.png");
+		spritePaths.add("file:images/battle/Luxio/Luxiofireblast.png");
+		spritePaths.add("file:images/battle/Luxio/Luxioattack.png");
+		spritePaths.add("file:images/battle/Luxio/Luxiostandby.png");
+		spritePaths.add("file:images/battle/Luxio/Luxioback.png");
 				
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 															 //Rows		
@@ -81,8 +81,8 @@ public class Eevee extends Pokemon {
 	public int[][] getCoordinates() {
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 //Rows		
-		int[][] coordinates = {{0,0,63,55,555,240,100,100, 64, 25}, //standBy
-		{0,0,74,67,550,245,100,100, 78, 39},				 //escape/ember
+		int[][] coordinates = {{0,0,70,76,565,240,100,100,70, 49}, //standBy
+		{0,0,70,90,555,240,100,100, 71, 35},				 //escape/thunder
 		
 		};
 		return coordinates;

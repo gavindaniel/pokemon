@@ -82,7 +82,7 @@ public class Bulbasaur extends Pokemon {
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 //Rows		
 		int[][] coordinates = {{0,0,46,49,565,240,100,100, 45, 40}, //standBy
-		{0,0,65,65,565,240,110,100, 62, 63},				 //escape
+		{0,0,65,65,555,230,120,120, 62, 63},				 //escape
 		
 		};
 		return coordinates;

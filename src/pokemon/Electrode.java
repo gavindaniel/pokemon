@@ -82,7 +82,7 @@ public class Electrode extends Pokemon {
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 //Rows		
 		int[][] coordinates = {{0,0,72,59,555,240,100,100,72, 45}, //standBy
-		{0,0,74,67,515,245,140,110, 78, 39},				 //escape
+		{0,0,72,59,555,245,100,100, 72, 44},				 //escape/electrode attack
 		
 		};
 		return coordinates;

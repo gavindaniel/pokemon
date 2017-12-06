@@ -22,9 +22,14 @@ import pokemon.Caterpie;
 import pokemon.Charmander;
 import pokemon.Eevee;
 import pokemon.Electrode;
+import pokemon.Flareon;
+import pokemon.Ivysaur;
+import pokemon.Luxio;
 import pokemon.Pikachu;
 import pokemon.Pokemon;
+import pokemon.Psyduck;
 import pokemon.Squirtle;
+import pokemon.Vaporeon;
 
 public class CaptureRunner extends Application {
 
@@ -53,7 +58,7 @@ public class CaptureRunner extends Application {
 		Scene scene = new Scene(window, SCENE_WIDTH, SCENE_HEIGHT);
 		//Add battle view observer
 		trainer1=new Trainer("Person");
-		capture=new Capture(new Electrode(), trainer1);
+		capture=new Capture(new Vaporeon(), trainer1);
 		captureView = new CaptureView(capture, SCENE_WIDTH, SCENE_HEIGHT,window);
 		window.setCenter((Node) captureView);
 		stage.setScene(scene);

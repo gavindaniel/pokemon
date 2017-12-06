@@ -9,17 +9,17 @@ import java.util.List;
  * @author Abdullah Asaad
  *
  */
-public class Eevee extends Pokemon {
+public class Vaporeon extends Pokemon {
 
 	String standByPath,runAwayPath,capturePath;
-	public Eevee() {
-		super("Eevee", PokeType.NORMAL, PokeType.NORMAL, OccurrenceRate.COMMON);
-		initializeStats(55, 55, 50, 45, 65);
+	public Vaporeon() {
+		super("Vaporeon", PokeType.WATER, PokeType.WATER, OccurrenceRate.UNCOMMON);
+		initializeStats(50, 52, 48, 65, 50);
 		initializeAttacks();
 		initializeBattleAnimations();
-		this.standByPath="file:images/battle/Eevee/eeveestandby.png";
-		this.runAwayPath="file:images/battle/Eevee/eeveeember.png";
-		this.capturePath="file:images/battle/Eevee/eeveestandby.png";
+		this.standByPath="file:images/battle/Vaporeon/vaporeonstand-by.png";
+		this.runAwayPath="file:images/battle/Vaporeon/vaporeonwatergun.png";
+		this.capturePath="file:images/battle/Vaporeon/vaporeonstand-by.png";
 	}
 
 	@Override
@@ -27,9 +27,9 @@ public class Eevee extends Pokemon {
 		
 		ArrayList<Attack> listOfAttacks = this.getAttackList();
 
-		listOfAttacks.add(new ActiveAttack("Tackle", 40, PokeType.NORMAL, 100));
-		listOfAttacks.add(new ActiveAttack("Quick Attack",40,PokeType.NORMAL, 100));
-		listOfAttacks.add(new ActiveAttack("Swift", 60, PokeType.NORMAL, 100));
+		listOfAttacks.add(new ActiveAttack("Water Gun", 40, PokeType.WATER, 100));
+		listOfAttacks.add(new ActiveAttack("Water Pulse",65,PokeType.WATER, 95));
+		listOfAttacks.add(new ActiveAttack("Aqua Tail", 80, PokeType.WATER, 100));
 		listOfAttacks.add(new PassiveStatBuff("Recover", PokeType.NORMAL, 100, 1, 181, 1, 1, 1));
 
 		return listOfAttacks;
@@ -38,12 +38,12 @@ public class Eevee extends Pokemon {
 	@Override
 	public void initializeBattleAnimations() {
 		List<String> spritePaths = new ArrayList<>(5);
-		spritePaths.add("file:images/battle/Eevee/eeveestandby.png");
-		spritePaths.add("file:images/battle/Eevee/eeveeember.png");
-		spritePaths.add("file:images/battle/Eevee/eeveeember.png");
-		spritePaths.add("file:images/battle/Eevee/eeveeattack.png");
-		spritePaths.add("file:images/battle/Eevee/eeveestandby.png");
-		spritePaths.add("file:images/battle/Eevee/eeveeback.png");
+		spritePaths.add("file:images/battle/Vaporeon/vaporeonstand-by.png");
+		spritePaths.add("file:images/battle/Vaporeon/vaporeonwatergun.png");
+		spritePaths.add("file:images/battle/Vaporeon/Vaporeonfireblast.png");
+		spritePaths.add("file:images/battle/Vaporeon/Vaporeonattack.png");
+		spritePaths.add("file:images/battle/Vaporeon/Vaporeonstandby.png");
+		spritePaths.add("file:images/battle/Vaporeon/Vaporeonback.png");
 				
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 															 //Rows		
@@ -81,8 +81,8 @@ public class Eevee extends Pokemon {
 	public int[][] getCoordinates() {
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 //Rows		
-		int[][] coordinates = {{0,0,63,55,555,240,100,100, 64, 25}, //standBy
-		{0,0,74,67,550,245,100,100, 78, 39},				 //escape/ember
+		int[][] coordinates = {{0,0,100,72,565,240,100,100,102, 33}, //standBy
+		{0,0,98,101,560,245,110,110, 105, 40},				 //escape/hydropump
 		
 		};
 		return coordinates;

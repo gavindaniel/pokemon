@@ -107,7 +107,7 @@ public class CaptureView extends Canvas implements Observer {
 	  //Let the pokemon try to retreat
 	  public void attemptRetreat() {
 		  
-	    	if(capture.retreat(new Random().nextInt(100))) {
+	    	if(capture.retreat(new Random().nextInt(100)+1)) {
 	    		captureAnimation.animateRunAway();
 	    	}
 	    	
@@ -117,7 +117,7 @@ public class CaptureView extends Canvas implements Observer {
 	  //Try to capture the pokemon
 	  public void attemptCapture() {
 		  
-		  if(capture.throwBall(new Random().nextInt(100))) {
+		  if(capture.throwBall(new Random().nextInt(100)+1)) {
 			  System.out.println(capture.currentTrain.getOwnedPokemonList());
 			  captureAnimation.animateCapture();
 		  }
