@@ -252,11 +252,13 @@ public class BattleView extends Canvas implements Observer {
 		gc.fillText(attack3, x, y + yGap, maxWidth);
 		gc.fillText(attack4, x + xGap, y + yGap, maxWidth);
 	
-		//Draw Arrow
-		if (arrowPos == 0) gc.drawImage(battleMenus, 277, 23, 6, 10, 24, 587, 6*3, 10*3);	//Attack1 highlighted
+		//Draw Arrow and attack stats
+		if (arrowPos == 0) gc.drawImage(battleMenus, 277, 23, 6, 10, 24, 587, 6*3, 10*3);	//Attack1 highlighted}
 		else if (arrowPos == 1) gc.drawImage(battleMenus, 277, 23, 6, 10, 24 + xGap, 587, 6*3, 10*3);	//Attack2 highlighted
 		else if (arrowPos == 2) gc.drawImage(battleMenus, 277, 23, 6, 10, 24, 587 + yGap, 6*3, 10*3);	//Attack3 highlighted
 		else gc.drawImage(battleMenus, 277, 23, 6, 10, 24 + xGap, 587 + yGap, 6*3, 10*3);	//Attack3 highlighted
+		
+		gc.fillText("TYPE/ " + attackList.get(arrowPos).getType().toString(), 570, y, maxWidth/3); //Draw attack type
 	}
 	
 	private void startIdle() {
