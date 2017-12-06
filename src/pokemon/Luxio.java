@@ -4,21 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class represents the common, electric pokemon 'Electrode'.
+ * Class represents the uncommon, electric pokemon 'Luxio'.
  * @author Abdullah Asaad
  *
  */
-public class Electrode extends Pokemon {
+public class Luxio extends Pokemon {
 
 	String standByPath,runAwayPath,capturePath;
-	public Electrode() {
-		super("Electrode", PokeType.ELECTRIC, null, OccurrenceRate.COMMON);
-		initializeStats(160, 95, 120, 130, 220);
+	public Luxio() {
+		super("Luxio", PokeType.ELECTRIC, PokeType.NORMAL, OccurrenceRate.UNCOMMON);
+		initializeStats(220, 180, 120, 130, 130);
 		initializeAttacks();
 		initializeBattleAnimations();
-		this.standByPath="file:images/battle/Electrode/electrodestandby.png";
-		this.runAwayPath="file:images/battle/Electrode/electrodeattack.png";
-		this.capturePath="file:images/battle/Electrode/electrodestandby.png";
 	}
 
 	@Override
@@ -26,10 +23,10 @@ public class Electrode extends Pokemon {
 		
 		ArrayList<Attack> listOfAttacks = this.getAttackList();
 
-		listOfAttacks.add(new ActiveAttack("Thunderbolt", 90, PokeType.ELECTRIC, 75));
-		listOfAttacks.add(new ActiveAttack("Swift", 60, PokeType.NORMAL, 80));
-		listOfAttacks.add(new PassiveAttackBuff("Charge", PokeType.ELECTRIC, 100, 1, 2, 1.15));
-		listOfAttacks.add(new PassiveStatBuff("Defense Curl", PokeType.NORMAL, 100, 1, 0, 1, 1.5, 1));
+		listOfAttacks.add(new ActiveAttack("Spark", 75, PokeType.ELECTRIC, 95));
+		listOfAttacks.add(new ActiveAttack("Crunch", 85, PokeType.NORMAL, 100));
+		listOfAttacks.add(new PassiveStatBuff("Double Team", PokeType.NORMAL, 100, 1, 0, 1, 1.75, 1));
+		listOfAttacks.add(new ActiveAttack("Swift", 60, PokeType.NORMAL, 100));
 
 		return listOfAttacks;
 	}
@@ -37,12 +34,12 @@ public class Electrode extends Pokemon {
 	@Override
 	public void initializeBattleAnimations() {
 		List<String> spritePaths = new ArrayList<>(5);
-		spritePaths.add("file:images/battle/Electrode/electrodestandby.png");
-		spritePaths.add("file:images/battle/Electrode/electrodeattack.png");
-		spritePaths.add("file:images/battle/Electrode/electrodeattack.png");
-		spritePaths.add("file:images/battle/Electrode/electrodeattack.png");
-		spritePaths.add("file:images/battle/Electrode/electrodestandby.png");
-		spritePaths.add("file:images/battle/Electrode/electrodeback.png");
+		spritePaths.add("file:images/battle/Luxio/luxiostandby.png");
+		spritePaths.add("file:images/battle/Luxio/luxiothunder.png");
+		spritePaths.add("file:images/battle/Luxio/luxiosandattack.png");
+		spritePaths.add("file:images/battle/Luxio/luxiostandby.png");
+		spritePaths.add("file:images/battle/Luxio/luxiosandattack.png");
+		spritePaths.add("file:images/battle/Luxio/luxioback.png");
 				
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 															 //Rows		
@@ -57,7 +54,6 @@ public class Electrode extends Pokemon {
 		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
 		this.setBattleAnimation(pba);
 	}
-	
 	@Override
 	public String getStandByPath() {
 		// TODO Auto-generated method stub
@@ -79,6 +75,7 @@ public class Electrode extends Pokemon {
 
 	@Override
 	public int[][] getCoordinates() {
+		
 		return null;
 	}
 	

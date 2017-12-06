@@ -1,7 +1,6 @@
 package pokemon;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,7 +13,7 @@ public class Caterpie extends Pokemon {
 	String standByPath,runAwayPath,capturePath;
 	public Caterpie() {
 		super("Caterpie", PokeType.GRASS, PokeType.NORMAL, OccurrenceRate.COMMON);
-		initializeStats(45, 30, 35, 20, 20);
+		initializeStats(160, 70, 90, 60, 95);
 		initializeAttacks();
 		initializeBattleAnimations();
 		this.standByPath="file:images/battle/Caterpie/caterpiestandby.png";
@@ -28,9 +27,9 @@ public class Caterpie extends Pokemon {
 		ArrayList<Attack> listOfAttacks = this.getAttackList();
 
 		listOfAttacks.add(new ActiveAttack("Tackle", 40, PokeType.NORMAL, 100));
-		listOfAttacks.add(new PassiveStatBuff("String Shot",PokeType.GRASS, 100, 1, 181, 1, 1, 1));
-		listOfAttacks.add(new ActiveAttack("Bug Bite", 60, PokeType.GRASS, 95));
-		listOfAttacks.add(new PassiveStatBuff("Recover", PokeType.NORMAL, 100, 1, 181, 1, 1, 1));
+		listOfAttacks.add(new ActiveAttack("String Shot", 65, PokeType.GRASS, 90));
+		listOfAttacks.add(new ActiveAttack("Bug Bite", 60, PokeType.GRASS, 100));
+		listOfAttacks.add(new PassiveStatBuff("Recover", PokeType.NORMAL, 100, 1, getMaxHP()/3, 1, 1, 1));
 
 		return listOfAttacks;
 	}
@@ -58,6 +57,7 @@ public class Caterpie extends Pokemon {
 		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
 		this.setBattleAnimation(pba);
 	}
+	
 	@Override
 	public String getStandByPath() {
 		// TODO Auto-generated method stub
@@ -79,13 +79,7 @@ public class Caterpie extends Pokemon {
 
 	@Override
 	public int[][] getCoordinates() {
-		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
-		 //Rows		
-		int[][] coordinates = {{0,0,45,45,555,240,100,100, 46, 46}, //standBy
-		{0,0,70,55,535,240,110,100, 67, 53},				 //escape
-		
-		};
-		return coordinates;
+		return null;
 	}
 	
 }

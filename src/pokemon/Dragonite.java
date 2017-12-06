@@ -4,21 +4,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class represents the common, water pokemon 'Squirtle'.
+ * Class represents the rare, fire pokemon 'Dragonite'.
  * @author Abdullah Asaad
  *
  */
-public class Squirtle extends Pokemon {
+public class Dragonite extends Pokemon {
 
 	String standByPath,runAwayPath,capturePath;
-	public Squirtle() {
-		super("Squirtle", PokeType.WATER, null, OccurrenceRate.COMMON);
-		initializeStats(155, 100, 120, 100, 90);
+	public Dragonite() {
+		super("Dragonite", PokeType.FIRE, PokeType.NORMAL, OccurrenceRate.RARE);
+		initializeStats(330, 330, 265, 260, 220);
 		initializeAttacks();
 		initializeBattleAnimations();
-		this.standByPath="file:images/battle/Squirtle/squirtle-standby.png";
-		this.runAwayPath="file:images/battle/Squirtle/squirtle-bubblebeam.png";
-		this.capturePath="file:images/battle/Squirtle/squirtle-standby.png";
+
 	}
 	
 	@Override
@@ -26,10 +24,10 @@ public class Squirtle extends Pokemon {
 
 		ArrayList<Attack> listOfAttacks = this.getAttackList();
 
-		listOfAttacks.add(new ActiveAttack("Hydro Pump", 100, PokeType.WATER, 60));
-		listOfAttacks.add(new ActiveAttack("Bubble Beam", 65, PokeType.WATER, 90));
-		listOfAttacks.add(new ActiveAttack("Slash", 70, PokeType.NORMAL, 75));
-		listOfAttacks.add(new PassiveStatBuff("Harden", PokeType.NORMAL, 100, 1, 0, 1, 1.5, 1));
+		listOfAttacks.add(new ActiveAttack("Fire Blast", 110, PokeType.FIRE, 80));
+		listOfAttacks.add(new ActiveAttack("Body Slam", 90, PokeType.NORMAL, 90));
+		listOfAttacks.add(new ActiveAttack("Thunder Punch", 75, PokeType.ELECTRIC, 100));
+		listOfAttacks.add(new PassiveStatBuff("Defense Curl", PokeType.NORMAL, 100, 1, 0, 1.5, 1, 1));
 
 		return listOfAttacks;
 	}
@@ -37,12 +35,12 @@ public class Squirtle extends Pokemon {
 	@Override
 	public void initializeBattleAnimations() {
 		List<String> spritePaths = new ArrayList<>(5);
-		spritePaths.add("file:images/battle/Squirtle/squirtle-standby.png");
-		spritePaths.add("file:images/battle/Squirtle/squirtle-bubblebeam.png");
-		spritePaths.add("file:images/battle/Squirtle/squirtle-bubblebeam.png");
-		spritePaths.add("file:images/battle/Squirtle/squirtle-tackle.png");
-		spritePaths.add("file:images/battle/Squirtle/squirtle-standby.png");
-		spritePaths.add("file:images/battle/Squirtle/squirtle-back.png");
+		spritePaths.add("file:images/battle/Dragonite/dragonitestandby.png");
+		spritePaths.add("file:images/battle/Dragonite/dragonitefireblast.png");
+		spritePaths.add("file:images/battle/Dragonite/dragonitebodyslam.png");
+		spritePaths.add("file:images/battle/Dragonite/dragonitewrap.png");
+		spritePaths.add("file:images/battle/Dragonite/dragonitestandby.png");
+		spritePaths.add("file:images/battle/Dragonite/dragoniteback.png");
 		
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 															 //Rows

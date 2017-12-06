@@ -4,50 +4,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Class represents the common, water pokemon 'Squirtle'.
+ * Class represents the uncommon, grass pokemon 'Ivysaur'.
  * @author Abdullah Asaad
  *
  */
-public class Squirtle extends Pokemon {
+public class Ivysaur extends Pokemon {
 
 	String standByPath,runAwayPath,capturePath;
-	public Squirtle() {
-		super("Squirtle", PokeType.WATER, null, OccurrenceRate.COMMON);
-		initializeStats(155, 100, 120, 100, 90);
+	public Ivysaur() {
+		super("Ivysaur", PokeType.GRASS, null, OccurrenceRate.UNCOMMON);
+		initializeStats(225, 150, 150, 160, 130);
 		initializeAttacks();
 		initializeBattleAnimations();
-		this.standByPath="file:images/battle/Squirtle/squirtle-standby.png";
-		this.runAwayPath="file:images/battle/Squirtle/squirtle-bubblebeam.png";
-		this.capturePath="file:images/battle/Squirtle/squirtle-standby.png";
 	}
-	
+
 	@Override
 	public ArrayList<Attack> initializeAttacks() {
-
+		
 		ArrayList<Attack> listOfAttacks = this.getAttackList();
 
-		listOfAttacks.add(new ActiveAttack("Hydro Pump", 100, PokeType.WATER, 60));
-		listOfAttacks.add(new ActiveAttack("Bubble Beam", 65, PokeType.WATER, 90));
-		listOfAttacks.add(new ActiveAttack("Slash", 70, PokeType.NORMAL, 75));
+		listOfAttacks.add(new ActiveAttack("Razor Leaf", 55, PokeType.GRASS, 95));
+		listOfAttacks.add(new ActiveAttack("Solar Beam", 120, PokeType.GRASS, 100));
 		listOfAttacks.add(new PassiveStatBuff("Harden", PokeType.NORMAL, 100, 1, 0, 1, 1.5, 1));
+		listOfAttacks.add(new ActiveAttack("Bite", 70, PokeType.NORMAL, 85));
 
 		return listOfAttacks;
 	}
-	
+
 	@Override
 	public void initializeBattleAnimations() {
 		List<String> spritePaths = new ArrayList<>(5);
-		spritePaths.add("file:images/battle/Squirtle/squirtle-standby.png");
-		spritePaths.add("file:images/battle/Squirtle/squirtle-bubblebeam.png");
-		spritePaths.add("file:images/battle/Squirtle/squirtle-bubblebeam.png");
-		spritePaths.add("file:images/battle/Squirtle/squirtle-tackle.png");
-		spritePaths.add("file:images/battle/Squirtle/squirtle-standby.png");
-		spritePaths.add("file:images/battle/Squirtle/squirtle-back.png");
-		
+		spritePaths.add("file:images/battle/Ivysaur/ivysaurstandby.png");
+		spritePaths.add("file:images/battle/Ivysaur/ivysaursolarbeam.png");
+		spritePaths.add("file:images/battle/Ivysaur/ivysaursolarbeam.png");
+		spritePaths.add("file:images/battle/Ivysaur/ivysaurstandby.png");
+		spritePaths.add("file:images/battle/Ivysaur/ivysaursandattack.png");
+		spritePaths.add("file:images/battle/Ivysaur/ivysaurback.png");
+				
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
-		 															 //Rows
-		int[][] coordinates = {{0,0,60,60,575,230,100,100, 60, 33}, //standBy
-				{0,0,60,60,575,230,100,100, 60, 33},				 //First Attack
+		 															 //Rows		
+		int[][] coordinates = {{0,0,63,55,555,240,100,100, 64, 25}, //standBy
+				{0,0,74,67,515,245,140,110, 78, 39},				 //First Attack
 				{0,0,60,60,575,230,100,100, 60, 33},				 //Second Attack
 				{0,0,60,60,575,230,100,100, 60, 33},				 //Third Attack
 				{0,0,60,60,575,230,100,100, 60, 33},				 //Fourth Attack
@@ -57,7 +54,6 @@ public class Squirtle extends Pokemon {
 		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
 		this.setBattleAnimation(pba);
 	}
-	
 	@Override
 	public String getStandByPath() {
 		// TODO Auto-generated method stub
@@ -76,8 +72,11 @@ public class Squirtle extends Pokemon {
 		return capturePath;
 
 	}
+
 	@Override
 	public int[][] getCoordinates() {
+		
 		return null;
 	}
+	
 }
