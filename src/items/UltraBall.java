@@ -4,7 +4,7 @@ public class UltraBall extends Item{
 	String imagePath;
 	public UltraBall() {
 		super();
-		this.imagePath="file:images/items/hyperpotion.png";
+		this.imagePath="file:images/items/ultraball.png";
 	}
 	
 	@Override
