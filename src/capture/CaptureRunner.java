@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.Observer;
 
 import battle.BattleLogic;
-import items.MasterBall;
-import items.UltraBall;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -60,8 +58,6 @@ public class CaptureRunner extends Application {
 		Scene scene = new Scene(window, SCENE_WIDTH, SCENE_HEIGHT);
 		//Add battle view observer
 		trainer1=new Trainer("Person");
-		trainer1.addItem(new MasterBall());
-		trainer1.addItem(new UltraBall());
 		capture=new Capture(new Vaporeon(), trainer1);
 		captureView = new CaptureView(capture, SCENE_WIDTH, SCENE_HEIGHT,window);
 		window.setCenter((Node) captureView);
