@@ -46,12 +46,12 @@ public class Electrode extends Pokemon {
 				
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 															 //Rows		
-		int[][] coordinates = {{0,0,63,55,555,240,100,100, 64, 25}, //standBy
-				{0,0,74,67,515,245,140,110, 78, 39},				 //First Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Second Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Third Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Fourth Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Back Standby
+		int[][] coordinates = {{2, 0,70,58,550,255,90,80, 72, 45}, //standBy
+				{2, 0,70,58,550,255,90,80, 80, 46},				 //First Attack
+				{2, 0,70,58,550,255,90,80, 80, 46},				 //Second Attack
+				{2, 0,70,58,550,255,90,80, 72, 46},				 //Third Attack
+				{2, 0,70,58,550,255,90,80, 72, 45},				 //Fourth Attack
+				{2,0,70,58,110,430,120,100, 73, 45},				 //Back Standby
 		};
 		
 		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);

@@ -37,19 +37,19 @@ public class Dragonite extends Pokemon {
 		List<String> spritePaths = new ArrayList<>(5);
 		spritePaths.add("file:images/battle/Dragonite/dragonitestandby.png");
 		spritePaths.add("file:images/battle/Dragonite/dragonitefireblast.png");
-		spritePaths.add("file:images/battle/Dragonite/dragonitebodyslam.png");
-		spritePaths.add("file:images/battle/Dragonite/dragonitewrap.png");
+		spritePaths.add("file:images/battle/Dragonite/dragonitefireblast.png");
+		spritePaths.add("file:images/battle/Dragonite/dragonitefireblast.png");
 		spritePaths.add("file:images/battle/Dragonite/dragonitestandby.png");
 		spritePaths.add("file:images/battle/Dragonite/dragoniteback.png");
 		
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 															 //Rows
-		int[][] coordinates = {{0,0,60,60,575,230,100,100, 60, 33}, //standBy
-				{0,0,60,60,575,230,100,100, 60, 33},				 //First Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Second Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Third Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Fourth Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Back Standby
+		int[][] coordinates = {{0,0, 80,100,520,195,135,175, 85, 44}, //standBy
+				{0,0, 90,110,520,195,135,175, 104, 41},				 //First Attack
+				{0,0, 90,110,520,195,135,175, 104, 41},				 //Second Attack
+				{0,0, 90,110,520,195,135,175, 104, 41},				 //Third Attack
+				{0,0, 80,100,520,195,135,175, 85, 44},				 //Fourth Attack
+				{0,0,110,98,50,360,200,180, 110, 38},				 //Back Standby
 		};
 		
 		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);

@@ -46,12 +46,12 @@ public class Bulbasaur extends Pokemon {
 				
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 															 //Rows		
-		int[][] coordinates = {{0,0,60,60,575,230,100,100, 60, 33}, //standBy
-				{0,0,60,60,575,230,100,100, 60, 33},				 //First Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Second Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Third Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Fourth Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Back Standby
+		int[][] coordinates = {{0,0,46,50,550,255,85,85, 45, 40}, //standBy
+				{0,0,65,65,548,243,100,100, 62, 66},				 //First Attack
+				{0,0,65,65,548,243,100,100, 62, 66},				 //Second Attack
+				{0,0,65,65,548,243,100,100, 62, 66},				 //Third Attack
+				{0,0,46,50,550,255,85,85, 45, 40},				 //Fourth Attack
+				{0,0,52,52,50,390,150,150, 52, 45},				 //Back Standby
 		};
 		
 		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);

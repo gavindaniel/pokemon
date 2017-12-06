@@ -46,12 +46,12 @@ public class Caterpie extends Pokemon {
 				
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 															 //Rows		
-		int[][] coordinates = {{0,0,45,45,535,240,100,100, 46, 46}, //standBy
-				{0,0,70,55,535,240,110,100, 67, 53},				 //First Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Second Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Third Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Fourth Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Back Standby
+		int[][] coordinates = {{0,0,45,45,550,255,85,85, 46, 50}, //standBy
+				{0,0,70,55,535,240,110,100, 67, 48},				 //First Attack
+				{0,0,70,55,535,240,110,100, 67, 48},				 //Second Attack
+				{0,0,70,55,535,240,110,100, 67, 48},				 //Third Attack
+				{0,0,45,45,535,240,100,100, 46, 50},				 //Fourth Attack
+				{0,0,50,45,50,390,150,150, 50, 53},				 //Back Standby
 		};
 		
 		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);

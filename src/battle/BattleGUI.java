@@ -28,6 +28,8 @@ import model.Trainer;
 import pokemon.Attack;
 import pokemon.Bulbasaur;
 import pokemon.Charmander;
+import pokemon.Electrode;
+import pokemon.Flareon;
 import pokemon.Pikachu;
 import pokemon.PokeType;
 import pokemon.Pokemon;
@@ -86,7 +88,7 @@ public class BattleGUI extends Application {
 		/******************************For Quick Testing************************************/
 		  
 		List<Pokemon> pokeList1 = new ArrayList<>();
-		pokeList1.add(new Pikachu());
+		pokeList1.add(new Electrode());
 		pokeList1.add(new Charmander());
 		pokeList1.add(new Bulbasaur());
 		for(Pokemon p : pokeList1) {
@@ -94,7 +96,7 @@ public class BattleGUI extends Application {
 		}
 
 		List<Pokemon> pokeList2 = new ArrayList<>();
-		pokeList2.add(new Charmander());
+		pokeList2.add(new Flareon());
 		pokeList2.add(new Pikachu());
 		pokeList2.add(new Squirtle());
 		

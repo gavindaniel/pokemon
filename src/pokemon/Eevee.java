@@ -46,12 +46,12 @@ public class Eevee extends Pokemon {
 				
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 															 //Rows		
-		int[][] coordinates = {{0,0,63,55,555,240,100,100, 64, 25}, //standBy
-				{0,0,74,67,515,245,140,110, 78, 39},				 //First Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Second Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Third Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Fourth Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Back Standby
+		int[][] coordinates = {{0,0,63,55,545,255,94,80, 64, 25}, //standBy
+				{20,0,85,85,515,260,114,90, 113, 39},				 //First Attack
+				{0,0,80,80,535,270,114,90, 78, 37},				 //Second Attack
+				{20,0,85,85,515,260,114,90, 113, 39},				 //Third Attack
+				{0,0,63,55,545,255,94,80, 64, 25},				 //Fourth Attack
+				{0,0,70,55,75,430,137,110, 72, 29},				 //Back Standby
 		};
 		
 		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);

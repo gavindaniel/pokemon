@@ -23,7 +23,7 @@ public class Flareon extends Pokemon {
 		
 		ArrayList<Attack> listOfAttacks = this.getAttackList();
 
-		listOfAttacks.add(new ActiveAttack("Fire Blast", 110, PokeType.FIRE, 75));
+		listOfAttacks.add(new ActiveAttack("Fire Blast", 100, PokeType.FIRE, 75));
 		listOfAttacks.add(new ActiveAttack("Quick Attack", 40, PokeType.NORMAL, 100));
 		listOfAttacks.add(new PassiveAttackBuff("Flame Charge", PokeType.FIRE, 100, 1, 2, 1.15));
 		listOfAttacks.add(new ActiveAttack("Sand Attack", 60, PokeType.NORMAL, 85));
@@ -43,12 +43,12 @@ public class Flareon extends Pokemon {
 				
 		//coordinates columns: sx, sy, sw, sh, dx, dy, dw, dh, sx shift, # of frames. 									 
 		 															 //Rows		
-		int[][] coordinates = {{0,0,63,55,555,240,100,100, 64, 25}, //standBy
-				{0,0,74,67,515,245,140,110, 78, 39},				 //First Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Second Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Third Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Fourth Attack
-				{0,0,60,60,575,230,100,100, 60, 33},				 //Back Standby
+		int[][] coordinates = {{0,0,60,95,565,245,60,95, 59, 28}, //standBy
+				{20,0,70,130,565,235,70,130, 94, 36},				 //First Attack
+				{10,0,110,120,535,225,110,120, 123, 40},				 //Second Attack
+				{0,0,60,95,565,245,60,95, 59, 28},				 //Third Attack
+				{10,0,110,120,535,225,110,120, 123, 40},				 //Fourth Attack
+				{0,0,80,100,65,390,150,150, 79, 33},				 //Back Standby
 		};
 		
 		PokeBattleAnimation pba = new PokeBattleAnimation(battleBgPath, spritePaths, coordinates);
